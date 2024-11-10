@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
@@ -117,7 +117,7 @@ const MeditationPage = () => {
   );
 
   // Audio Player component for playing audio files
-  const AudioPlayer = ({ src, autoplay = false, loop = false }: { src: string | null; autoplay?: boolean; loop?: boolean }) => {
+  const AudioPlayer = ({ src, autoplay = false, loop = false, showControls = true }: { src: string | null; autoplay?: boolean; loop?: boolean; showControls?: boolean }) => {
     const audioRef = useRef<HTMLAudioElement>(null);
 
     useEffect(() => {
@@ -129,7 +129,7 @@ const MeditationPage = () => {
     }, [src, autoplay]);
 
     return (
-      <audio ref={audioRef} src={src || ''} controls loop={loop}>
+      <audio ref={audioRef} src={src || ''} controls={showControls} loop={loop}>
         Your browser does not support the audio element.
       </audio>
     );
@@ -148,14 +148,15 @@ const MeditationPage = () => {
           <h2>Audio Player</h2>
           {backgroundAudioSrc && (
             <div>
-              <h3>Background Audio</h3>
-              <AudioPlayer src={backgroundAudioSrc} autoplay={true} loop={true} />
+              <h3>Background Audio (Hidden)</h3>
+              {/* Hide the controls for background audio */}
+              <AudioPlayer src={backgroundAudioSrc} autoplay={true} loop={true} showControls={false} />
             </div>
           )}
           {guideAudioSrc && (
             <div>
               <h3>Guide Audio</h3>
-              <AudioPlayer src={guideAudioSrc} autoplay={false} loop={false} />
+              <AudioPlayer src={guideAudioSrc} autoplay={false} loop={false} showControls={true} />
             </div>
           )}
         </div>

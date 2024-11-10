@@ -6,7 +6,7 @@ async function Navbar() {
     const session = await getServerSession();
 
   return (
-    <nav className="bg-zinc-900 p-4">
+    <nav className="bg-white-900 p-4">
       <div className="flex justify-between container mx-auto">
         <Link href="/">
           <h1 className="font-bold text-xl">NextAuth</h1>
