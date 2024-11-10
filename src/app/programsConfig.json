@@ -1,0 +1,37 @@
+{
+  "programs": [
+    {
+      "programName": "deep_concentration",
+      "guides": [
+        {
+          "fileName": "2_minutes.m4a",
+          "guideName": "2 minutes"
+        },
+        {
+          "fileName": "5_minutes.m4a",
+          "guideName": "5 minutes"
+        },
+        {
+          "fileName": "10_minutes.m4a",
+          "guideName": "10 minutes"
+        },
+        {
+          "fileName": "20_minutes.m4a",
+          "guideName": "20 minutes"
+        },
+        {
+          "fileName": "25_minutes.m4a",
+          "guideName": "25 minutes"
+        },
+        {
+          "fileName": "30_minutes.m4a",
+          "guideName": "30 minutes"
+        },
+        {
+          "fileName": "15_minutes.m4a",
+          "guideName": "15 minutes"
+        }
+      ]
+    }
+  ]
+}

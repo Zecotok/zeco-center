@@ -1,0 +1,2181 @@
+{
+    "scenes": [
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2019-05-07T21:13:37.537Z",
+        "is_default": true,
+        "gradient_end_color": "#3935d0",
+        "time_period": "day",
+        "audio": {
+          "id": "9177564bcdf6e86056d98cc2a6501e9f",
+          "url": "https://assets.calm.com/9177564bcdf6e86056d98cc2a6501e9f.m4a",
+          "download_url": "https://assets.calm.com/9177564bcdf6e86056d98cc2a6501e9f.m4a",
+          "content_type": "audio/mp4",
+          "size": 9731147,
+          "has_transcript": false,
+          "duration": 600.022
+        },
+        "updated_at": "2019-05-07T22:56:35.743Z",
+        "gradient_start_color": "#3c9eda",
+        "title": "Jasper Lake",
+        "english_title_for_analytics": "Jasper Lake",
+        "video": {
+          "id": "aaf764eade43946661391ae8204118bc",
+          "url": "https://s3.amazonaws.com/calm-assets-videos/hls/aaf764eade43946661391ae8204118bc/aaf764eade43946661391ae8204118bc.mp4",
+          "content_type": "video/mp4",
+          "size": 3376021,
+          "has_transcript": false,
+          "duration": 2.009
+        },
+        "id": "ZFlV8dbxPd",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 26207,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/6b6500c525aa1be40280feaedb894901.jpeg",
+          "dominant_colors": [
+            "#779cbf",
+            "#525833",
+            "#d5d1ce"
+          ],
+          "download_url": "https://assets.calm.com/6b6500c525aa1be40280feaedb894901.jpeg",
+          "id": "6b6500c525aa1be40280feaedb894901",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2023-04-04T15:46:09.897Z",
+        "time_period": "all",
+        "audio": {
+          "id": "3e35b8cd11e5afa1775dffb2b854b092",
+          "url": "https://assets.calm.com/3e35b8cd11e5afa1775dffb2b854b092.m4a",
+          "download_url": "https://assets.calm.com/3e35b8cd11e5afa1775dffb2b854b092.m4a",
+          "content_type": "audio/mp4",
+          "size": 1944397,
+          "has_transcript": false,
+          "duration": 120.043
+        },
+        "updated_at": "2023-04-19T01:27:13.802Z",
+        "title": "Denali",
+        "english_title_for_analytics": "Denali",
+        "video": {
+          "content_type": "video/mp4",
+          "size": 4600027,
+          "width": 1920,
+          "height": 1080,
+          "content_policy_path": "public",
+          "url": "https://content.calm.com/public/eb6bde47903cd4c00d1a9c1140968e69/1681247781929_download.mp4",
+          "orientation": "landscape",
+          "duration": 12,
+          "id": "eb6bde47903cd4c00d1a9c1140968e69",
+          "has_transcript": false
+        },
+        "id": "4Jjqu6ILK5",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 33540,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/ad1a191b20d09558f3b70e3a2afc1c23.jpeg",
+          "dominant_colors": [
+            "#3558c9",
+            "#1b2e68"
+          ],
+          "download_url": "https://assets.calm.com/ad1a191b20d09558f3b70e3a2afc1c23.jpeg",
+          "id": "ad1a191b20d09558f3b70e3a2afc1c23",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2023-04-04T15:42:30.446Z",
+        "time_period": "all",
+        "audio": {
+          "id": "e0f4709331d8d7320adfe53a923c5387",
+          "url": "https://assets.calm.com/e0f4709331d8d7320adfe53a923c5387.m4a",
+          "download_url": "https://assets.calm.com/e0f4709331d8d7320adfe53a923c5387.m4a",
+          "content_type": "audio/mp4",
+          "size": 1944408,
+          "has_transcript": false,
+          "duration": 120.043
+        },
+        "updated_at": "2023-04-19T01:27:17.318Z",
+        "title": "Yosemite",
+        "english_title_for_analytics": "Yosemite",
+        "video": {
+          "content_type": "video/mp4",
+          "size": 4493748,
+          "width": 1920,
+          "height": 1080,
+          "content_policy_path": "public",
+          "url": "https://content.calm.com/public/1e42e816b6082ea3837e6b7c425c0200/1681247741204_download.mp4",
+          "orientation": "landscape",
+          "duration": 11.96,
+          "id": "1e42e816b6082ea3837e6b7c425c0200",
+          "has_transcript": false
+        },
+        "id": "6pku_9jIWr",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 39135,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/e6241935ef2901a29abb02f837ecb619.jpeg",
+          "dominant_colors": [
+            "#f0f00e",
+            "#444404"
+          ],
+          "download_url": "https://assets.calm.com/e6241935ef2901a29abb02f837ecb619.jpeg",
+          "id": "e6241935ef2901a29abb02f837ecb619",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2023-04-04T15:47:13.747Z",
+        "time_period": "all",
+        "audio": {
+          "id": "acabf986c3c0b4be4b008888957b0a05",
+          "url": "https://assets.calm.com/acabf986c3c0b4be4b008888957b0a05.m4a",
+          "download_url": "https://assets.calm.com/acabf986c3c0b4be4b008888957b0a05.m4a",
+          "content_type": "audio/mp4",
+          "size": 1944412,
+          "has_transcript": false,
+          "duration": 120.043
+        },
+        "updated_at": "2023-04-19T01:27:20.801Z",
+        "title": "Olympic",
+        "english_title_for_analytics": "Olympic",
+        "video": {
+          "content_type": "video/mp4",
+          "size": 4780465,
+          "width": 1920,
+          "height": 1080,
+          "content_policy_path": "public",
+          "url": "https://content.calm.com/public/db27f41bdc749bc08acb321b02bb1f5b/1681247819548_download.mp4",
+          "orientation": "landscape",
+          "duration": 12.04,
+          "id": "db27f41bdc749bc08acb321b02bb1f5b",
+          "has_transcript": false
+        },
+        "id": "qua-Ux6qS2",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 39907,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/b34597732d9e3603a91ce8efc5a6ee77.jpeg",
+          "dominant_colors": [
+            "#8dcc32",
+            "#466519"
+          ],
+          "download_url": "https://assets.calm.com/b34597732d9e3603a91ce8efc5a6ee77.jpeg",
+          "id": "b34597732d9e3603a91ce8efc5a6ee77",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2014-11-21T13:37:39.294Z",
+        "gradient_end_color": "#001a40",
+        "time_period": "all",
+        "audio": {
+          "id": "3a8db8d793a8523e1ccf1cdf1e708c7c",
+          "url": "https://assets.calm.com/3a8db8d793a8523e1ccf1cdf1e708c7c.m4a",
+          "download_url": "https://assets.calm.com/3a8db8d793a8523e1ccf1cdf1e708c7c.m4a",
+          "content_type": "audio/mp4",
+          "size": 5017934,
+          "has_transcript": false,
+          "duration": 303.808
+        },
+        "updated_at": "2020-09-15T16:22:03.476Z",
+        "gradient_start_color": "#005878",
+        "title": "Mountain Lake",
+        "english_title_for_analytics": "Mountain Lake",
+        "video": {
+          "id": "ec430076eb0ac1b7d31d0770246eb1d1",
+          "url": "https://assets.calm.com/ec430076eb0ac1b7d31d0770246eb1d1.mp4",
+          "content_type": "video/mp4",
+          "size": 4006754,
+          "has_transcript": false,
+          "duration": 10.125
+        },
+        "id": "S38pOgKsfM",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 17963,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/c47623c4edd34fc86ef9cf49928791b3.jpeg",
+          "dominant_colors": [
+            "#2d4636",
+            "#56afdd",
+            "#b8d5d8"
+          ],
+          "download_url": "https://assets.calm.com/c47623c4edd34fc86ef9cf49928791b3.jpeg",
+          "id": "c47623c4edd34fc86ef9cf49928791b3",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2014-11-21T13:38:40.510Z",
+        "gradient_end_color": "#052914",
+        "time_period": "all",
+        "audio": {
+          "id": "faa8c3a1b094209aa2189f916bad3191",
+          "url": "https://assets.calm.com/faa8c3a1b094209aa2189f916bad3191.m4a",
+          "download_url": "https://assets.calm.com/faa8c3a1b094209aa2189f916bad3191.m4a",
+          "content_type": "audio/mp4",
+          "size": 5171525,
+          "has_transcript": false,
+          "duration": 313.322667
+        },
+        "updated_at": "2020-09-15T16:27:24.853Z",
+        "gradient_start_color": "#0e603d",
+        "title": "Rain On Leaves",
+        "english_title_for_analytics": "Rain On Leaves",
+        "video": {
+          "id": "fea14a3cf74fe19bdaf09150bde4a66e",
+          "url": "https://assets.calm.com/fea14a3cf74fe19bdaf09150bde4a66e.mp4",
+          "content_type": "video/mp4",
+          "size": 9802544,
+          "has_transcript": false,
+          "duration": 10.378
+        },
+        "id": "KRenfJ2WcN",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 15621,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/aa6bcc987a18b790e36f008618d2d227.jpeg",
+          "dominant_colors": [
+            "#4f6c58",
+            "#d3f0e8",
+            "#a6d2c4"
+          ],
+          "download_url": "https://assets.calm.com/aa6bcc987a18b790e36f008618d2d227.jpeg",
+          "id": "aa6bcc987a18b790e36f008618d2d227",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.2,
+          "y": 0.5
+        },
+        "created_at": "2019-11-25T20:32:56.659Z",
+        "gradient_end_color": "#244304",
+        "time_period": "day",
+        "audio": {
+          "id": "b1e44d61d6de53ac314d654e098c188b",
+          "url": "https://assets.calm.com/b1e44d61d6de53ac314d654e098c188b.m4a",
+          "download_url": "https://assets.calm.com/b1e44d61d6de53ac314d654e098c188b.m4a",
+          "content_type": "audio/mp4",
+          "size": 1701662,
+          "has_transcript": false,
+          "duration": 105.043
+        },
+        "updated_at": "2023-04-20T15:34:44.913Z",
+        "gradient_start_color": "#558e1c",
+        "title": "The Waterfall",
+        "english_title_for_analytics": "The Waterfall",
+        "video": {
+          "id": "4b3796aa0f8910e8931a57b98ad7a637",
+          "url": "https://assets.calm.com/4b3796aa0f8910e8931a57b98ad7a637.mp4",
+          "content_type": "video/mp4",
+          "size": 6279125,
+          "has_transcript": false,
+          "duration": 4.004
+        },
+        "id": "oJJuiLglvc",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 36061,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/3a73b4f548d7140c8b3cf7e819ecd4f0.jpeg",
+          "dominant_colors": [
+            "#5b5d2d",
+            "#c6cac7",
+            "#bcbb76"
+          ],
+          "download_url": "https://assets.calm.com/3a73b4f548d7140c8b3cf7e819ecd4f0.jpeg",
+          "id": "3a73b4f548d7140c8b3cf7e819ecd4f0",
+          "has_transcript": false
+        },
+        "children": [
+          {
+            "offsets": {
+              "x": 0.2,
+              "y": 0.5
+            },
+            "created_at": "2019-11-25T20:40:42.900Z",
+            "gradient_end_color": "#1a0064",
+            "time_period": "night",
+            "audio": {
+              "id": "226c20906a8bc2575c65fbe084cc9867",
+              "url": "https://assets.calm.com/226c20906a8bc2575c65fbe084cc9867.m4a",
+              "download_url": "https://assets.calm.com/226c20906a8bc2575c65fbe084cc9867.m4a",
+              "content_type": "audio/mp4",
+              "size": 1701628,
+              "has_transcript": false,
+              "duration": 105.043
+            },
+            "updated_at": "2023-04-20T15:37:36.698Z",
+            "gradient_start_color": "#2e54a8",
+            "title": "The Waterfall",
+            "english_title_for_analytics": "The Waterfall",
+            "video": {
+              "id": "2678a058d47b4dbda7d940399595ae20",
+              "url": "https://assets.calm.com/2678a058d47b4dbda7d940399595ae20.mp4",
+              "download_url": "https://assets.calm.com/2678a058d47b4dbda7d940399595ae20.mp4",
+              "content_type": "video/mp4",
+              "size": 2680738,
+              "has_transcript": false,
+              "duration": 4.054
+            },
+            "id": "uKPEGUhvQa",
+            "image": {
+              "content_type": "image/jpeg",
+              "size": 22522,
+              "width": 640,
+              "height": 220,
+              "url": "https://assets.calm.com/e3d9378f2473531a69cd163e98cb5015.jpeg",
+              "dominant_colors": [
+                "#152543",
+                "#55618e",
+                "#4e5c7c"
+              ],
+              "download_url": "https://assets.calm.com/e3d9378f2473531a69cd163e98cb5015.jpeg",
+              "id": "e3d9378f2473531a69cd163e98cb5015",
+              "has_transcript": false
+            }
+          }
+        ]
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2019-11-26T15:38:17.065Z",
+        "gradient_end_color": "#381466",
+        "time_period": "day",
+        "audio": {
+          "id": "0151988fea4b0681a4c5e5aad9b7cdc6",
+          "url": "https://assets.calm.com/0151988fea4b0681a4c5e5aad9b7cdc6.m4a",
+          "download_url": "https://assets.calm.com/0151988fea4b0681a4c5e5aad9b7cdc6.m4a",
+          "content_type": "audio/mp4",
+          "size": 1701706,
+          "has_transcript": false,
+          "duration": 105.043
+        },
+        "updated_at": "2023-04-20T15:44:45.225Z",
+        "gradient_start_color": "#cbb294",
+        "title": "Blue Gold",
+        "english_title_for_analytics": "Blue Gold",
+        "video": {
+          "id": "401efc763dd4d038d7ed56f7490b4860",
+          "url": "https://assets.calm.com/401efc763dd4d038d7ed56f7490b4860.mp4",
+          "content_type": "video/mp4",
+          "size": 1537461,
+          "has_transcript": false,
+          "duration": 4.088
+        },
+        "id": "PaiBU-QKR3",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 36671,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/675f1c91c30eb8f726c295e6a9219d7b.jpeg",
+          "dominant_colors": [
+            "#ad8e6f",
+            "#eccac8",
+            "#503929"
+          ],
+          "download_url": "https://assets.calm.com/675f1c91c30eb8f726c295e6a9219d7b.jpeg",
+          "id": "675f1c91c30eb8f726c295e6a9219d7b",
+          "has_transcript": false
+        },
+        "children": [
+          {
+            "offsets": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "created_at": "2019-11-26T15:41:11.954Z",
+            "gradient_end_color": "#05226f",
+            "time_period": "night",
+            "audio": {
+              "id": "8ad4921c23da58445f34203b01ccc969",
+              "url": "https://assets.calm.com/8ad4921c23da58445f34203b01ccc969.m4a",
+              "download_url": "https://assets.calm.com/8ad4921c23da58445f34203b01ccc969.m4a",
+              "content_type": "audio/mp4",
+              "size": 1701708,
+              "has_transcript": false,
+              "duration": 105.043
+            },
+            "updated_at": "2023-04-20T15:46:17.383Z",
+            "gradient_start_color": "#657cf2",
+            "title": "Blue Gold",
+            "english_title_for_analytics": "Blue Gold",
+            "video": {
+              "id": "e243d4fa58b322425d75ed51e436a37d",
+              "url": "https://assets.calm.com/e243d4fa58b322425d75ed51e436a37d.mp4",
+              "download_url": "https://assets.calm.com/e243d4fa58b322425d75ed51e436a37d.mp4",
+              "content_type": "video/mp4",
+              "size": 1477346,
+              "has_transcript": false,
+              "duration": 5.005
+            },
+            "id": "nRIzmW1fHS",
+            "image": {
+              "content_type": "image/jpeg",
+              "size": 29951,
+              "width": 640,
+              "height": 220,
+              "url": "https://assets.calm.com/69689d8147d1a20efb11cdc1a27c8f46.jpeg",
+              "dominant_colors": [
+                "#1c407a",
+                "#121727",
+                "#515cbb"
+              ],
+              "download_url": "https://assets.calm.com/69689d8147d1a20efb11cdc1a27c8f46.jpeg",
+              "id": "69689d8147d1a20efb11cdc1a27c8f46",
+              "has_transcript": false
+            }
+          }
+        ]
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2019-09-17T22:42:51.319Z",
+        "gradient_end_color": "#122a01",
+        "time_period": "day",
+        "audio": {
+          "id": "93562824d174a2c4bb160c30f0a39a31",
+          "url": "https://assets.calm.com/93562824d174a2c4bb160c30f0a39a31.wav",
+          "download_url": "https://assets.calm.com/93562824d174a2c4bb160c30f0a39a31.wav",
+          "content_type": "audio/wav",
+          "size": 30401970,
+          "has_transcript": false,
+          "duration": 105.000333
+        },
+        "updated_at": "2023-04-20T15:47:12.621Z",
+        "gradient_start_color": "#4a903a",
+        "title": "Garden Rain",
+        "english_title_for_analytics": "Garden Rain",
+        "video": {
+          "id": "02468a3ae77a0cd4b8104fda6b0164e8",
+          "url": "https://assets.calm.com/02468a3ae77a0cd4b8104fda6b0164e8.mp4",
+          "content_type": "video/mp4",
+          "size": 2282823,
+          "has_transcript": false,
+          "duration": 4.046
+        },
+        "id": "YxyG1Gmmrn",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 23692,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/22ea764b14d6ea23a4f6764d52e2542e.jpeg",
+          "dominant_colors": [
+            "#546f2f",
+            "#b3bcb2",
+            "#9fbe84"
+          ],
+          "download_url": "https://assets.calm.com/22ea764b14d6ea23a4f6764d52e2542e.jpeg",
+          "id": "22ea764b14d6ea23a4f6764d52e2542e",
+          "has_transcript": false
+        },
+        "children": [
+          {
+            "offsets": {
+              "x": 0.5,
+              "y": 0.5
+            },
+            "created_at": "2019-09-17T22:44:23.336Z",
+            "gradient_end_color": "#0b0247",
+            "time_period": "night",
+            "audio": {
+              "id": "f178d6e6f4e53feeccf2e2b6a8d0b388",
+              "url": "https://assets.calm.com/f178d6e6f4e53feeccf2e2b6a8d0b388.m4a",
+              "download_url": "https://assets.calm.com/f178d6e6f4e53feeccf2e2b6a8d0b388.m4a",
+              "content_type": "audio/mp4",
+              "size": 1701697,
+              "has_transcript": false,
+              "duration": 105.043
+            },
+            "updated_at": "2023-04-20T15:48:08.687Z",
+            "gradient_start_color": "#166f4a",
+            "title": "Garden Rain",
+            "english_title_for_analytics": "Garden Rain",
+            "video": {
+              "id": "2498f45646c88f9f75f7d82df91eaec0",
+              "url": "https://assets.calm.com/2498f45646c88f9f75f7d82df91eaec0.mp4",
+              "download_url": "https://assets.calm.com/2498f45646c88f9f75f7d82df91eaec0.mp4",
+              "content_type": "video/mp4",
+              "size": 3864825,
+              "has_transcript": false,
+              "duration": 3.879
+            },
+            "id": "s3EjoPzYbJ",
+            "image": {
+              "content_type": "image/jpeg",
+              "size": 19618,
+              "width": 640,
+              "height": 220,
+              "url": "https://assets.calm.com/7e68800ee6e2249cde2c13adaebd3481.jpeg",
+              "dominant_colors": [
+                "#213144",
+                "#4654bb",
+                "#4e6c8c"
+              ],
+              "download_url": "https://assets.calm.com/7e68800ee6e2249cde2c13adaebd3481.jpeg",
+              "id": "7e68800ee6e2249cde2c13adaebd3481",
+              "has_transcript": false
+            }
+          }
+        ]
+      },
+      {
+        "offsets": {
+          "x": 0.35,
+          "y": 0.5
+        },
+        "created_at": "2019-12-17T20:56:27.710Z",
+        "gradient_end_color": "#045c62",
+        "time_period": "day",
+        "audio": {
+          "id": "f914c44cc3115277f438351a87346532",
+          "url": "https://assets.calm.com/f914c44cc3115277f438351a87346532.m4a",
+          "download_url": "https://assets.calm.com/f914c44cc3115277f438351a87346532.m4a",
+          "content_type": "audio/mp4",
+          "size": 1701641,
+          "has_transcript": false,
+          "duration": 105.044
+        },
+        "updated_at": "2023-04-20T15:49:11.359Z",
+        "gradient_start_color": "#51ac8b",
+        "title": "Calm River",
+        "english_title_for_analytics": "Calm River",
+        "video": {
+          "id": "37289cd9608459d504e741f4aeed5064",
+          "url": "https://assets.calm.com/37289cd9608459d504e741f4aeed5064.mp4",
+          "content_type": "video/mp4",
+          "size": 9252801,
+          "has_transcript": false,
+          "duration": 4.054
+        },
+        "id": "ZTzt5VUKLR",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 30089,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/9b46b72c4357852d631016b1f1a848a4.jpeg",
+          "dominant_colors": [
+            "#3b4645",
+            "#bab5ce",
+            "#a7a286"
+          ],
+          "download_url": "https://assets.calm.com/9b46b72c4357852d631016b1f1a848a4.jpeg",
+          "id": "9b46b72c4357852d631016b1f1a848a4",
+          "has_transcript": false
+        },
+        "children": [
+          {
+            "offsets": {
+              "x": 0.35,
+              "y": 0.5
+            },
+            "created_at": "2020-01-07T01:16:10.723Z",
+            "gradient_end_color": "#112d63",
+            "time_period": "night",
+            "audio": {
+              "id": "eec533fb781fe7a1d028cefc9d6f976c",
+              "url": "https://assets.calm.com/eec533fb781fe7a1d028cefc9d6f976c.m4a",
+              "download_url": "https://assets.calm.com/eec533fb781fe7a1d028cefc9d6f976c.m4a",
+              "content_type": "audio/mp4",
+              "size": 1701656,
+              "has_transcript": false,
+              "duration": 105.044
+            },
+            "updated_at": "2023-04-20T15:50:26.407Z",
+            "gradient_start_color": "#735eaf",
+            "title": "Calm River",
+            "english_title_for_analytics": "Calm River",
+            "video": {
+              "id": "78cf24ca014688aef7f54b68127ce443",
+              "url": "https://assets.calm.com/78cf24ca014688aef7f54b68127ce443.mp4",
+              "download_url": "https://assets.calm.com/78cf24ca014688aef7f54b68127ce443.mp4",
+              "content_type": "video/mp4",
+              "size": 6501028,
+              "has_transcript": false,
+              "duration": 4.054
+            },
+            "id": "rXiy78nqQt",
+            "image": {
+              "content_type": "image/jpeg",
+              "size": 23039,
+              "width": 640,
+              "height": 220,
+              "url": "https://assets.calm.com/9552d208b03b2e29d3f9de7f67c1a988.jpeg",
+              "dominant_colors": [
+                "#2e385e",
+                "#6369a7",
+                "#696c74"
+              ],
+              "download_url": "https://assets.calm.com/9552d208b03b2e29d3f9de7f67c1a988.jpeg",
+              "id": "9552d208b03b2e29d3f9de7f67c1a988",
+              "has_transcript": false
+            }
+          }
+        ]
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2017-01-28T00:38:06.442Z",
+        "gradient_end_color": "#012d48",
+        "time_period": "all",
+        "audio": {
+          "id": "0d10874f6af3b706db7edb524498aa94",
+          "url": "https://assets.calm.com/0d10874f6af3b706db7edb524498aa94.m4a",
+          "download_url": "https://assets.calm.com/0d10874f6af3b706db7edb524498aa94.m4a",
+          "content_type": "audio/mp4",
+          "size": 3154189,
+          "has_transcript": false,
+          "duration": 194.764
+        },
+        "updated_at": "2023-04-20T15:54:55.176Z",
+        "gradient_start_color": "#5f4858",
+        "title": "Thunderstorm",
+        "english_title_for_analytics": "Thunderstorm",
+        "video": {
+          "id": "1e3734bbdb4927e21072c59e856e3ccb",
+          "url": "https://assets.calm.com/1e3734bbdb4927e21072c59e856e3ccb.mp4",
+          "content_type": "video/mp4",
+          "size": 4808543,
+          "has_transcript": false,
+          "duration": 19.68
+        },
+        "id": "AL7jVb5K9",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 8013,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/a9fb70043c5513fe9a74cba993cbcea4.jpeg",
+          "dominant_colors": [
+            "#374a55",
+            "#baaca6",
+            "#879a9f"
+          ],
+          "download_url": "https://assets.calm.com/a9fb70043c5513fe9a74cba993cbcea4.jpeg",
+          "id": "a9fb70043c5513fe9a74cba993cbcea4",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2015-12-22T10:41:37.101Z",
+        "gradient_end_color": "#1f0b00",
+        "time_period": "all",
+        "audio": {
+          "id": "83f0058ba903953c560083dcc1761784",
+          "url": "https://assets.calm.com/83f0058ba903953c560083dcc1761784.m4a",
+          "download_url": "https://assets.calm.com/83f0058ba903953c560083dcc1761784.m4a",
+          "content_type": "audio/mp4",
+          "size": 1944479,
+          "has_transcript": false,
+          "duration": 120.043
+        },
+        "updated_at": "2023-04-20T15:51:35.117Z",
+        "gradient_start_color": "#6e3700",
+        "title": "Fireplace",
+        "english_title_for_analytics": "Fireplace",
+        "video": {
+          "id": "46d1d2795b5daa396b8fc0339c11e33a",
+          "url": "https://assets.calm.com/46d1d2795b5daa396b8fc0339c11e33a.mp4",
+          "content_type": "video/mp4",
+          "size": 5310094,
+          "has_transcript": false,
+          "duration": 20
+        },
+        "id": "p9Kb0nj05",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 9413,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/bd5fd1a03deeade863ab9c731570fe1c.jpeg",
+          "dominant_colors": [
+            "#170d0a",
+            "#dfb884",
+            "#846c44"
+          ],
+          "download_url": "https://assets.calm.com/bd5fd1a03deeade863ab9c731570fe1c.jpeg",
+          "id": "bd5fd1a03deeade863ab9c731570fe1c",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2015-12-22T10:21:51.442Z",
+        "gradient_end_color": "#000000",
+        "time_period": "all",
+        "audio": {
+          "id": "b5e332a526c53dbc3d587e8ca95cc52a",
+          "url": "https://assets.calm.com/b5e332a526c53dbc3d587e8ca95cc52a.m4a",
+          "download_url": "https://assets.calm.com/b5e332a526c53dbc3d587e8ca95cc52a.m4a",
+          "content_type": "audio/mp4",
+          "size": 2952,
+          "has_transcript": false,
+          "duration": 4.852971
+        },
+        "updated_at": "2019-09-17T22:26:57.986Z",
+        "gradient_start_color": "#244879",
+        "title": "Silent Earth",
+        "english_title_for_analytics": "Silent Earth",
+        "video": {
+          "id": "3ebc3a6573abbdddd48af754208df888",
+          "url": "https://assets.calm.com/3ebc3a6573abbdddd48af754208df888.mp4",
+          "content_type": "video/mp4",
+          "size": 4096710,
+          "has_transcript": false,
+          "duration": 60
+        },
+        "id": "ZzwjdY1rq",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 8307,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/b399151cbd8557d7f3b0e13c62216f26.jpeg",
+          "dominant_colors": [
+            "#07090d",
+            "#9fb8d6",
+            "#6b95bc"
+          ],
+          "download_url": "https://assets.calm.com/b399151cbd8557d7f3b0e13c62216f26.jpeg",
+          "id": "b399151cbd8557d7f3b0e13c62216f26",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2014-11-21T13:38:11.088Z",
+        "gradient_end_color": "#4e291f",
+        "time_period": "all",
+        "audio": {
+          "id": "12b8aa6ccfd080b003e3ebef5ca04231",
+          "url": "https://assets.calm.com/12b8aa6ccfd080b003e3ebef5ca04231.m4a",
+          "download_url": "https://assets.calm.com/12b8aa6ccfd080b003e3ebef5ca04231.m4a",
+          "content_type": "audio/mp4",
+          "size": 5829448,
+          "has_transcript": false,
+          "duration": 360.043
+        },
+        "updated_at": "2023-04-20T15:56:02.895Z",
+        "gradient_start_color": "#ddad53",
+        "title": "Sunset Beach",
+        "english_title_for_analytics": "Sunset Beach",
+        "video": {
+          "id": "282d76af513ddd3978f452c7899c6127",
+          "url": "https://assets.calm.com/282d76af513ddd3978f452c7899c6127.mp4",
+          "content_type": "video/mp4",
+          "size": 10089627,
+          "has_transcript": false,
+          "duration": 13.08
+        },
+        "id": "8PliUgmUUp",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 16783,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/eee4733a25a8296ad214da2235060448.jpeg",
+          "dominant_colors": [
+            "#d5aa7c",
+            "#734c42",
+            "#fbfbdb"
+          ],
+          "download_url": "https://assets.calm.com/eee4733a25a8296ad214da2235060448.jpeg",
+          "id": "eee4733a25a8296ad214da2235060448",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2014-12-04T10:20:27.883Z",
+        "gradient_end_color": "#094368",
+        "time_period": "all",
+        "audio": {
+          "id": "3d49400219a23e1a8a30da9d971cbadc",
+          "url": "https://assets.calm.com/3d49400219a23e1a8a30da9d971cbadc.m4a",
+          "download_url": "https://assets.calm.com/3d49400219a23e1a8a30da9d971cbadc.m4a",
+          "content_type": "audio/mp4",
+          "size": 19427128,
+          "has_transcript": false,
+          "duration": 1200.043
+        },
+        "updated_at": "2023-04-20T15:53:44.946Z",
+        "gradient_start_color": "#52aab6",
+        "title": "Tropical Beach",
+        "english_title_for_analytics": "Tropical Beach",
+        "video": {
+          "id": "0239b4799c3142ad08bb3b79d3d345b5",
+          "url": "https://assets.calm.com/0239b4799c3142ad08bb3b79d3d345b5.mp4",
+          "content_type": "video/mp4",
+          "size": 5349079,
+          "has_transcript": false,
+          "duration": 11.345
+        },
+        "id": "1auAzldp5k",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 10570,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/6660085890f15029f650029bf356d373.jpeg",
+          "dominant_colors": [
+            "#d6d0c4",
+            "#95c3c3",
+            "#abc7c6"
+          ],
+          "download_url": "https://assets.calm.com/6660085890f15029f650029bf356d373.jpeg",
+          "id": "6660085890f15029f650029bf356d373",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2017-01-30T23:12:36.903Z",
+        "gradient_end_color": "#152908",
+        "time_period": "all",
+        "audio": {
+          "id": "b8b3685eb2d41cb2a4542568c6e8eeec",
+          "url": "https://assets.calm.com/b8b3685eb2d41cb2a4542568c6e8eeec.m4a",
+          "download_url": "https://assets.calm.com/b8b3685eb2d41cb2a4542568c6e8eeec.m4a",
+          "content_type": "audio/mp4",
+          "size": 1847487,
+          "has_transcript": false,
+          "duration": 114.043
+        },
+        "updated_at": "2023-04-20T15:57:01.495Z",
+        "gradient_start_color": "#a7b046",
+        "title": "Mystic Fountain",
+        "english_title_for_analytics": "Mystic Fountain",
+        "video": {
+          "id": "8e9bfb0fdd23f30eb0ae06649a8a8d64",
+          "url": "https://assets.calm.com/8e9bfb0fdd23f30eb0ae06649a8a8d64.mp4",
+          "content_type": "video/mp4",
+          "size": 46197344,
+          "has_transcript": false,
+          "duration": 26.827
+        },
+        "id": "BLjapx8l1",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 36001,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/9f1d3c014a9da86d164a3cbebc1fed1f.jpeg",
+          "dominant_colors": [
+            "#48431b",
+            "#cdbc6f",
+            "#a2a52d"
+          ],
+          "download_url": "https://assets.calm.com/9f1d3c014a9da86d164a3cbebc1fed1f.jpeg",
+          "id": "9f1d3c014a9da86d164a3cbebc1fed1f",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2017-01-30T23:51:03.115Z",
+        "gradient_end_color": "#3c2a14",
+        "time_period": "all",
+        "audio": {
+          "id": "a96a6f9bfa8ed212a0bf4099464f90a3",
+          "url": "https://assets.calm.com/a96a6f9bfa8ed212a0bf4099464f90a3.m4a",
+          "download_url": "https://assets.calm.com/a96a6f9bfa8ed212a0bf4099464f90a3.m4a",
+          "content_type": "audio/mp4",
+          "size": 9714602,
+          "has_transcript": false,
+          "duration": 600.043
+        },
+        "updated_at": "2023-04-20T15:58:48.230Z",
+        "gradient_start_color": "#cebd6e",
+        "title": "Evening Crickets",
+        "english_title_for_analytics": "Evening Crickets",
+        "video": {
+          "id": "e2fbbbc42df8ff1291bb80e841e2e326",
+          "url": "https://assets.calm.com/e2fbbbc42df8ff1291bb80e841e2e326.mp4",
+          "content_type": "video/mp4",
+          "size": 15651986,
+          "has_transcript": false,
+          "duration": 54.054
+        },
+        "id": "3wb9A8A3B",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 12142,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/3eed0effcb147407456baa59b55e3f01.jpeg",
+          "dominant_colors": [
+            "#6d4d2a",
+            "#f8ebbb",
+            "#e0be7c"
+          ],
+          "download_url": "https://assets.calm.com/3eed0effcb147407456baa59b55e3f01.jpeg",
+          "id": "3eed0effcb147407456baa59b55e3f01",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2014-12-04T10:20:20.500Z",
+        "gradient_end_color": "#0c312b",
+        "time_period": "all",
+        "audio": {
+          "id": "3a8b22dcd74f96cf3dd8410662e2468b",
+          "url": "https://assets.calm.com/3a8b22dcd74f96cf3dd8410662e2468b.m4a",
+          "download_url": "https://assets.calm.com/3a8b22dcd74f96cf3dd8410662e2468b.m4a",
+          "content_type": "audio/mp4",
+          "size": 9714516,
+          "has_transcript": false,
+          "duration": 600.043
+        },
+        "updated_at": "2023-04-20T16:00:01.645Z",
+        "gradient_start_color": "#52a198",
+        "title": "Pouring Rain",
+        "english_title_for_analytics": "Pouring Rain",
+        "video": {
+          "id": "f01524202be03340a9cd3f745281c3b5",
+          "url": "https://assets.calm.com/f01524202be03340a9cd3f745281c3b5.mp4",
+          "content_type": "video/mp4",
+          "size": 1591195,
+          "has_transcript": false,
+          "duration": 12.63
+        },
+        "id": "BXSpAYWDTQ",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 8593,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/673c3f7ddb92a53f5950716bc291fbbc.jpeg",
+          "dominant_colors": [
+            "#314f4a",
+            "#3f6765",
+            "#3b645c"
+          ],
+          "download_url": "https://assets.calm.com/673c3f7ddb92a53f5950716bc291fbbc.jpeg",
+          "id": "673c3f7ddb92a53f5950716bc291fbbc",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2014-12-04T10:20:14.214Z",
+        "gradient_end_color": "#222737",
+        "time_period": "all",
+        "audio": {
+          "id": "85fdd4a61254e9f3804f6b0f61df6140",
+          "url": "https://assets.calm.com/85fdd4a61254e9f3804f6b0f61df6140.m4a",
+          "download_url": "https://assets.calm.com/85fdd4a61254e9f3804f6b0f61df6140.m4a",
+          "content_type": "audio/mp4",
+          "size": 9724626,
+          "has_transcript": false,
+          "duration": 600.023
+        },
+        "updated_at": "2023-04-20T16:01:20.407Z",
+        "gradient_start_color": "#ad8e60",
+        "title": "Coastline At Sunset",
+        "english_title_for_analytics": "Coastline At Sunset",
+        "video": {
+          "id": "17f9bd8c1b290bcda8e189017392c1dc",
+          "url": "https://assets.calm.com/17f9bd8c1b290bcda8e189017392c1dc.mp4",
+          "content_type": "video/mp4",
+          "size": 1180490,
+          "has_transcript": false,
+          "duration": 11
+        },
+        "id": "CsIvVSPOrN",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 14226,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/060d68074427c1d5fe051af4bd46a5ca.jpeg",
+          "dominant_colors": [
+            "#645448",
+            "#e3b375",
+            "#fbf8d4"
+          ],
+          "download_url": "https://assets.calm.com/060d68074427c1d5fe051af4bd46a5ca.jpeg",
+          "id": "060d68074427c1d5fe051af4bd46a5ca",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2014-12-04T10:19:52.682Z",
+        "gradient_end_color": "#0d4157",
+        "time_period": "all",
+        "audio": {
+          "id": "d09b89d1c7cc3a9562845988d0072142",
+          "url": "https://assets.calm.com/d09b89d1c7cc3a9562845988d0072142.m4a",
+          "download_url": "https://assets.calm.com/d09b89d1c7cc3a9562845988d0072142.m4a",
+          "content_type": "audio/mp4",
+          "size": 9714563,
+          "has_transcript": false,
+          "duration": 600.044
+        },
+        "updated_at": "2023-04-20T16:02:58.871Z",
+        "gradient_start_color": "#85bfba",
+        "title": "Foggy Stream",
+        "english_title_for_analytics": "Foggy Stream",
+        "video": {
+          "id": "e8ebb91d6d60b9ba887c5a7b850444c9",
+          "url": "https://assets.calm.com/e8ebb91d6d60b9ba887c5a7b850444c9.mp4",
+          "content_type": "video/mp4",
+          "size": 1326642,
+          "has_transcript": false,
+          "duration": 19.947
+        },
+        "id": "I5iFDW1Znn",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 12252,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/f5e5df404adac1151f915fd2080e42bc.jpeg",
+          "dominant_colors": [
+            "#7bb4bc",
+            "#0b2931",
+            "#2e6c83"
+          ],
+          "download_url": "https://assets.calm.com/f5e5df404adac1151f915fd2080e42bc.jpeg",
+          "id": "f5e5df404adac1151f915fd2080e42bc",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2014-12-04T10:20:00.462Z",
+        "gradient_end_color": "#302c41",
+        "time_period": "all",
+        "audio": {
+          "id": "fdd37fae78dc54f87a4277d23c276a04",
+          "url": "https://assets.calm.com/fdd37fae78dc54f87a4277d23c276a04.m4a",
+          "download_url": "https://assets.calm.com/fdd37fae78dc54f87a4277d23c276a04.m4a",
+          "content_type": "audio/mp4",
+          "size": 4858377,
+          "has_transcript": false,
+          "duration": 300.043
+        },
+        "updated_at": "2023-04-20T16:03:47.288Z",
+        "gradient_start_color": "#bd8474",
+        "title": "Summer Meadow",
+        "english_title_for_analytics": "Summer Meadow",
+        "video": {
+          "id": "db43ece896d33c2cca61eb92e7f7ad03",
+          "url": "https://assets.calm.com/db43ece896d33c2cca61eb92e7f7ad03.mp4",
+          "content_type": "video/mp4",
+          "size": 1140503,
+          "has_transcript": false,
+          "duration": 12.502
+        },
+        "id": "t5vo6FcfAq",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 23697,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/9592e7d5ce4fb4a9e0c4f11397eded17.jpeg",
+          "dominant_colors": [
+            "#a17e50",
+            "#edcbab",
+            "#e4be8e"
+          ],
+          "download_url": "https://assets.calm.com/9592e7d5ce4fb4a9e0c4f11397eded17.jpeg",
+          "id": "9592e7d5ce4fb4a9e0c4f11397eded17",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:20:59.538Z",
+        "gradient_end_color": "#561d12",
+        "time_period": "all",
+        "audio": {
+          "id": "7f06b51bd5309ba2846082bc769018b1",
+          "url": "https://assets.calm.com/7f06b51bd5309ba2846082bc769018b1.m4a",
+          "download_url": "https://assets.calm.com/7f06b51bd5309ba2846082bc769018b1.m4a",
+          "content_type": "audio/mp4",
+          "size": 4387327,
+          "has_transcript": false,
+          "duration": 270.974
+        },
+        "updated_at": "2023-04-20T16:09:55.659Z",
+        "gradient_start_color": "#b59941",
+        "title": "Celestial Sunbeams",
+        "english_title_for_analytics": "Celestial Sunbeams",
+        "video": {
+          "id": "f796baff53fc7dac0a5d15c02f1ff878",
+          "url": "https://assets.calm.com/f796baff53fc7dac0a5d15c02f1ff878.mp4",
+          "content_type": "video/mp4",
+          "size": 1475767,
+          "has_transcript": false,
+          "duration": 10.08
+        },
+        "id": "ujxeUXRD7M",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 13209,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/6ffccb722600ecd044eb28bff4b89fba.jpeg",
+          "dominant_colors": [
+            "#783409",
+            "#dbb753",
+            "#c8922f"
+          ],
+          "download_url": "https://assets.calm.com/6ffccb722600ecd044eb28bff4b89fba.jpeg",
+          "id": "6ffccb722600ecd044eb28bff4b89fba",
+          "has_transcript": false
+        },
+        "track_name": "Cathedral"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2014-12-04T10:20:36.220Z",
+        "gradient_end_color": "#432e4d",
+        "time_period": "all",
+        "audio": {
+          "id": "e32f645dbd375a3b5f2a48514dea0bc0",
+          "url": "https://assets.calm.com/e32f645dbd375a3b5f2a48514dea0bc0.m4a",
+          "download_url": "https://assets.calm.com/e32f645dbd375a3b5f2a48514dea0bc0.m4a",
+          "content_type": "audio/mp4",
+          "size": 1555978,
+          "has_transcript": false,
+          "duration": 96.132
+        },
+        "updated_at": "2023-05-09T17:44:09.253Z",
+        "gradient_start_color": "#ef96a9",
+        "title": "Woodland Lake",
+        "english_title_for_analytics": "Woodland Lake",
+        "video": {
+          "id": "ac892517809de2d83a461b0d970c84fa",
+          "url": "https://assets.calm.com/ac892517809de2d83a461b0d970c84fa.mp4",
+          "content_type": "video/mp4",
+          "size": 1465148,
+          "has_transcript": false,
+          "duration": 13.04
+        },
+        "id": "lSC95pRkNc",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 15906,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/d3ef1d0d8e2a6c792cbbaa81d91c1818.jpeg",
+          "dominant_colors": [
+            "#b16a6d",
+            "#0f0709",
+            "#f0cfa5"
+          ],
+          "download_url": "https://assets.calm.com/d3ef1d0d8e2a6c792cbbaa81d91c1818.jpeg",
+          "id": "d3ef1d0d8e2a6c792cbbaa81d91c1818",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:21:22.193Z",
+        "gradient_end_color": "#4e291f",
+        "time_period": "all",
+        "audio": {
+          "id": "2dfb016e1040fdf5ebe75e06c63a1a6e",
+          "url": "https://assets.calm.com/2dfb016e1040fdf5ebe75e06c63a1a6e.m4a",
+          "download_url": "https://assets.calm.com/2dfb016e1040fdf5ebe75e06c63a1a6e.m4a",
+          "content_type": "audio/mp4",
+          "size": 11170424,
+          "has_transcript": false,
+          "duration": 689.997
+        },
+        "updated_at": "2023-04-20T16:11:50.973Z",
+        "gradient_start_color": "#ddad53",
+        "title": "Zen Ocean",
+        "english_title_for_analytics": "Zen Ocean",
+        "video": {
+          "id": "eabb16e50a6787e376a537c02e2ddc8a",
+          "url": "https://assets.calm.com/eabb16e50a6787e376a537c02e2ddc8a.mp4",
+          "content_type": "video/mp4",
+          "size": 899203,
+          "has_transcript": false,
+          "duration": 8.48
+        },
+        "id": "dFOvOCZToC",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 15917,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/d24f0d6a80e9ba4b56da118c7c4291c6.jpeg",
+          "dominant_colors": [
+            "#e0b65d",
+            "#fbf7cd",
+            "#a9591a"
+          ],
+          "download_url": "https://assets.calm.com/d24f0d6a80e9ba4b56da118c7c4291c6.jpeg",
+          "id": "d24f0d6a80e9ba4b56da118c7c4291c6",
+          "has_transcript": false
+        },
+        "track_name": "Silk"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:20:42.564Z",
+        "gradient_end_color": "#382551",
+        "time_period": "all",
+        "audio": {
+          "id": "f7a8de08cc98931fdab0979159298ee5",
+          "url": "https://assets.calm.com/f7a8de08cc98931fdab0979159298ee5.m4a",
+          "download_url": "https://assets.calm.com/f7a8de08cc98931fdab0979159298ee5.m4a",
+          "content_type": "audio/mp4",
+          "size": 10272899,
+          "has_transcript": false,
+          "duration": 634.543
+        },
+        "updated_at": "2023-04-20T16:13:04.885Z",
+        "gradient_start_color": "#d57890",
+        "title": "Suspended Droplets",
+        "english_title_for_analytics": "Suspended Droplets",
+        "video": {
+          "id": "97fbc4034fc417231eb21f897f22bd5c",
+          "url": "https://assets.calm.com/97fbc4034fc417231eb21f897f22bd5c.mp4",
+          "content_type": "video/mp4",
+          "size": 1386329,
+          "has_transcript": false,
+          "duration": 15.08
+        },
+        "id": "Jzc622sfOd",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 12161,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/4c302a7f0c6142c84a0a938529b510ea.jpeg",
+          "dominant_colors": [
+            "#c4a9a2",
+            "#5f4954",
+            "#7f5f52"
+          ],
+          "download_url": "https://assets.calm.com/4c302a7f0c6142c84a0a938529b510ea.jpeg",
+          "id": "4c302a7f0c6142c84a0a938529b510ea",
+          "has_transcript": false
+        },
+        "track_name": "Water Falling"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2017-01-31T00:23:33.060Z",
+        "gradient_end_color": "#0e3014",
+        "time_period": "all",
+        "audio": {
+          "id": "568fbebe128257d7397cc05091a39177",
+          "url": "https://assets.calm.com/568fbebe128257d7397cc05091a39177.m4a",
+          "download_url": "https://assets.calm.com/568fbebe128257d7397cc05091a39177.m4a",
+          "content_type": "audio/mp4",
+          "size": 4858326,
+          "has_transcript": false,
+          "duration": 300.043
+        },
+        "updated_at": "2023-04-20T16:07:42.972Z",
+        "gradient_start_color": "#24a56e",
+        "title": "Wind in the Pines",
+        "english_title_for_analytics": "Wind in the Pines",
+        "video": {
+          "id": "1c9202c8950019efbc30af030343ca64",
+          "url": "https://assets.calm.com/1c9202c8950019efbc30af030343ca64.mp4",
+          "content_type": "video/mp4",
+          "size": 9181934,
+          "has_transcript": false,
+          "duration": 7.12
+        },
+        "id": "xMe8wBlA0",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 37041,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/92a58a587613a691ecdad8a6072ad3e1.jpeg",
+          "dominant_colors": [
+            "#8e978c",
+            "#30362b",
+            "#463830"
+          ],
+          "download_url": "https://assets.calm.com/92a58a587613a691ecdad8a6072ad3e1.jpeg",
+          "id": "92a58a587613a691ecdad8a6072ad3e1",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2017-01-30T21:49:15.494Z",
+        "gradient_end_color": "#012e44",
+        "time_period": "all",
+        "audio": {
+          "id": "6c1d8e04e74472edbde0182089108fba",
+          "url": "https://assets.calm.com/6c1d8e04e74472edbde0182089108fba.m4a",
+          "download_url": "https://assets.calm.com/6c1d8e04e74472edbde0182089108fba.m4a",
+          "content_type": "audio/mp4",
+          "size": 1337295,
+          "has_transcript": false,
+          "duration": 82.543
+        },
+        "updated_at": "2023-04-25T18:47:31.391Z",
+        "gradient_start_color": "#1eb283",
+        "title": "Celestial White Noise",
+        "english_title_for_analytics": "Celestial White Noise",
+        "video": {
+          "id": "68b44708681f3a4753464b57ac60e1bc",
+          "url": "https://assets.calm.com/68b44708681f3a4753464b57ac60e1bc.mp4",
+          "content_type": "video/mp4",
+          "size": 7216109,
+          "has_transcript": false,
+          "duration": 22.089
+        },
+        "id": "G6jVx1VYm",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 11935,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/571a44dba6bc4ef078e980647e75a094.jpeg",
+          "dominant_colors": [
+            "#05433d",
+            "#1cb087",
+            "#59bfbf"
+          ],
+          "download_url": "https://assets.calm.com/571a44dba6bc4ef078e980647e75a094.jpeg",
+          "id": "571a44dba6bc4ef078e980647e75a094",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:22:21.216Z",
+        "gradient_end_color": "#071c5c",
+        "time_period": "all",
+        "audio": {
+          "id": "32962d5ada7657e46913724ec6ecd38f",
+          "url": "https://assets.calm.com/32962d5ada7657e46913724ec6ecd38f.m4a",
+          "download_url": "https://assets.calm.com/32962d5ada7657e46913724ec6ecd38f.m4a",
+          "content_type": "audio/mp4",
+          "size": 16208560,
+          "has_transcript": false,
+          "duration": 1001.218
+        },
+        "updated_at": "2023-04-20T16:16:42.017Z",
+        "gradient_start_color": "#56ced4",
+        "title": "Open Ocean",
+        "english_title_for_analytics": "Open Ocean",
+        "video": {
+          "id": "c73a2cd767795020a24ec099877941ab",
+          "url": "https://assets.calm.com/c73a2cd767795020a24ec099877941ab.mp4",
+          "content_type": "video/mp4",
+          "size": 3740560,
+          "has_transcript": false,
+          "duration": 6.006
+        },
+        "id": "44ia9mwqUt",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 12160,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/57cfaa70ec520859d8289ac6c42fa660.jpeg",
+          "dominant_colors": [
+            "#084f98",
+            "#60cdee",
+            "#44a4cc"
+          ],
+          "download_url": "https://assets.calm.com/57cfaa70ec520859d8289ac6c42fa660.jpeg",
+          "id": "57cfaa70ec520859d8289ac6c42fa660",
+          "has_transcript": false
+        },
+        "track_name": "Rapture"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2014-12-04T10:20:07.632Z",
+        "gradient_end_color": "#293e18",
+        "time_period": "all",
+        "audio": {
+          "id": "4cc632839865706472735291fe8b28a9",
+          "url": "https://assets.calm.com/4cc632839865706472735291fe8b28a9.m4a",
+          "download_url": "https://assets.calm.com/4cc632839865706472735291fe8b28a9.m4a",
+          "content_type": "audio/mp4",
+          "size": 5829466,
+          "has_transcript": false,
+          "duration": 360.043
+        },
+        "updated_at": "2023-04-20T16:09:02.406Z",
+        "gradient_start_color": "#689ae1",
+        "title": "Plains of Wheat",
+        "english_title_for_analytics": "Plains of Wheat",
+        "video": {
+          "id": "4fd9f6d3f337d11ae77e657ab64abe1f",
+          "url": "https://assets.calm.com/4fd9f6d3f337d11ae77e657ab64abe1f.mp4",
+          "content_type": "video/mp4",
+          "size": 4053682,
+          "has_transcript": false,
+          "duration": 15.019
+        },
+        "id": "zja8JNEaS6",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 19706,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/f481f3c1463b93727d6c71d9c71a99e4.jpeg",
+          "dominant_colors": [
+            "#b8bdb0",
+            "#6f7541",
+            "#436cb9"
+          ],
+          "download_url": "https://assets.calm.com/f481f3c1463b93727d6c71d9c71a99e4.jpeg",
+          "id": "f481f3c1463b93727d6c71d9c71a99e4",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:22:41.289Z",
+        "gradient_end_color": "#304228",
+        "time_period": "all",
+        "audio": {
+          "id": "e37ecc6a2b659bb50fc93aa1f0a2c831",
+          "url": "https://assets.calm.com/e37ecc6a2b659bb50fc93aa1f0a2c831.m4a",
+          "download_url": "https://assets.calm.com/e37ecc6a2b659bb50fc93aa1f0a2c831.m4a",
+          "content_type": "audio/mp4",
+          "size": 7737775,
+          "has_transcript": false,
+          "duration": 477.941
+        },
+        "updated_at": "2023-04-20T16:18:54.392Z",
+        "gradient_start_color": "#7adae8",
+        "title": "Rhythmic Waves",
+        "english_title_for_analytics": "Rhythmic Waves",
+        "video": {
+          "id": "f1d18ce80056848b5fdf555f8949d84a",
+          "url": "https://assets.calm.com/f1d18ce80056848b5fdf555f8949d84a.mp4",
+          "content_type": "video/mp4",
+          "size": 5021909,
+          "has_transcript": false,
+          "duration": 8
+        },
+        "id": "q6S8Nk21QW",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 6825,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/a8aa79e05b2c476b078bcb420f864299.jpeg",
+          "dominant_colors": [
+            "#5d7c70",
+            "#7fd3de",
+            "#a3c4ad"
+          ],
+          "download_url": "https://assets.calm.com/a8aa79e05b2c476b078bcb420f864299.jpeg",
+          "id": "a8aa79e05b2c476b078bcb420f864299",
+          "has_transcript": false
+        },
+        "track_name": "Water On Rocks"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:21:05.773Z",
+        "gradient_end_color": "#173247",
+        "time_period": "all",
+        "audio": {
+          "id": "bfc4fefa511d4a60aa58177ca81954fa",
+          "url": "https://assets.calm.com/bfc4fefa511d4a60aa58177ca81954fa.m4a",
+          "download_url": "https://assets.calm.com/bfc4fefa511d4a60aa58177ca81954fa.m4a",
+          "content_type": "audio/mp4",
+          "size": 11248815,
+          "has_transcript": false,
+          "duration": 694.83
+        },
+        "updated_at": "2023-04-20T16:20:36.219Z",
+        "gradient_start_color": "#699bd8",
+        "title": "Into the Horizon",
+        "english_title_for_analytics": "Into the Horizon",
+        "video": {
+          "id": "f601bec6ad901e552a2ef4c05722dd59",
+          "url": "https://assets.calm.com/f601bec6ad901e552a2ef4c05722dd59.mp4",
+          "content_type": "video/mp4",
+          "size": 5230651,
+          "has_transcript": false,
+          "duration": 10
+        },
+        "id": "08y03gWoY8",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 11949,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/b1ed85c7bb6aa082875f0e869c6d3eb5.jpeg",
+          "dominant_colors": [
+            "#2c3c4c",
+            "#bcccce",
+            "#85a6bd"
+          ],
+          "download_url": "https://assets.calm.com/b1ed85c7bb6aa082875f0e869c6d3eb5.jpeg",
+          "id": "b1ed85c7bb6aa082875f0e869c6d3eb5",
+          "has_transcript": false
+        },
+        "track_name": "Love and Devotion"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:21:29.590Z",
+        "gradient_end_color": "#071c5c",
+        "time_period": "all",
+        "audio": {
+          "id": "55bdf8a4f0b694f64d5800df28e311bf",
+          "url": "https://assets.calm.com/55bdf8a4f0b694f64d5800df28e311bf.m4a",
+          "download_url": "https://assets.calm.com/55bdf8a4f0b694f64d5800df28e311bf.m4a",
+          "content_type": "audio/mp4",
+          "size": 9701348,
+          "has_transcript": false,
+          "duration": 599.249
+        },
+        "updated_at": "2023-04-20T16:22:00.571Z",
+        "gradient_start_color": "#56ced4",
+        "title": "Under the Surface",
+        "english_title_for_analytics": "Under the Surface",
+        "video": {
+          "id": "167d460ff3652c16fb454f7f5739a7aa",
+          "url": "https://assets.calm.com/167d460ff3652c16fb454f7f5739a7aa.mp4",
+          "content_type": "video/mp4",
+          "size": 1772279,
+          "has_transcript": false,
+          "duration": 10.08
+        },
+        "id": "WymZ239Fnu",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 19336,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/983fb01d1133d1186e675b4c3a86e60d.jpeg",
+          "dominant_colors": [
+            "#2962aa",
+            "#72c2f9",
+            "#9fedfb"
+          ],
+          "download_url": "https://assets.calm.com/983fb01d1133d1186e675b4c3a86e60d.jpeg",
+          "id": "983fb01d1133d1186e675b4c3a86e60d",
+          "has_transcript": false
+        },
+        "track_name": "And Now I See"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:20:51.527Z",
+        "gradient_end_color": "#0e2165",
+        "time_period": "all",
+        "audio": {
+          "id": "0c9a12e38bfaff08b1bc8f602bf85041",
+          "url": "https://assets.calm.com/0c9a12e38bfaff08b1bc8f602bf85041.m4a",
+          "download_url": "https://assets.calm.com/0c9a12e38bfaff08b1bc8f602bf85041.m4a",
+          "content_type": "audio/mp4",
+          "size": 11799983,
+          "has_transcript": false,
+          "duration": 728.894
+        },
+        "updated_at": "2023-04-20T16:23:20.349Z",
+        "gradient_start_color": "#6cb4dc",
+        "title": "Passing Clouds",
+        "english_title_for_analytics": "Passing Clouds",
+        "video": {
+          "id": "1578b34e624639ab51634d550e6ed8eb",
+          "url": "https://assets.calm.com/1578b34e624639ab51634d550e6ed8eb.mp4",
+          "content_type": "video/mp4",
+          "size": 630065,
+          "has_transcript": false,
+          "duration": 12.08
+        },
+        "id": "hjTo81Axtx",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 9739,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/bb32a819a73304322dcc92d06118b996.jpeg",
+          "dominant_colors": [
+            "#b9d6f2",
+            "#4a8fde",
+            "#648cd5"
+          ],
+          "download_url": "https://assets.calm.com/bb32a819a73304322dcc92d06118b996.jpeg",
+          "id": "bb32a819a73304322dcc92d06118b996",
+          "has_transcript": false
+        },
+        "track_name": "A Sensual Dawn"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:22:48.437Z",
+        "gradient_end_color": "#4a439a",
+        "time_period": "all",
+        "audio": {
+          "id": "ecd2dc33bbae31dffa71939aeb7c4091",
+          "url": "https://assets.calm.com/ecd2dc33bbae31dffa71939aeb7c4091.m4a",
+          "download_url": "https://assets.calm.com/ecd2dc33bbae31dffa71939aeb7c4091.m4a",
+          "content_type": "audio/mp4",
+          "size": 12061400,
+          "has_transcript": false,
+          "duration": 745.043
+        },
+        "updated_at": "2023-04-20T16:24:30.477Z",
+        "gradient_start_color": "#73aad8",
+        "title": "Falling Snowflakes",
+        "english_title_for_analytics": "Falling Snowflakes",
+        "video": {
+          "id": "3b833fc88fb5966b1fead8cddb5b940d",
+          "url": "https://assets.calm.com/3b833fc88fb5966b1fead8cddb5b940d.mp4",
+          "content_type": "video/mp4",
+          "size": 9042086,
+          "has_transcript": false,
+          "duration": 28.596
+        },
+        "id": "QtydmVydKW",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 6671,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/e2610de3af43e5558c5c4bc5c0dd58e7.jpeg",
+          "dominant_colors": [
+            "#b4cce8",
+            "#e1f8fc",
+            "#82a0c8"
+          ],
+          "download_url": "https://assets.calm.com/e2610de3af43e5558c5c4bc5c0dd58e7.jpeg",
+          "id": "e2610de3af43e5558c5c4bc5c0dd58e7",
+          "has_transcript": false
+        },
+        "track_name": "Sweet Stillness"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:21:53.875Z",
+        "gradient_end_color": "#0d1732",
+        "time_period": "all",
+        "audio": {
+          "id": "4a7be4d251381a506c58bf933787b454",
+          "url": "https://assets.calm.com/4a7be4d251381a506c58bf933787b454.m4a",
+          "download_url": "https://assets.calm.com/4a7be4d251381a506c58bf933787b454.m4a",
+          "content_type": "audio/mp4",
+          "size": 11376612,
+          "has_transcript": false,
+          "duration": 702.729
+        },
+        "updated_at": "2023-04-20T16:26:11.731Z",
+        "gradient_start_color": "#545f75",
+        "title": "Snowflakes in Moonlight",
+        "english_title_for_analytics": "Snowflakes in Moonlight",
+        "video": {
+          "id": "362e13033abdaa57cb34d17ee0f85ada",
+          "url": "https://assets.calm.com/362e13033abdaa57cb34d17ee0f85ada.mp4",
+          "content_type": "video/mp4",
+          "size": 8295338,
+          "has_transcript": false,
+          "duration": 25.025
+        },
+        "id": "F06IKipv6u",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 9107,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/1c5aa1bc866dd22b5812a52494a16c76.jpeg",
+          "dominant_colors": [
+            "#222c44",
+            "#a2a8b7",
+            "#7b8496"
+          ],
+          "download_url": "https://assets.calm.com/1c5aa1bc866dd22b5812a52494a16c76.jpeg",
+          "id": "1c5aa1bc866dd22b5812a52494a16c76",
+          "has_transcript": false
+        },
+        "track_name": "I Can Hear the Moon Rising"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:21:14.720Z",
+        "gradient_end_color": "#1f3c18",
+        "time_period": "all",
+        "audio": {
+          "id": "cbbf9b3e5bc888e46a821a3ad5b64f3d",
+          "url": "https://assets.calm.com/cbbf9b3e5bc888e46a821a3ad5b64f3d.m4a",
+          "download_url": "https://assets.calm.com/cbbf9b3e5bc888e46a821a3ad5b64f3d.m4a",
+          "content_type": "audio/mp4",
+          "size": 4580701,
+          "has_transcript": false,
+          "duration": 282.91
+        },
+        "updated_at": "2023-04-20T16:26:59.950Z",
+        "gradient_start_color": "#8eb866",
+        "title": "Gleaming Sunshine",
+        "english_title_for_analytics": "Gleaming Sunshine",
+        "video": {
+          "id": "94cc63d9fc0a7efcd67ec57c490195f8",
+          "url": "https://assets.calm.com/94cc63d9fc0a7efcd67ec57c490195f8.mp4",
+          "content_type": "video/mp4",
+          "size": 560888,
+          "has_transcript": false,
+          "duration": 13.08
+        },
+        "id": "6wR4PIYRLZ",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 8124,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/be4fc095e8451ee2fec7056ad1d37d3f.jpeg",
+          "dominant_colors": [
+            "#dae5bc",
+            "#7b9c4b",
+            "#779973"
+          ],
+          "download_url": "https://assets.calm.com/be4fc095e8451ee2fec7056ad1d37d3f.jpeg",
+          "id": "be4fc095e8451ee2fec7056ad1d37d3f",
+          "has_transcript": false
+        },
+        "track_name": "Soothe"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "created_at": "2015-02-23T23:26:09.838Z",
+        "gradient_end_color": "#203262",
+        "time_period": "all",
+        "audio": {
+          "id": "b5e332a526c53dbc3d587e8ca95cc52a",
+          "url": "https://assets.calm.com/b5e332a526c53dbc3d587e8ca95cc52a.m4a",
+          "download_url": "https://assets.calm.com/b5e332a526c53dbc3d587e8ca95cc52a.m4a",
+          "content_type": "audio/mp4",
+          "size": 2952,
+          "has_transcript": false,
+          "duration": 4.852971
+        },
+        "updated_at": "2018-11-22T01:13:56.355Z",
+        "gradient_start_color": "#62add4",
+        "title": "Silent Clouds",
+        "english_title_for_analytics": "Silent Clouds",
+        "video": {
+          "id": "766ccc5e1024264ebd67445eda2fe712",
+          "url": "https://assets.calm.com/766ccc5e1024264ebd67445eda2fe712.mp4",
+          "content_type": "video/mp4",
+          "size": 13836228,
+          "has_transcript": false,
+          "duration": 22
+        },
+        "id": "xf0OOjwvuo",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 8693,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/abf2a7a732b975f22e7f2fac706607e2.jpeg",
+          "dominant_colors": [
+            "#4a74b6",
+            "#a9e3fa",
+            "#98c7f8"
+          ],
+          "download_url": "https://assets.calm.com/abf2a7a732b975f22e7f2fac706607e2.jpeg",
+          "id": "abf2a7a732b975f22e7f2fac706607e2",
+          "has_transcript": false
+        }
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:21:46.463Z",
+        "gradient_end_color": "#1b448e",
+        "time_period": "all",
+        "audio": {
+          "id": "2a5778e48434027a5e4485bf7aab1a95",
+          "url": "https://assets.calm.com/2a5778e48434027a5e4485bf7aab1a95.m4a",
+          "download_url": "https://assets.calm.com/2a5778e48434027a5e4485bf7aab1a95.m4a",
+          "content_type": "audio/mp4",
+          "size": 12086609,
+          "has_transcript": false,
+          "duration": 746.589
+        },
+        "updated_at": "2023-04-20T16:28:32.520Z",
+        "gradient_start_color": "#6adcfa",
+        "title": "Radiating Energy",
+        "english_title_for_analytics": "Radiating Energy",
+        "video": {
+          "id": "4fcd95e34923ab2d3b6a734b07d3dd73",
+          "url": "https://assets.calm.com/4fcd95e34923ab2d3b6a734b07d3dd73.mp4",
+          "content_type": "video/mp4",
+          "size": 4797078,
+          "has_transcript": false,
+          "duration": 13
+        },
+        "id": "wkPKcMLGPI",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 7443,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/405842ce1234d0905c461c58bac8fbdb.jpeg",
+          "dominant_colors": [
+            "#218cf3",
+            "#e2eafb",
+            "#6dd5fb"
+          ],
+          "download_url": "https://assets.calm.com/405842ce1234d0905c461c58bac8fbdb.jpeg",
+          "id": "405842ce1234d0905c461c58bac8fbdb",
+          "has_transcript": false
+        },
+        "track_name": "I Am Free"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:22:13.424Z",
+        "gradient_end_color": "#010061",
+        "time_period": "all",
+        "audio": {
+          "id": "bb5e0a64c3e337f30986e2f88334c2dd",
+          "url": "https://assets.calm.com/bb5e0a64c3e337f30986e2f88334c2dd.m4a",
+          "download_url": "https://assets.calm.com/bb5e0a64c3e337f30986e2f88334c2dd.m4a",
+          "content_type": "audio/mp4",
+          "size": 9900963,
+          "has_transcript": false,
+          "duration": 611.577
+        },
+        "updated_at": "2023-04-20T16:29:35.977Z",
+        "gradient_start_color": "#6ec1e3",
+        "title": "Gently Flowing Stream",
+        "english_title_for_analytics": "Gently Flowing Stream",
+        "video": {
+          "id": "72ce0c667b39082a1271508792f0a1aa",
+          "url": "https://assets.calm.com/72ce0c667b39082a1271508792f0a1aa.mp4",
+          "content_type": "video/mp4",
+          "size": 9865079,
+          "has_transcript": false,
+          "duration": 7.534
+        },
+        "id": "2XVAtgp6ei",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 16893,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/d8ecd3b9eefad77ae780759550cd34aa.jpeg",
+          "dominant_colors": [
+            "#5aa9f3",
+            "#042499",
+            "#cbf5fc"
+          ],
+          "download_url": "https://assets.calm.com/d8ecd3b9eefad77ae780759550cd34aa.jpeg",
+          "id": "d8ecd3b9eefad77ae780759550cd34aa",
+          "has_transcript": false
+        },
+        "track_name": "No Water No Moon"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:22:30.696Z",
+        "gradient_end_color": "#3c345d",
+        "time_period": "all",
+        "audio": {
+          "id": "4106855559367308b97c9ec5e9e0fdc7",
+          "url": "https://assets.calm.com/4106855559367308b97c9ec5e9e0fdc7.m4a",
+          "download_url": "https://assets.calm.com/4106855559367308b97c9ec5e9e0fdc7.m4a",
+          "content_type": "audio/mp4",
+          "size": 17474949,
+          "has_transcript": false,
+          "duration": 1079.461
+        },
+        "updated_at": "2023-04-20T16:31:00.989Z",
+        "gradient_start_color": "#c9865d",
+        "title": "Flying Above the Clouds",
+        "english_title_for_analytics": "Flying Above the Clouds",
+        "video": {
+          "id": "602f74eb513448d66ecec302b23aabdc",
+          "url": "https://assets.calm.com/602f74eb513448d66ecec302b23aabdc.mp4",
+          "content_type": "video/mp4",
+          "size": 9039372,
+          "has_transcript": false,
+          "duration": 18.534
+        },
+        "id": "JuDHNIaQIC",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 14885,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/2937e964eab0cf09df9c8ada0d41b18e.jpeg",
+          "dominant_colors": [
+            "#715971",
+            "#ebd4bc",
+            "#c5a096"
+          ],
+          "download_url": "https://assets.calm.com/2937e964eab0cf09df9c8ada0d41b18e.jpeg",
+          "id": "2937e964eab0cf09df9c8ada0d41b18e",
+          "has_transcript": false
+        },
+        "track_name": "The Simple Blackness"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:22:01.838Z",
+        "gradient_end_color": "#55290e",
+        "time_period": "all",
+        "audio": {
+          "id": "af4c6e8677282ae7e32d01fc0ea35e40",
+          "url": "https://assets.calm.com/af4c6e8677282ae7e32d01fc0ea35e40.m4a",
+          "download_url": "https://assets.calm.com/af4c6e8677282ae7e32d01fc0ea35e40.m4a",
+          "content_type": "audio/mp4",
+          "size": 16615017,
+          "has_transcript": false,
+          "duration": 1026.347
+        },
+        "updated_at": "2023-04-20T16:32:15.519Z",
+        "gradient_start_color": "#e3a95b",
+        "title": "Moving Cloudbreak",
+        "english_title_for_analytics": "Moving Cloudbreak",
+        "video": {
+          "id": "a7c18f62872fa78fe46248ff69574d7d",
+          "url": "https://assets.calm.com/a7c18f62872fa78fe46248ff69574d7d.mp4",
+          "content_type": "video/mp4",
+          "size": 18298672,
+          "has_transcript": false,
+          "duration": 40.04
+        },
+        "id": "dqP8CcrmNd",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 10210,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/03926fb8f01ca148b64661361afa689a.jpeg",
+          "dominant_colors": [
+            "#653f20",
+            "#f8cd75",
+            "#bf9c6c"
+          ],
+          "download_url": "https://assets.calm.com/03926fb8f01ca148b64661361afa689a.jpeg",
+          "id": "03926fb8f01ca148b64661361afa689a",
+          "has_transcript": false
+        },
+        "track_name": "Love Is Surrender"
+      },
+      {
+        "offsets": {
+          "x": 0.5,
+          "y": 0.5
+        },
+        "artist_name": "Kip Mazuy",
+        "created_at": "2014-12-04T10:21:37.584Z",
+        "gradient_end_color": "#32291f",
+        "time_period": "all",
+        "audio": {
+          "id": "dea099c5e94ada97e935931937ffc86a",
+          "url": "https://assets.calm.com/dea099c5e94ada97e935931937ffc86a.m4a",
+          "download_url": "https://assets.calm.com/dea099c5e94ada97e935931937ffc86a.m4a",
+          "content_type": "audio/mp4",
+          "size": 7480513,
+          "has_transcript": false,
+          "duration": 462.043
+        },
+        "updated_at": "2023-04-20T16:33:01.336Z",
+        "gradient_start_color": "#c3a98d",
+        "title": "Falling Sundrops",
+        "english_title_for_analytics": "Falling Sundrops",
+        "video": {
+          "id": "eaf2be22e420c234a3374876de84d7af",
+          "url": "https://assets.calm.com/eaf2be22e420c234a3374876de84d7af.mp4",
+          "content_type": "video/mp4",
+          "size": 17892686,
+          "has_transcript": false,
+          "duration": 28.595233
+        },
+        "id": "PKoI2dY4uC",
+        "image": {
+          "content_type": "image/jpeg",
+          "size": 5828,
+          "width": 640,
+          "height": 220,
+          "url": "https://assets.calm.com/d5653aae58ac98e0b88275ebcc8f1d6d.jpeg",
+          "dominant_colors": [
+            "#ede2c5",
+            "#d9c2a5",
+            "#fcfbe8"
+          ],
+          "download_url": "https://assets.calm.com/d5653aae58ac98e0b88275ebcc8f1d6d.jpeg",
+          "id": "d5653aae58ac98e0b88275ebcc8f1d6d",
+          "has_transcript": false
+        },
+        "track_name": "A Shower of Blessings"
+      }
+    ],
+    "static_scenes": [
+      {
+        "id": "Ekeccg5Wsb",
+        "title": "Daily Scene",
+        "images": [
+          {
+            "id": "G63qMRQN9",
+            "start_time": "2017-01-14T00:00:00.000Z",
+            "url": "http://cdn.calm.com/images/static_scenes/Ekeccg5Wsb/G63qMRQN9.jpg?v=1479653867691"
+          }
+        ]
+      }
+    ]
+  }

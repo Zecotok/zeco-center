@@ -3,17 +3,12 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  --foreground-rgb: 0, 0, 0; /* Black text for light theme */
+  --background-start-rgb: 240, 248, 255; /* Light blue gradient start */
+  --background-end-rgb: 173, 216, 230; /* Lighter blue gradient end */
+  --primary-blue: 70, 130, 180; /* SteelBlue as the main blue tone */
+  --secondary-blue: 100, 149, 237; /* CornflowerBlue for highlights */
+  --accent-blue: 30, 144, 255; /* DodgerBlue for buttons or accent elements */
 }
 
 body {
@@ -24,4 +19,16 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+}
+
+/* Example of blue accent colors used on buttons or links */
+a,
+button {
+  color: rgb(var(--accent-blue));
+  transition: color 0.3s ease;
+}
+
+a:hover,
+button:hover {
+  color: rgb(var(--primary-blue));
 }

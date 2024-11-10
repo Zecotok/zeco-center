@@ -23,7 +23,7 @@ function LoginPage() {
 
     if (signinResponse?.error) return setError(signinResponse.error as string);
 
-    if (signinResponse?.ok) return router.push("/dashboard/profile");
+    if (signinResponse?.ok) return router.push("/dashboard");
 
     console.log(signinResponse);
   };
