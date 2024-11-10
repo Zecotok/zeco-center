@@ -1,4 +1,9 @@
-/* @tailwind base;
+
+/* In your globals.css or main stylesheet */
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
@@ -31,4 +36,4 @@ button {
 a:hover,
 button:hover {
   color: rgb(var(--primary-blue));
-} */
+}
