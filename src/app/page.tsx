@@ -26,6 +26,8 @@ const MeditationPage = () => {
 
   // State for background and guide audio sources
   const [backgroundAudioSrc, setBackgroundAudioSrc] = useState<string | null>(null);
+  const [backgroundScene, setBackgroundScene] = useState<string | null>(null);
+
   const [guideAudioSrc, setGuideAudioSrc] = useState<string | null>(null);
 
   // State for fetched data
@@ -62,6 +64,8 @@ const MeditationPage = () => {
   useEffect(() => {
     if (selectedScene) {
       setBackgroundAudioSrc(`/scenes/${selectedScene.filename}`);
+      setBackgroundScene(`${selectedScene.name}`);
+      
     }
   }, [selectedScene]);
 
@@ -161,7 +165,7 @@ const MeditationPage = () => {
           <h2 className="text-2xl font-semibold text-center text-teal-900 mb-6">Audio Player</h2>
           {backgroundAudioSrc && (
             <div>
-              <h3 className="text-lg font-semibold text-center text-teal-700 mb-2">Background Audio (Hidden)</h3>
+              <h3 className="text-lg font-semibold text-center text-teal-700 mb-2">{backgroundScene}</h3>
               <AudioPlayer src={backgroundAudioSrc} autoplay={true} loop={true} showControls={false} />
             </div>
           )}
@@ -174,8 +178,6 @@ const MeditationPage = () => {
         </div>
       </div>
       <div className="mt-8 text-center">
-        <i className="fas fa-spa text-6xl text-teal-700"></i> {/* Meditation Icon */}
-        <h2 className="text-2xl font-semibold text-teal-900 mt-4">Meditation App</h2>
       </div>
 
     </div>
