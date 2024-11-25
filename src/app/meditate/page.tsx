@@ -129,7 +129,7 @@ const MeditationPage = () => {
         {selectedProgram?.guides.map((guide) => (
           <li key={guide.fileName}>
             <button
-              className="w-full p-2 text-white bg-purple-500 hover:bg-purple-700 rounded-lg shadow-md transition-colors"
+              className="w-full p-2 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-md transition-colors"
               onClick={() => setSelectedGuide(guide)}
             >
               {guide.guideName}
@@ -159,23 +159,23 @@ const MeditationPage = () => {
   };
 
   return (
-    <div className="bg-gradient-to-r from-teal-100 to-teal-300 min-h-screen flex flex-col items-center p-6">
-      <h1 className="text-4xl font-extrabold text-teal-900 mb-6">Meditation App</h1>
+    <div className="bg-gradient-to-r from-teal-150 to-teal-10 min-h-screen flex flex-col items-center p-4 md:p-6">
+      <h1 className="text-3xl md:text-4xl font-extrabold text-teal-900 mb-4 md:mb-6">Meditation App</h1>
 
-      <div className="w-full max-w-3xl p-6 bg-white border-4 border-teal-500 rounded-xl shadow-lg mb-8">
-        <h2 className="text-2xl font-semibold text-center text-teal-900 mb-4">Audio Player</h2>
+      <div className="w-full max-w-2xl lg:max-w-3xl p-4 md:p-6 bg-white border-4 border-teal-500 rounded-xl shadow-lg mb-6 md:mb-8">
+        <h2 className="text-xl md:text-2xl font-semibold text-center text-teal-900 mb-4">Audio Player</h2>
         {backgroundAudioSrc && (
           <AudioPlayer src={backgroundAudioSrc} autoplay={true} loop={true} showControls={false} />
         )}
         {guideAudioSrc && (
           <div className="mt-4">
-            <h3 className="text-lg font-semibold text-center text-teal-700 mb-2">Guide Audio</h3>
+            <h3 className="text-lg font-semibold text-center text-teal-700 mb-2"></h3>
             <AudioPlayer src={guideAudioSrc} autoplay={false} loop={false} showControls={true} />
           </div>
         )}
       </div>
 
-      <div className="flex gap-4 justify-center w-full max-w-5xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-5xl">
         <div className="flex-1 min-w-[300px]">
           <SceneList />
         </div>

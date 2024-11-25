@@ -12,7 +12,7 @@ function HomePage() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-4xl">
         {/* Meditate Card */}
-        <Link href="/meditate" className="bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow-lg p-6 flex flex-col items-center transition-all duration-300 transform hover:scale-105">
+        <Link href="/meditate" className="bg-blue-500 hover:bg-white-999 text-white rounded-lg shadow-lg p-6 flex flex-col items-center transition-all duration-300 transform hover:scale-105">
           <FontAwesomeIcon icon={faSpa} className="text-4xl mb-4" />
           <h2 className="font-semibold text-2xl">Meditate</h2>
           <p className="mt-2 text-center">Relax and find inner peace.</p>
@@ -26,7 +26,7 @@ function HomePage() {
         </Link>
         
         {/* Profile Card */}
-        <Link href="/profile" className="bg-purple-500 hover:bg-purple-600 text-white rounded-lg shadow-lg p-6 flex flex-col items-center transition-all duration-300 transform hover:scale-105">
+        <Link href="/dashboard/profile" className="bg-purple-500 hover:bg-purple-600 text-white rounded-lg shadow-lg p-6 flex flex-col items-center transition-all duration-300 transform hover:scale-105">
           <FontAwesomeIcon icon={faUser} className="text-4xl mb-4" />
           <h2 className="font-semibold text-2xl">Profile</h2>
           <p className="mt-2 text-center">View and edit your profile.</p>
