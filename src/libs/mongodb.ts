@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 
 // Load environment variables from the `.env` file
-dotenv.config();
+// dotenv.config();
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URI = "Your connection string";
 
 if (!MONGODB_URI) {
   throw new Error(
