@@ -1,0 +1,456 @@
+{
+  "program": {
+    "id": "Zm54l8oBq4",
+    "variant_id": "4Jwz5e3JCj",
+    "ch_allowed_plan_tiers": ["calm_health", "ch-payor-base", "ch-payor-buyup"],
+    "meditation_type": "freeform",
+    "published_at": "2019-01-28T21:55:02.676Z",
+    "position": 54,
+    "title": "Deep Concentration",
+    "subtitle": "Focus your mind",
+    "language": "en",
+    "content_group": "0-default",
+    "description": "A simple yet powerful meditation to help sharpen your attention",
+    "icon_asset_id": "82388e5b181d7f181fdbab33dc113081",
+    "metadata": {
+      "program_view_hides_play_button": true
+    },
+    "is_hidden": false,
+    "should_play_as_guide": false,
+    "author": {
+      "id": "VVWDqY83",
+      "name": "Tamara Levitt",
+      "should_display": true
+    },
+    "search_category": "meditations",
+    "upsell_variant": "generic",
+    "is_clinical": false,
+    "created_at": "2015-06-30T18:06:54.721Z",
+    "updated_at": "2021-04-07T20:09:55.679Z",
+    "narrator": {
+      "id": "VkYG-ZSmX",
+      "name": "Tamara Levitt",
+      "bio": "A meditator of over 25 years, Tamara is the Head of Mindfulness at Calm, where she writes and narrates the company's meditation content, a role she has held since 2014. \n\nTamara authored Calm’s very first Sleep Story, The Queen of Calm, and has since written and narrated other popular tales such as Luna’s Lullaby, The Secret Lagoon and Ella’s Treasure. \n\nShe is also the author of two children’s books on mindfulness themes, ‘Happiness Doesn’t Come from Headstands,’ and ‘The Secret to Clara’s Calm,’ both published by Wisdom Publications.\n\nTo learn more, visit her website www.tamaralevitt.com or follow her on Instagram.",
+      "short_bio": "Head of Mindfulness at Calm",
+      "medium_bio": "Calm’s Head of Mindfulness, narrating fiction, non-fiction, and napping stories",
+      "is_composer": false,
+      "created_at": "2017-06-27T20:45:52.186Z",
+      "updated_at": "2022-06-22T16:54:51.737Z",
+      "headshot": {
+        "id": "03a247bf67ff4cf0d3e0852cf59607c8",
+        "type": "image",
+        "content_type": "image/jpeg",
+        "size": 544856,
+        "url": "https://assets.calm.com/03a247bf67ff4cf0d3e0852cf59607c8.jpeg",
+        "width": 960,
+        "height": 960,
+        "dominant_colors": ["#c44c74", "#45140a"]
+      }
+    },
+    "background_image": {
+      "id": "e3ff67fe3942fb85c902709d87ad4e8e",
+      "type": "image",
+      "content_type": "image/jpeg",
+      "size": 59613,
+      "url": "https://assets.calm.com/e3ff67fe3942fb85c902709d87ad4e8e.jpeg",
+      "width": 502,
+      "height": 560,
+      "dominant_colors": ["#5049ac", "#041450"]
+    },
+    "cell_image": {
+      "id": "e3ff67fe3942fb85c902709d87ad4e8e",
+      "type": "image",
+      "content_type": "image/jpeg",
+      "size": 59613,
+      "url": "https://assets.calm.com/e3ff67fe3942fb85c902709d87ad4e8e.jpeg",
+      "width": 502,
+      "height": 560,
+      "dominant_colors": ["#5049ac", "#041450"]
+    },
+    "untitled_cell_image": {
+      "id": "e3ff67fe3942fb85c902709d87ad4e8e",
+      "type": "image",
+      "content_type": "image/jpeg",
+      "size": 59613,
+      "url": "https://assets.calm.com/e3ff67fe3942fb85c902709d87ad4e8e.jpeg",
+      "width": 502,
+      "height": 560,
+      "dominant_colors": ["#5049ac", "#041450"]
+    },
+    "guides": [
+      {
+        "id": "3XpY6b1MV5",
+        "variant_id": "V1DFje2y0s",
+        "position": 3,
+        "is_trailer": false,
+        "metadata": {
+          "mood_check_in_recommendations": ["content"]
+        },
+        "program_variant_id": "4Jwz5e3JCj",
+        "alt_assets": [],
+        "capabilities": {
+          "stream_only": false,
+          "non_shareable": false
+        },
+        "content_policies": [],
+        "created_at": "2015-06-30T18:07:14.997Z",
+        "updated_at": "2015-06-30T18:08:34.231Z",
+        "asset": {
+          "id": "c8077b69636d2d178e5a0d678a8d375c",
+          "size": 8266819,
+          "content_type": "audio/mp4",
+          "url": "https://assets.calm.com/c8077b69636d2d178e5a0d678a8d375c.m4a",
+          "download_url": "https://assets.calm.com/c8077b69636d2d178e5a0d678a8d375c.m4a",
+          "type": "audio",
+          "duration": 601.941333,
+          "updated_at": "2024-09-11T18:22:06.362Z"
+        },
+        "assets": [
+          {
+            "id": "c8077b69636d2d178e5a0d678a8d375c",
+            "size": 8266819,
+            "content_type": "audio/mp4",
+            "url": "https://assets.calm.com/c8077b69636d2d178e5a0d678a8d375c.m4a",
+            "download_url": "https://assets.calm.com/c8077b69636d2d178e5a0d678a8d375c.m4a",
+            "type": "audio",
+            "duration": 601.941333,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          },
+          {
+            "id": "f392a3fe44825d53b8aae296301f7081",
+            "size": 7858753,
+            "content_type": "audio/ogg",
+            "url": "https://assets.calm.com/f392a3fe44825d53b8aae296301f7081.oga",
+            "download_url": "https://assets.calm.com/f392a3fe44825d53b8aae296301f7081.oga",
+            "type": "audio",
+            "duration": 601.92,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          }
+        ],
+        "has_transcript": true,
+        "narrator_id": "VkYG-ZSmX",
+        "narrator_name": "Tamara Levitt",
+        "title": "10 minutes",
+        "is_free": true
+      },
+      {
+        "id": "EJbm19tgJL",
+        "variant_id": "NJzYolh10i",
+        "position": 5,
+        "is_trailer": false,
+        "program_variant_id": "4Jwz5e3JCj",
+        "alt_assets": [],
+        "capabilities": {
+          "stream_only": false,
+          "non_shareable": false
+        },
+        "content_policies": [],
+        "created_at": "2015-06-30T18:07:26.036Z",
+        "updated_at": "2015-06-30T18:09:49.388Z",
+        "asset": {
+          "id": "9c22352e0f5eb8b59a681658e1cef09d",
+          "size": 16327799,
+          "content_type": "audio/mp4",
+          "url": "https://assets.calm.com/9c22352e0f5eb8b59a681658e1cef09d.m4a",
+          "download_url": "https://assets.calm.com/9c22352e0f5eb8b59a681658e1cef09d.m4a",
+          "type": "audio",
+          "duration": 1196.309333,
+          "updated_at": "2024-09-11T18:22:06.362Z"
+        },
+        "assets": [
+          {
+            "id": "9c22352e0f5eb8b59a681658e1cef09d",
+            "size": 16327799,
+            "content_type": "audio/mp4",
+            "url": "https://assets.calm.com/9c22352e0f5eb8b59a681658e1cef09d.m4a",
+            "download_url": "https://assets.calm.com/9c22352e0f5eb8b59a681658e1cef09d.m4a",
+            "type": "audio",
+            "duration": 1196.309333,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          },
+          {
+            "id": "b507527b0710e6685b7dd026c15e3f86",
+            "size": 16201318,
+            "content_type": "audio/ogg",
+            "url": "https://assets.calm.com/b507527b0710e6685b7dd026c15e3f86.oga",
+            "download_url": "https://assets.calm.com/b507527b0710e6685b7dd026c15e3f86.oga",
+            "type": "audio",
+            "duration": 1196.288,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          }
+        ],
+        "has_transcript": true,
+        "narrator_id": "VkYG-ZSmX",
+        "narrator_name": "Tamara Levitt",
+        "title": "20 minutes",
+        "is_free": true
+      },
+      {
+        "id": "Om6AI32ekG",
+        "variant_id": "4J4Yoe2JRi",
+        "position": 6,
+        "is_trailer": false,
+        "program_variant_id": "4Jwz5e3JCj",
+        "alt_assets": [],
+        "capabilities": {
+          "stream_only": false,
+          "non_shareable": false
+        },
+        "content_policies": [],
+        "created_at": "2015-06-30T18:07:40.645Z",
+        "updated_at": "2015-06-30T18:10:13.627Z",
+        "asset": {
+          "id": "718a0755dad618d959af98d5cd5b55b9",
+          "size": 20445259,
+          "content_type": "audio/mp4",
+          "url": "https://assets.calm.com/718a0755dad618d959af98d5cd5b55b9.m4a",
+          "download_url": "https://assets.calm.com/718a0755dad618d959af98d5cd5b55b9.m4a",
+          "type": "audio",
+          "duration": 1498.666667,
+          "updated_at": "2024-09-11T18:22:06.362Z"
+        },
+        "assets": [
+          {
+            "id": "718a0755dad618d959af98d5cd5b55b9",
+            "size": 20445259,
+            "content_type": "audio/mp4",
+            "url": "https://assets.calm.com/718a0755dad618d959af98d5cd5b55b9.m4a",
+            "download_url": "https://assets.calm.com/718a0755dad618d959af98d5cd5b55b9.m4a",
+            "type": "audio",
+            "duration": 1498.666667,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          },
+          {
+            "id": "a6567d6127accd6fddc26c0344af600d",
+            "size": 20920987,
+            "content_type": "audio/ogg",
+            "url": "https://assets.calm.com/a6567d6127accd6fddc26c0344af600d.oga",
+            "download_url": "https://assets.calm.com/a6567d6127accd6fddc26c0344af600d.oga",
+            "type": "audio",
+            "duration": 1498.645333,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          }
+        ],
+        "has_transcript": true,
+        "narrator_id": "VkYG-ZSmX",
+        "narrator_name": "Tamara Levitt",
+        "title": "25 minutes",
+        "is_free": true
+      },
+      {
+        "id": "PMvLIZEbJv",
+        "variant_id": "VkrtiehJRi",
+        "position": 1,
+        "is_trailer": false,
+        "program_variant_id": "4Jwz5e3JCj",
+        "alt_assets": [],
+        "capabilities": {
+          "stream_only": false,
+          "non_shareable": false
+        },
+        "content_policies": [],
+        "created_at": "2015-06-30T18:07:05.983Z",
+        "updated_at": "2015-06-30T18:08:33.805Z",
+        "asset": {
+          "id": "24cfaf7ce7def848d988ce5034da1eb7",
+          "size": 1730544,
+          "content_type": "audio/mp4",
+          "url": "https://assets.calm.com/24cfaf7ce7def848d988ce5034da1eb7.m4a",
+          "download_url": "https://assets.calm.com/24cfaf7ce7def848d988ce5034da1eb7.m4a",
+          "type": "audio",
+          "duration": 124.501333,
+          "updated_at": "2024-09-11T18:22:06.362Z"
+        },
+        "assets": [
+          {
+            "id": "24cfaf7ce7def848d988ce5034da1eb7",
+            "size": 1730544,
+            "content_type": "audio/mp4",
+            "url": "https://assets.calm.com/24cfaf7ce7def848d988ce5034da1eb7.m4a",
+            "download_url": "https://assets.calm.com/24cfaf7ce7def848d988ce5034da1eb7.m4a",
+            "type": "audio",
+            "duration": 124.501333,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          },
+          {
+            "id": "487be5c185f93afdb6300c6239cf1153",
+            "size": 1441960,
+            "content_type": "audio/ogg",
+            "url": "https://assets.calm.com/487be5c185f93afdb6300c6239cf1153.oga",
+            "download_url": "https://assets.calm.com/487be5c185f93afdb6300c6239cf1153.oga",
+            "type": "audio",
+            "duration": 124.48,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          }
+        ],
+        "has_transcript": true,
+        "narrator_id": "VkYG-ZSmX",
+        "narrator_name": "Tamara Levitt",
+        "title": "2 minutes",
+        "is_free": true
+      },
+      {
+        "id": "Vs4xqhX0Vy",
+        "variant_id": "NyUKsx2JAj",
+        "position": 2,
+        "is_trailer": false,
+        "metadata": {
+          "goals_recommendations": false,
+          "sleep_check_in_recommendations": ["morning", "afternoon", "evening"],
+          "gratitude_check_in_recommendations": false
+        },
+        "program_variant_id": "4Jwz5e3JCj",
+        "alt_assets": [],
+        "capabilities": {
+          "stream_only": false,
+          "non_shareable": false
+        },
+        "content_policies": [],
+        "created_at": "2015-06-30T18:07:11.831Z",
+        "updated_at": "2021-03-25T01:38:37.889Z",
+        "asset": {
+          "id": "89a50fdbb38bdfc153979fdb38b6dc92",
+          "size": 4000291,
+          "content_type": "audio/ogg",
+          "url": "https://assets.calm.com/89a50fdbb38bdfc153979fdb38b6dc92.oga",
+          "download_url": "https://assets.calm.com/89a50fdbb38bdfc153979fdb38b6dc92.oga",
+          "type": "audio",
+          "duration": 304.938667,
+          "updated_at": "2024-09-11T18:22:06.362Z"
+        },
+        "assets": [
+          {
+            "id": "89a50fdbb38bdfc153979fdb38b6dc92",
+            "size": 4000291,
+            "content_type": "audio/ogg",
+            "url": "https://assets.calm.com/89a50fdbb38bdfc153979fdb38b6dc92.oga",
+            "download_url": "https://assets.calm.com/89a50fdbb38bdfc153979fdb38b6dc92.oga",
+            "type": "audio",
+            "duration": 304.938667,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          },
+          {
+            "id": "b725ea58c84bcabbf63cebd1cb9f400c",
+            "size": 4186790,
+            "content_type": "audio/mp4",
+            "url": "https://assets.calm.com/b725ea58c84bcabbf63cebd1cb9f400c.m4a",
+            "download_url": "https://assets.calm.com/b725ea58c84bcabbf63cebd1cb9f400c.m4a",
+            "type": "audio",
+            "duration": 304.96,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          }
+        ],
+        "has_transcript": false,
+        "narrator_id": "VkYG-ZSmX",
+        "narrator_name": "Tamara Levitt",
+        "title": "5 minutes",
+        "is_free": true
+      },
+      {
+        "id": "p7JftT8Tdg",
+        "variant_id": "4kuFjehk0s",
+        "position": 7,
+        "is_trailer": false,
+        "program_variant_id": "4Jwz5e3JCj",
+        "alt_assets": [],
+        "capabilities": {
+          "stream_only": false,
+          "non_shareable": false
+        },
+        "content_policies": [],
+        "created_at": "2015-06-30T18:08:24.530Z",
+        "updated_at": "2015-06-30T18:11:18.707Z",
+        "asset": {
+          "id": "04d5348fb24fd84d9ea48d549ac98c90",
+          "size": 24507631,
+          "content_type": "audio/mp4",
+          "url": "https://assets.calm.com/04d5348fb24fd84d9ea48d549ac98c90.m4a",
+          "download_url": "https://assets.calm.com/04d5348fb24fd84d9ea48d549ac98c90.m4a",
+          "type": "audio",
+          "duration": 1800.256,
+          "updated_at": "2024-09-11T18:22:06.362Z"
+        },
+        "assets": [
+          {
+            "id": "04d5348fb24fd84d9ea48d549ac98c90",
+            "size": 24507631,
+            "content_type": "audio/mp4",
+            "url": "https://assets.calm.com/04d5348fb24fd84d9ea48d549ac98c90.m4a",
+            "download_url": "https://assets.calm.com/04d5348fb24fd84d9ea48d549ac98c90.m4a",
+            "type": "audio",
+            "duration": 1800.256,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          },
+          {
+            "id": "bc8548b5503b9a5a5dac1849b8374c72",
+            "size": 25404672,
+            "content_type": "audio/ogg",
+            "url": "https://assets.calm.com/bc8548b5503b9a5a5dac1849b8374c72.oga",
+            "download_url": "https://assets.calm.com/bc8548b5503b9a5a5dac1849b8374c72.oga",
+            "type": "audio",
+            "duration": 1800.234667,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          }
+        ],
+        "has_transcript": true,
+        "narrator_id": "VkYG-ZSmX",
+        "narrator_name": "Tamara Levitt",
+        "title": "30 minutes",
+        "is_free": true
+      },
+      {
+        "id": "peIQD7Fdks",
+        "variant_id": "VJXYjx2JCo",
+        "position": 4,
+        "is_trailer": false,
+        "program_variant_id": "4Jwz5e3JCj",
+        "alt_assets": [],
+        "capabilities": {
+          "stream_only": false,
+          "non_shareable": false
+        },
+        "content_policies": [],
+        "created_at": "2015-06-30T18:07:34.918Z",
+        "updated_at": "2015-06-30T18:09:51.969Z",
+        "asset": {
+          "id": "9c3a52e215cc1aae73736c1b21a26bf4",
+          "size": 12254393,
+          "content_type": "audio/mp4",
+          "url": "https://assets.calm.com/9c3a52e215cc1aae73736c1b21a26bf4.m4a",
+          "download_url": "https://assets.calm.com/9c3a52e215cc1aae73736c1b21a26bf4.m4a",
+          "type": "audio",
+          "duration": 896.512,
+          "updated_at": "2024-09-11T18:22:06.362Z"
+        },
+        "assets": [
+          {
+            "id": "9c3a52e215cc1aae73736c1b21a26bf4",
+            "size": 12254393,
+            "content_type": "audio/mp4",
+            "url": "https://assets.calm.com/9c3a52e215cc1aae73736c1b21a26bf4.m4a",
+            "download_url": "https://assets.calm.com/9c3a52e215cc1aae73736c1b21a26bf4.m4a",
+            "type": "audio",
+            "duration": 896.512,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          },
+          {
+            "id": "dfa3740770824204c9433c580c25aac4",
+            "size": 12169385,
+            "content_type": "audio/ogg",
+            "url": "https://assets.calm.com/dfa3740770824204c9433c580c25aac4.oga",
+            "download_url": "https://assets.calm.com/dfa3740770824204c9433c580c25aac4.oga",
+            "type": "audio",
+            "duration": 896.490667,
+            "updated_at": "2024-09-11T18:22:06.362Z"
+          }
+        ],
+        "has_transcript": true,
+        "narrator_id": "VkYG-ZSmX",
+        "narrator_name": "Tamara Levitt",
+        "title": "15 minutes",
+        "is_free": true
+      }
+    ],
+    "content_type": "Meditation"
+  }
+}

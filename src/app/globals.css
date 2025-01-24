@@ -1,0 +1,36 @@
+
+/* In your globals.css or main stylesheet */
+@import '@fortawesome/fontawesome-free/css/all.min.css';
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0; 
+  --background-start-rgb: 240, 248, 255; 
+  --background-end-rgb: 173, 216, 230; 
+  --primary-blue: 70, 130, 180; 
+  --secondary-blue: 100, 149, 237; 
+  --accent-blue: 30, 144, 255;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+
+a,
+button {
+  color: rgb(var(--accent-blue));
+  transition: color 0.3s ease;
+}
+
+
