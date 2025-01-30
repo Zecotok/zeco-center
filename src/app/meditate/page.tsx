@@ -1,8 +1,10 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/solid";
-
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import React from "react";
 // Scene and Guide Interfaces
 interface Scene {
   name: string;
@@ -19,7 +21,250 @@ interface Program {
   guides: Guide[];
 }
 
+// Add these interfaces at the top with other interfaces
+interface AudioConfig {
+  showSeekControls: boolean;
+}
+
+// Update the AudioPlayer props interface
+interface AudioPlayerProps {
+  src: string | null;
+  autoplay?: boolean;
+  loop?: boolean;
+  showControls?: boolean;
+  volume: number;
+  onVolumeChange: (value: number) => void;
+  label: string;
+  isGuide?: boolean;
+  // Add these new props for tracking
+  programName?: string;
+  guideName?: string;
+  sceneUsed?: string;
+  config?: AudioConfig;
+}
+
+const AudioPlayer = React.memo(({ 
+  src, 
+  autoplay = false, 
+  loop = false, 
+  showControls = true,
+  volume,
+  onVolumeChange,
+  label,
+  isGuide = false,
+  programName,
+  guideName,
+  sceneUsed,
+  config = { showSeekControls: false }
+}: AudioPlayerProps) => {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
+
+  useEffect(() => {
+    if (audioRef.current && autoplay && src) {
+      audioRef.current.play().catch((error) => {
+        console.error("Error playing audio:", error);
+      });
+    }
+  }, [src, autoplay]);
+
+  useEffect(() => {
+    if (audioRef.current && isGuide) {
+      const audio = audioRef.current;
+      
+      const handleTimeUpdate = () => {
+        setCurrentTime(audio.currentTime);
+      };
+
+      const handleLoadedMetadata = () => {
+        setDuration(audio.duration);
+      };
+
+      audio.addEventListener('timeupdate', handleTimeUpdate);
+      audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+
+      return () => {
+        audio.removeEventListener('timeupdate', handleTimeUpdate);
+        audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      };
+    }
+  }, [isGuide]);
+
+  const togglePlay = useCallback(() => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  }, [isPlaying]);
+
+  const formatTime = useCallback((time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }, []);
+
+  // Add function to record completion
+  const recordCompletion = useCallback(async () => {
+    if (isGuide && src) {
+      try {
+        await axios.post('/api/meditation/complete', {
+          guideId: src,
+          programName,
+          guideName,
+          duration,
+          sceneUsed
+        });
+      } catch (error) {
+        console.error('Error recording meditation completion:', error);
+      }
+    }
+  }, [isGuide, src, programName, guideName, duration, sceneUsed]);
+
+  // Add handleSeek function
+  const handleSeek = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (audioRef.current) {
+      const newTime = parseFloat(e.target.value);
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+    }
+  }, []);
+
+  // Scene audio player (minimal version)
+  if (!isGuide) {
+    return (
+      <div className="space-y-2">
+        <div className="flex items-center justify-end">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-500">Background Volume:</span>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={(e) => onVolumeChange(parseFloat(e.target.value))}
+              className="w-24"
+            />
+          </div>
+        </div>
+        <audio 
+          ref={audioRef} 
+          src={src || ""} 
+          loop={loop}
+          className="hidden"
+        >
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    );
+  }
+
+  // Guide audio player (with controls)
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <label className="text-sm font-medium text-gray-700">{label}</label>
+        <div className="flex items-center space-x-4">
+          <button
+            onClick={togglePlay}
+            className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
+          >
+            {isPlaying ? 'Pause' : 'Play'}
+          </button>
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-500">Volume:</span>
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={(e) => onVolumeChange(parseFloat(e.target.value))}
+              className="w-24"
+            />
+          </div>
+        </div>
+      </div>
+      
+      {/* Seek bar */}
+      <div className="space-y-1">
+        <div className="w-full bg-gray-200 rounded-full h-2 relative">
+          {config?.showSeekControls ? (
+            <input
+              type="range"
+              min="0"
+              max={duration || 0}
+              value={currentTime}
+              onChange={handleSeek}
+              className="absolute inset-0 w-full h-2 appearance-none bg-transparent rounded-full cursor-pointer
+                [&::-webkit-slider-runnable-track]:bg-transparent
+                [&::-webkit-slider-thumb]:appearance-none 
+                [&::-webkit-slider-thumb]:w-4 
+                [&::-webkit-slider-thumb]:h-4 
+                [&::-webkit-slider-thumb]:rounded-full 
+                [&::-webkit-slider-thumb]:bg-white 
+                [&::-webkit-slider-thumb]:border-2
+                [&::-webkit-slider-thumb]:border-teal-500
+                [&::-webkit-slider-thumb]:cursor-pointer
+                [&::-webkit-slider-thumb]:shadow-md
+                [&::-moz-range-track]:bg-transparent
+                [&::-moz-range-thumb]:appearance-none 
+                [&::-moz-range-thumb]:w-4 
+                [&::-moz-range-thumb]:h-4 
+                [&::-moz-range-thumb]:rounded-full 
+                [&::-moz-range-thumb]:bg-white 
+                [&::-moz-range-thumb]:border-2
+                [&::-moz-range-thumb]:border-teal-500
+                [&::-moz-range-thumb]:cursor-pointer
+                [&::-moz-range-thumb]:shadow-md"
+            />
+          ) : null}
+          <div 
+            className="absolute inset-0 bg-teal-500 h-full rounded-full transition-all duration-300"
+            style={{ width: `${(currentTime / duration) * 100}%` }}
+          />
+        </div>
+        <div className="flex justify-between text-sm text-gray-500">
+          <span>{formatTime(currentTime)}</span>
+          <span>{formatTime(duration)}</span>
+        </div>
+      </div>
+
+      <audio 
+        ref={audioRef} 
+        src={src || ""} 
+        loop={loop}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onEnded={() => {
+          setIsPlaying(false);
+          recordCompletion();
+        }}
+        className="hidden"
+      >
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+  );
+});
+
+AudioPlayer.displayName = 'AudioPlayer';
+
 const MeditationPage = () => {
+  const router = useRouter();
+  const { data: session, status } = useSession();
   const [selectedScene, setSelectedScene] = useState<Scene | null>(null);
   const [selectedProgram, setSelectedProgram] = useState<Program | null>(null);
   const [selectedGuide, setSelectedGuide] = useState<Guide | null>(null);
@@ -33,6 +278,15 @@ const MeditationPage = () => {
   const [isScenesCollapsed, setScenesCollapsed] = useState(false);
   const [isProgramsCollapsed, setProgramsCollapsed] = useState(false);
   const [isGuidesCollapsed, setGuidesCollapsed] = useState(false);
+
+  // Add these new state variables after other useState declarations
+  const [sceneVolume, setSceneVolume] = useState(0.5);
+  const [guideVolume, setGuideVolume] = useState(0.8);
+  
+  // Add this config object
+  const audioConfig: AudioConfig = {
+    showSeekControls: true
+  };
 
   useEffect(() => {
     const fetchScenes = async () => {
@@ -67,6 +321,12 @@ const MeditationPage = () => {
       setGuideAudioSrc(`/programs/${selectedProgram.programName}/${selectedGuide.fileName}`);
     }
   }, [selectedGuide, selectedProgram]);
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 
   const SceneList = () => (
     <div className="bg-blue-50 p-4 rounded-xl shadow-lg transition-all">
@@ -140,23 +400,16 @@ const MeditationPage = () => {
     </div>
   );
 
-  const AudioPlayer = ({ src, autoplay = false, loop = false, showControls = true }: { src: string | null; autoplay?: boolean; loop?: boolean; showControls?: boolean }) => {
-    const audioRef = useRef<HTMLAudioElement>(null);
+  // If still loading session, you can show a loading message
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
 
-    useEffect(() => {
-      if (audioRef.current && autoplay && src) {
-        audioRef.current.play().catch((error) => {
-          console.error("Error playing audio:", error);
-        });
-      }
-    }, [src, autoplay]);
-
-    return (
-      <audio ref={audioRef} src={src || ""} controls={showControls} loop={loop} className="w-full mt-4">
-        Your browser does not support the audio element.
-      </audio>
-    );
-  };
+  // If user is not logged in, show a message or redirect them
+  if (!session) {
+    console.log('------------------------',session)
+    return <p className="text-center text-red-600">You must be logged in to access this page.</p>;
+  }
 
   return (
     <div className="bg-gradient-to-r from-teal-150 to-teal-10 min-h-screen flex flex-col items-center p-4 md:p-6">
@@ -165,12 +418,35 @@ const MeditationPage = () => {
       <div className="w-full max-w-2xl lg:max-w-3xl p-4 md:p-6 bg-white border-4 border-teal-500 rounded-xl shadow-lg mb-6 md:mb-8">
         <h2 className="text-xl md:text-2xl font-semibold text-center text-teal-900 mb-4">Audio Player</h2>
         {backgroundAudioSrc && (
-          <AudioPlayer src={backgroundAudioSrc} autoplay={true} loop={true} showControls={false} />
+          <AudioPlayer 
+            src={backgroundAudioSrc} 
+            autoplay={true} 
+            loop={true} 
+            showControls={false}
+            volume={sceneVolume}
+            onVolumeChange={setSceneVolume}
+            label="Background Scene"
+            isGuide={false}
+            programName={selectedProgram?.programName}
+            sceneUsed={selectedScene?.name}
+          />
         )}
         {guideAudioSrc && (
           <div className="mt-4">
-            <h3 className="text-lg font-semibold text-center text-teal-700 mb-2"></h3>
-            <AudioPlayer src={guideAudioSrc} autoplay={false} loop={false} showControls={true} />
+            <AudioPlayer 
+              src={guideAudioSrc} 
+              autoplay={true} 
+              loop={false} 
+              showControls={true}
+              volume={guideVolume}
+              onVolumeChange={setGuideVolume}
+              label="Meditation Guide"
+              isGuide={true}
+              programName={selectedProgram?.programName}
+              guideName={selectedGuide?.guideName}
+              sceneUsed={selectedScene?.name}
+              config={audioConfig}
+            />
           </div>
         )}
       </div>

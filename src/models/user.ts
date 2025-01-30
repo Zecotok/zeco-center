@@ -20,6 +20,10 @@ const userSchema = new Schema({
         required: [true, "Fullname is required"],
         minLength: [3, "Fullname must be at least 3 characters long"],
         maxLength: [50, "Fullname must be at most 50 characters long"]
+    },
+    isAdmin: {
+        type: Boolean,
+        default: false
     }
 });
 

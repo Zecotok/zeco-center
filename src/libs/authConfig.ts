@@ -1,14 +1,10 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import NextAuth from "next-auth"
+import { AuthOptions } from "next-auth";
 import { connectDB } from "@/libs/mongodb";
 import User from "@/models/user";
 import bcrypt from "bcryptjs";
-import { ensureAdminExists } from "@/libs/adminSetup";
 
-// Ensure admin exists when the auth system initializes
-ensureAdminExists();
-
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
     providers: [
         CredentialsProvider({
             name: "Credentials",
@@ -36,7 +32,6 @@ const handler = NextAuth({
     ],
     callbacks: {
         jwt({ account, token, user, profile, session }) {
-            console.log("user: ", user);
             if (user) {
                 token.user = {
                     id: user.id,
@@ -51,13 +46,10 @@ const handler = NextAuth({
             if (token.user) {
                 session.user = token.user;
             }
-            console.log("session: ", session);
             return session;
         }
     },
     pages: {
         signIn: "/login",
     },
-});
-
-export { handler as GET, handler as POST };
+}; 

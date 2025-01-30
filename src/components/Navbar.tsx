@@ -12,6 +12,8 @@ import {
   faInfoCircle,
   faGears,
   faDashboard,
+  faUserShield,
+  faChartLine,
 } from "@fortawesome/free-solid-svg-icons";
 
 function Navbar() {
@@ -55,17 +57,41 @@ function Navbar() {
 
           {/* Dynamic Links Based on Session */}
           {session ? (
-            <li>
-              <Link
-                href="/dashboard/profile"
-                className="hover:text-yellow-200 transition duration-300 text-white"
-              >
-                <FontAwesomeIcon icon={faUser} />
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link
+                  href="/dashboard/profile"
+                  className="hover:text-yellow-200 transition duration-300 text-white"
+                >
+                  <FontAwesomeIcon icon={faUser} />
+                </Link>
+              </li>
+
+              {session?.user?.isAdmin && (
+                <>
+                  <li>
+                    <Link
+                      href="/admin/users"
+                      className="hover:text-yellow-200 transition duration-300 text-white"
+                    >
+                      <FontAwesomeIcon icon={faUserShield} className="mr-1" />
+                      Admin
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/admin/analytics"
+                      className="hover:text-yellow-200 transition duration-300 text-white"
+                    >
+                      <FontAwesomeIcon icon={faChartLine} className="mr-1" />
+                      Analytics
+                    </Link>
+                  </li>
+                </>
+              )}
+            </>
           ) : (
             <>
-
               {/* Login link */}
               <li>
                 <Link
