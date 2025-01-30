@@ -98,7 +98,7 @@ const AnalyticsDashboard = () => {
     const fetchStats = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('/api/meditation/complete', {
+        const response = await axios.get('/api/meditation/analytics', {
           params: {
             startDate: startDate.toISOString(),
             endDate: endDate.toISOString(),

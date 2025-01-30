@@ -119,7 +119,7 @@ const AudioPlayer = React.memo(({
   const recordCompletion = useCallback(async () => {
     if (isGuide && src) {
       try {
-        await axios.post('/api/meditation/complete', {
+        await axios.post('/api/meditation/analytics', {
           guideId: src,
           programName,
           guideName,
@@ -416,7 +416,7 @@ const MeditationPage = () => {
 
   return (
     <div className="bg-gradient-to-r from-teal-150 to-teal-10 min-h-screen flex flex-col items-center p-4 md:p-6">
-      <h1 className="text-3xl md:text-4xl font-extrabold text-teal-900 mb-4 md:mb-6">Meditation App</h1>
+      <h1 className="text-3xl md:text-4xl font-extrabold text-teal-900 mb-4 md:mb-6">ZecoCenter Meditation</h1>
 
       <div className="w-full max-w-2xl lg:max-w-3xl p-4 md:p-6 bg-white border-4 border-teal-500 rounded-xl shadow-lg mb-6 md:mb-8">
         <h2 className="text-xl md:text-2xl font-semibold text-center text-teal-900 mb-4">Audio Player</h2>
