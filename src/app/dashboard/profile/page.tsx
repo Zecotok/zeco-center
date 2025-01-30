@@ -10,42 +10,35 @@ function ProfilePage() {
   const firstName = fullName.split(" ")[0];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-100 to-blue-100 flex flex-col items-center p-6">
-      <div className="w-full max-w-lg bg-white rounded-lg shadow-lg p-8 mt-10 text-center">
-        <h1 className="text-4xl font-bold text-teal-800 mb-4">Hello, {firstName}!</h1>
-        <p className="text-xl text-gray-700">Welcome to your profile page.</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#F0F7FF] via-[#E6F0FF] to-[#F0F7FF] py-8 px-4">
+      <div className="max-w-lg mx-auto">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-[#2C4A7F]/10 p-8 border border-[#84B9EF]/20">
+          <h1 className="text-3xl font-bold text-[#0A2342] text-center mb-6">
+            Welcome, {firstName}
+          </h1>
+          
+          <div className="space-y-4">
+            {/* Profile Information */}
+            <div className="flex items-center p-3 rounded-lg bg-[#F0F7FF]">
+              <FontAwesomeIcon icon={faUser} className="w-5 h-5 text-[#2C4A7F] mr-3" />
+              <span className="text-[#0A2342]">{fullName}</span>
+            </div>
+            
+            <div className="flex items-center p-3 rounded-lg bg-[#F0F7FF]">
+              <FontAwesomeIcon icon={faEnvelope} className="w-5 h-5 text-[#2C4A7F] mr-3" />
+              <span className="text-[#0A2342]">{session?.user?.email}</span>
+            </div>
+          </div>
 
-      <div className="w-full max-w-lg bg-white rounded-lg shadow-md mt-6 p-6 flex flex-col items-center">
-        <div className="w-24 h-24 rounded-full bg-teal-200 flex items-center justify-center mb-4">
-          <FontAwesomeIcon icon={faUser} className="text-teal-600 text-5xl" />
-        </div>
-        <h2 className="text-2xl font-semibold text-gray-800">{fullName}</h2>
-        <p className="text-gray-600 text-lg mb-4">@{session?.user?.username || "username"}</p>
-        
-        <div className="w-full mt-4 space-y-4 text-left">
-          <div className="flex items-center gap-3">
-            <FontAwesomeIcon icon={faEnvelope} className="text-teal-500 text-xl" />
-            <p className="text-lg text-gray-700">{session?.user?.email || "Not provided"}</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <FontAwesomeIcon icon={faPhone} className="text-teal-500 text-xl" />
-            <p className="text-lg text-gray-700">Phone: {session?.user?.phone || "Not provided"}</p>
-          </div>
-          <div className="flex items-center gap-3">
-            <FontAwesomeIcon icon={faAddressCard} className="text-teal-500 text-xl" />
-            <p className="text-lg text-gray-700">Location: {session?.user?.location || "Not specified"}</p>
-          </div>
+          <button
+            className="mt-8 w-full bg-[#2C4A7F] text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:bg-[#0A2342] transition-colors duration-300 flex items-center justify-center"
+            onClick={() => signOut()}
+          >
+            <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+            Logout
+          </button>
         </div>
       </div>
-
-      <button
-        className="mt-8 bg-teal-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-teal-600 transition-colors"
-        onClick={() => signOut()}
-      >
-        <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
-        Logout
-      </button>
     </div>
   );
 }

@@ -265,6 +265,16 @@ const AudioPlayer = React.memo(({
 
 AudioPlayer.displayName = 'AudioPlayer';
 
+// Add this wave pattern component
+const WavePattern = () => (
+  <div className="fixed inset-0 z-0 pointer-events-none opacity-[0.07]" 
+    style={{
+      backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264 1.088-.402l1.768-.661C33.64 15.347 39.647 14 50 14c10.271 0 15.362 1.222 24.629 4.928.955.383 1.869.74 2.75 1.072h6.225c-2.51-.73-5.139-1.691-8.233-2.928C65.888 13.278 60.562 12 50 12c-10.626 0-16.855 1.397-26.66 5.063l-1.767.662c-2.475.923-4.66 1.674-6.724 2.275h6.335zm0-20C13.258 2.892 8.077 4 0 4V2c5.744 0 9.951-.574 14.85-2h6.334zM77.38 0C85.239 2.966 90.502 4 100 4V2c-6.842 0-11.386-.542-16.396-2h-6.225zM0 14c8.44 0 13.718-1.21 22.272-4.402l1.768-.661C33.64 5.347 39.647 4 50 4c10.271 0 15.362 1.222 24.629 4.928C84.112 12.722 89.438 14 100 14v-2c-10.271 0-15.362-1.222-24.629-4.928C65.888 3.278 60.562 2 50 2 39.374 2 33.145 3.397 23.34 7.063l-1.767.662C13.223 10.84 8.163 12 0 12v2z' fill='%232C4A7F' fill-opacity='0.8' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+      backgroundSize: '100px auto',
+    }}
+  />
+);
+
 const AccordionSection = ({ 
   title, 
   isOpen, 
@@ -278,17 +288,17 @@ const AccordionSection = ({
   children: React.ReactNode;
   icon: string;
 }) => (
-  <div className="border-b border-teal-100 last:border-b-0">
+  <div className="border-b border-[#2C4A7F]/10 last:border-b-0">
     <button
       onClick={onToggle}
-      className="w-full px-6 py-4 flex items-center justify-between hover:bg-teal-50 transition-colors"
+      className="w-full px-6 py-4 flex items-center justify-between hover:bg-[#84B9EF]/5 transition-colors"
     >
       <div className="flex items-center gap-3">
-        <span className="text-teal-600">{icon}</span>
-        <h2 className="text-lg font-medium text-teal-900">{title}</h2>
+        <span className="text-[#2C4A7F]">{icon}</span>
+        <h2 className="text-lg font-medium text-[#051B2C]">{title}</h2>
       </div>
       <ChevronUpIcon 
-        className={`w-5 h-5 text-teal-600 transition-transform duration-300 ${
+        className={`w-5 h-5 text-[#2C4A7F] transition-transform duration-300 ${
           isOpen ? '' : 'rotate-180'
         }`}
       />
@@ -372,14 +382,15 @@ const MeditationPage = () => {
   }, [status, router]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-purple-50 py-8 px-4">
-      <div className="max-w-3xl mx-auto">
-        <h1 className="text-3xl font-bold text-teal-900 text-center mb-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#F0F7FF] via-[#E6F0FF] to-[#F0F7FF] py-8 px-4 relative">
+      <WavePattern />
+      <div className="max-w-3xl mx-auto relative z-10">
+        <h1 className="text-4xl font-bold text-[#0A2342] text-center mb-8">
           ZecoCenter Meditation
         </h1>
 
         {/* Audio Players Section */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-[#2C4A7F]/10 p-6 mb-6 border border-[#84B9EF]/20">
           {backgroundAudioSrc && (
             <AudioPlayer 
               src={backgroundAudioSrc}
@@ -413,23 +424,23 @@ const MeditationPage = () => {
         </div>
 
         {/* Accordion Sections */}
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-[#2C4A7F]/10 overflow-hidden border border-[#84B9EF]/20">
           {/* Scenes Section */}
           <AccordionSection 
             title="Choose Background Scene" 
             isOpen={!isScenesCollapsed}
             onToggle={() => setScenesCollapsed(!isScenesCollapsed)}
-            icon="🎵"
+            icon="🌊"
           >
             <div className="grid gap-2">
               {scenes.map((scene) => (
                 <button
                   key={scene.filename}
                   onClick={() => setSelectedScene(scene)}
-                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                  className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 ${
                     selectedScene?.name === scene.name
-                      ? 'bg-teal-100 text-teal-900'
-                      : 'hover:bg-teal-50 text-gray-700'
+                      ? 'bg-[#2C4A7F] text-white shadow-md shadow-[#2C4A7F]/10'
+                      : 'hover:bg-[#84B9EF]/10 text-[#051B2C] hover:shadow-sm'
                   }`}
                 >
                   {scene.name}
@@ -443,17 +454,17 @@ const MeditationPage = () => {
             title="Select Program" 
             isOpen={!isProgramsCollapsed}
             onToggle={() => setProgramsCollapsed(!isProgramsCollapsed)}
-            icon="📚"
+            icon="🌟"
           >
             <div className="grid gap-2">
               {programs.map((program) => (
                 <div key={program.programName}>
                   <button
                     onClick={() => setSelectedProgram(program)}
-                    className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                    className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 ${
                       selectedProgram?.programName === program.programName
-                        ? 'bg-teal-100 text-teal-900'
-                        : 'hover:bg-teal-50 text-gray-700'
+                        ? 'bg-[#2C4A7F] text-white shadow-md shadow-[#2C4A7F]/10'
+                        : 'hover:bg-[#84B9EF]/10 text-[#051B2C] hover:shadow-sm'
                     }`}
                   >
                     {program.programName.replace(/_/g, " ").toUpperCase()}
@@ -461,15 +472,15 @@ const MeditationPage = () => {
                   
                   {/* Guides Subsection */}
                   {selectedProgram?.programName === program.programName && (
-                    <div className="ml-6 mt-2 border-l-2 border-teal-100 pl-4">
+                    <div className="ml-6 mt-2 border-l-2 border-[#84B9EF]/20 pl-4">
                       {program.guides.map((guide) => (
                         <button
                           key={guide.fileName}
                           onClick={() => setSelectedGuide(guide)}
-                          className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                          className={`w-full text-left px-4 py-2 rounded-xl transition-all duration-200 ${
                             selectedGuide?.fileName === guide.fileName
-                              ? 'bg-teal-100 text-teal-900'
-                              : 'hover:bg-teal-50 text-gray-700'
+                              ? 'bg-[#64B6AC] text-white shadow-md shadow-[#64B6AC]/10'
+                              : 'hover:bg-[#84B9EF]/10 text-[#051B2C] hover:shadow-sm'
                           }`}
                         >
                           {guide.guideName}

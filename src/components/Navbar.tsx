@@ -20,127 +20,118 @@ function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <nav className="bg-gradient-to-r from-blue-500 to-teal-500 shadow-lg h-16">
-      <div className="container mx-auto h-full px-4">
+    <nav className="bg-white shadow-md border-b border-[#84B9EF]/20 sticky top-0 z-50">
+      <div className="container mx-auto h-16 px-4">
         <div className="flex justify-between items-center h-full">
           {/* Logo and App Name */}
           <Link
             href="/"
-            className="flex items-center text-xl font-bold text-white hover:text-yellow-200 transition duration-300"
+            className="flex items-center text-xl font-semibold text-[#0A2342] hover:text-[#2C4A7F] transition-colors duration-300"
           >
             <FontAwesomeIcon 
               icon={faDashboard} 
-              className="w-5 h-5 mr-2" 
+              className="w-5 h-5 mr-2 text-[#2C4A7F]" 
               style={{ maxWidth: '1.25rem' }} 
             />
             ZecoCenter
           </Link>
 
-          {/* Links */}
-          <ul className="flex gap-x-6 items-center">
-            {/* Secure link */}
+          {/* Navigation Links */}
+          <ul className="flex items-center space-x-8">
             <li>
               <Link
                 href="/security"
-                className="flex items-center hover:text-yellow-200 transition duration-300 text-white text-base"
+                className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-5"
               >
                 <FontAwesomeIcon 
                   icon={faShieldAlt} 
-                  className="w-4 h-4 mr-1" 
-                  style={{ maxWidth: '1rem' }} 
+                  className="w-4 h-4 mr-2 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300" 
                 />
-                Security
+                <span className="font-medium">Security</span>
               </Link>
             </li>
 
-            {/* Meditate link */}
             <li>
               <Link
                 href="/meditate"
-                className="flex items-center hover:text-yellow-200 transition duration-300 text-white text-base"
+                className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-5"
               >
                 <FontAwesomeIcon 
                   icon={faBrain} 
-                  className="w-4 h-4 mr-1" 
-                  style={{ maxWidth: '1rem' }} 
+                  className="w-4 h-4 mr-2 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300" 
                 />
-                Meditate
+                <span className="font-medium">Meditate</span>
               </Link>
             </li>
 
-            {/* Dynamic Links Based on Session */}
             {session ? (
               <>
-                <li>
-                  <Link
-                    href="/dashboard/profile"
-                    className="flex items-center hover:text-yellow-200 transition duration-300 text-white"
-                  >
-                    <FontAwesomeIcon 
-                      icon={faUser} 
-                      className="w-4 h-4" 
-                      style={{ maxWidth: '1rem' }} 
-                    />
-                  </Link>
-                </li>
-
-                {session?.user?.isAdmin && (
+                              {session?.user?.isAdmin && (
                   <>
                     <li>
                       <Link
                         href="/admin/users"
-                        className="flex items-center hover:text-yellow-200 transition duration-300 text-white text-base"
+                        className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-5"
                       >
                         <FontAwesomeIcon 
                           icon={faUserShield} 
-                          className="w-4 h-4 mr-1" 
-                          style={{ maxWidth: '1rem' }} 
+                          className="w-4 h-4 mr-2 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300" 
                         />
-                        Admin
+                        <span className="font-medium">Admin</span>
                       </Link>
                     </li>
                     <li>
                       <Link
                         href="/admin/analytics"
-                        className="flex items-center hover:text-yellow-200 transition duration-300 text-white text-base"
+                        className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-5"
                       >
                         <FontAwesomeIcon 
                           icon={faChartLine} 
-                          className="w-4 h-4 mr-1" 
-                          style={{ maxWidth: '1rem' }} 
+                          className="w-4 h-4 mr-2 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300" 
                         />
-                        Analytics
+                        <span className="font-medium">Analytics</span>
                       </Link>
                     </li>
                   </>
                 )}
+                <li>
+                  <Link
+                    href="/dashboard/profile"
+                    className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-5"
+                  >
+                    <FontAwesomeIcon 
+                      icon={faUser} 
+                      className="w-4 h-4 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300" 
+                    />
+                  </Link>
+                </li>
+
+
               </>
             ) : (
               <>
                 <li>
                   <Link
                     href="/login"
-                    className="flex items-center hover:text-yellow-200 transition duration-300 text-white text-base"
+                    className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-5"
                   >
                     <FontAwesomeIcon 
                       icon={faSignInAlt} 
-                      className="w-4 h-4 mr-1" 
-                      style={{ maxWidth: '1rem' }} 
+                      className="w-4 h-4 mr-2 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300" 
                     />
-                    Login
+                    <span className="font-medium">Login</span>
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/register"
-                    className="flex items-center hover:text-yellow-200 transition duration-300 text-white text-base"
+                    className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-5"
                   >
                     <FontAwesomeIcon 
                       icon={faUserPlus} 
-                      className="w-4 h-4 mr-1" 
-                      style={{ maxWidth: '1rem' }} 
+                      className="w-4 h-4 mr-2 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300" 
                     />
-                    Register
+                    <span className="font-medium">Register</span>
                   </Link>
                 </li>
               </>
