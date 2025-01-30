@@ -208,7 +208,7 @@ const AudioPlayer = React.memo(({
               max={duration || 0}
               value={currentTime}
               onChange={handleSeek}
-              className="absolute inset-0 w-full h-2 appearance-none bg-transparent rounded-full cursor-pointer
+              className="absolute inset-0 w-full h-2 appearance-none bg-transparent rounded-full cursor-pointer z-10
                 [&::-webkit-slider-runnable-track]:bg-transparent
                 [&::-webkit-slider-thumb]:appearance-none 
                 [&::-webkit-slider-thumb]:w-4 
@@ -232,8 +232,11 @@ const AudioPlayer = React.memo(({
             />
           ) : null}
           <div 
-            className="absolute inset-0 bg-teal-500 h-full rounded-full transition-all duration-300"
-            style={{ width: `${(currentTime / duration) * 100}%` }}
+            className="absolute inset-0 bg-teal-500 h-full rounded-full transition-all duration-150"
+            style={{ 
+              width: duration ? `${(currentTime / duration * 100).toFixed(2)}%` : '0%',
+              zIndex: 1 
+            }}
           />
         </div>
         <div className="flex justify-between text-sm text-gray-500">
