@@ -265,6 +265,46 @@ const AudioPlayer = React.memo(({
 
 AudioPlayer.displayName = 'AudioPlayer';
 
+const AccordionSection = ({ 
+  title, 
+  isOpen, 
+  onToggle, 
+  children, 
+  icon 
+}: { 
+  title: string; 
+  isOpen: boolean; 
+  onToggle: () => void; 
+  children: React.ReactNode;
+  icon: string;
+}) => (
+  <div className="border-b border-teal-100 last:border-b-0">
+    <button
+      onClick={onToggle}
+      className="w-full px-6 py-4 flex items-center justify-between hover:bg-teal-50 transition-colors"
+    >
+      <div className="flex items-center gap-3">
+        <span className="text-teal-600">{icon}</span>
+        <h2 className="text-lg font-medium text-teal-900">{title}</h2>
+      </div>
+      <ChevronUpIcon 
+        className={`w-5 h-5 text-teal-600 transition-transform duration-300 ${
+          isOpen ? '' : 'rotate-180'
+        }`}
+      />
+    </button>
+    <div
+      className={`overflow-hidden transition-all duration-300 ${
+        isOpen ? 'max-h-[400px]' : 'max-h-0'
+      }`}
+    >
+      <div className="px-6 pb-4">
+        {children}
+      </div>
+    </div>
+  </div>
+);
+
 const MeditationPage = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
@@ -331,141 +371,117 @@ const MeditationPage = () => {
     }
   }, [status, router]);
 
-  const SceneList = () => (
-    <div className="bg-blue-50 p-4 rounded-xl shadow-lg transition-all">
-      <h2
-        className="text-xl font-semibold text-blue-900 mb-2 flex justify-between items-center cursor-pointer"
-        onClick={() => setScenesCollapsed(!isScenesCollapsed)}
-      >
-        Select a Scene
-        {isScenesCollapsed ? <ChevronDownIcon className="w-5 h-5" /> : <ChevronUpIcon className="w-5 h-5" />}
-      </h2>
-      <ul className={`space-y-4 ${isScenesCollapsed ? "max-h-0 overflow-hidden" : "max-h-80 overflow-y-auto"}`}>
-        {scenes.map((scene) => (
-          <li key={scene.filename}>
-            <button
-              className="w-full p-2 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-md transition-colors"
-              onClick={() => setSelectedScene(scene)}
-            >
-              {scene.name}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-
-  const ProgramList = () => (
-    <div className="bg-green-50 p-4 rounded-xl shadow-lg transition-all">
-      <h2
-        className="text-xl font-semibold text-green-900 mb-2 flex justify-between items-center cursor-pointer"
-        onClick={() => setProgramsCollapsed(!isProgramsCollapsed)}
-      >
-        Select a Program
-        {isProgramsCollapsed ? <ChevronDownIcon className="w-5 h-5" /> : <ChevronUpIcon className="w-5 h-5" />}
-      </h2>
-      <ul className={`space-y-4 ${isProgramsCollapsed ? "max-h-0 overflow-hidden" : "max-h-80 overflow-y-auto"}`}>
-        {programs.map((program) => (
-          <li key={program.programName}>
-            <button
-              className="w-full p-2 text-white bg-green-500 hover:bg-green-700 rounded-lg shadow-md transition-colors"
-              onClick={() => setSelectedProgram(program)}
-            >
-              {program.programName.replace(/_/g, " ").toUpperCase()}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-
-  const GuideList = () => (
-    <div className="bg-purple-50 p-4 rounded-xl shadow-lg transition-all">
-      <h3
-        className="text-xl font-semibold text-purple-900 mb-2 flex justify-between items-center cursor-pointer"
-        onClick={() => setGuidesCollapsed(!isGuidesCollapsed)}
-      >
-        Select a Guide
-        {isGuidesCollapsed ? <ChevronDownIcon className="w-5 h-5" /> : <ChevronUpIcon className="w-5 h-5" />}
-      </h3>
-      <ul className={`space-y-4 ${isGuidesCollapsed ? "max-h-0 overflow-hidden" : "max-h-80 overflow-y-auto"}`}>
-        {selectedProgram?.guides.map((guide) => (
-          <li key={guide.fileName}>
-            <button
-              className="w-full p-2 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-md transition-colors"
-              onClick={() => setSelectedGuide(guide)}
-            >
-              {guide.guideName}
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-
-  // If still loading session, you can show a loading message
-  if (status === "loading") {
-    return <p>Loading...</p>;
-  }
-
-  // If user is not logged in, show a message or redirect them
-  if (!session) {
-    console.log('------------------------',session)
-    return <p className="text-center text-red-600">You must be logged in to access this page.</p>;
-  }
-
   return (
-    <div className="bg-gradient-to-r from-teal-150 to-teal-10 min-h-screen flex flex-col items-center p-4 md:p-6">
-      <h1 className="text-3xl md:text-4xl font-extrabold text-teal-900 mb-4 md:mb-6">ZecoCenter Meditation</h1>
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-purple-50 py-8 px-4">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-3xl font-bold text-teal-900 text-center mb-8">
+          ZecoCenter Meditation
+        </h1>
 
-      <div className="w-full max-w-2xl lg:max-w-3xl p-4 md:p-6 bg-white border-4 border-teal-500 rounded-xl shadow-lg mb-6 md:mb-8">
-        <h2 className="text-xl md:text-2xl font-semibold text-center text-teal-900 mb-4">Audio Player</h2>
-        {backgroundAudioSrc && (
-          <AudioPlayer 
-            src={backgroundAudioSrc} 
-            autoplay={true} 
-            loop={true} 
-            showControls={false}
-            volume={sceneVolume}
-            onVolumeChange={setSceneVolume}
-            label="Background Scene"
-            isGuide={false}
-            programName={selectedProgram?.programName}
-            sceneUsed={selectedScene?.name}
-          />
-        )}
-        {guideAudioSrc && (
-          <div className="mt-4">
+        {/* Audio Players Section */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+          {backgroundAudioSrc && (
             <AudioPlayer 
-              src={guideAudioSrc} 
-              autoplay={true} 
-              loop={false} 
-              showControls={true}
-              volume={guideVolume}
-              onVolumeChange={setGuideVolume}
-              label="Meditation Guide"
-              isGuide={true}
-              programName={selectedProgram?.programName}
-              guideName={selectedGuide?.guideName}
-              sceneUsed={selectedScene?.name}
-              config={audioConfig}
+              src={backgroundAudioSrc}
+              autoplay={true}
+              loop={true}
+              showControls={false}
+              volume={sceneVolume}
+              onVolumeChange={setSceneVolume}
+              label="Background Scene"
+              isGuide={false}
             />
-          </div>
-        )}
-      </div>
+          )}
+          {guideAudioSrc && (
+            <div className="mt-4">
+              <AudioPlayer 
+                src={guideAudioSrc}
+                autoplay={false}
+                loop={false}
+                showControls={true}
+                volume={guideVolume}
+                onVolumeChange={setGuideVolume}
+                label="Meditation Guide"
+                isGuide={true}
+                programName={selectedProgram?.programName}
+                guideName={selectedGuide?.guideName}
+                sceneUsed={selectedScene?.name}
+                config={audioConfig}
+              />
+            </div>
+          )}
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-5xl">
-        <div className="flex-1 min-w-[300px]">
-          <SceneList />
+        {/* Accordion Sections */}
+        <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+          {/* Scenes Section */}
+          <AccordionSection 
+            title="Choose Background Scene" 
+            isOpen={!isScenesCollapsed}
+            onToggle={() => setScenesCollapsed(!isScenesCollapsed)}
+            icon="🎵"
+          >
+            <div className="grid gap-2">
+              {scenes.map((scene) => (
+                <button
+                  key={scene.filename}
+                  onClick={() => setSelectedScene(scene)}
+                  className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                    selectedScene?.name === scene.name
+                      ? 'bg-teal-100 text-teal-900'
+                      : 'hover:bg-teal-50 text-gray-700'
+                  }`}
+                >
+                  {scene.name}
+                </button>
+              ))}
+            </div>
+          </AccordionSection>
+
+          {/* Programs Section */}
+          <AccordionSection 
+            title="Select Program" 
+            isOpen={!isProgramsCollapsed}
+            onToggle={() => setProgramsCollapsed(!isProgramsCollapsed)}
+            icon="📚"
+          >
+            <div className="grid gap-2">
+              {programs.map((program) => (
+                <div key={program.programName}>
+                  <button
+                    onClick={() => setSelectedProgram(program)}
+                    className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                      selectedProgram?.programName === program.programName
+                        ? 'bg-teal-100 text-teal-900'
+                        : 'hover:bg-teal-50 text-gray-700'
+                    }`}
+                  >
+                    {program.programName.replace(/_/g, " ").toUpperCase()}
+                  </button>
+                  
+                  {/* Guides Subsection */}
+                  {selectedProgram?.programName === program.programName && (
+                    <div className="ml-6 mt-2 border-l-2 border-teal-100 pl-4">
+                      {program.guides.map((guide) => (
+                        <button
+                          key={guide.fileName}
+                          onClick={() => setSelectedGuide(guide)}
+                          className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
+                            selectedGuide?.fileName === guide.fileName
+                              ? 'bg-teal-100 text-teal-900'
+                              : 'hover:bg-teal-50 text-gray-700'
+                          }`}
+                        >
+                          {guide.guideName}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </AccordionSection>
         </div>
-        <div className="flex-1 min-w-[300px]">
-          <ProgramList />
-        </div>
-        {selectedProgram && (
-          <div className="flex-1 min-w-[300px]">
-            <GuideList />
-          </div>
-        )}
       </div>
     </div>
   );
