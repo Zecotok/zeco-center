@@ -288,7 +288,7 @@ const MeditationPage = () => {
   
   // Add this config object
   const audioConfig: AudioConfig = {
-    showSeekControls: true
+    showSeekControls: session?.user?.isAdmin ? true : false
   };
 
   useEffect(() => {
