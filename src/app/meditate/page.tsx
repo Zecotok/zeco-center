@@ -305,10 +305,10 @@ const AccordionSection = ({
     </button>
     <div
       className={`overflow-hidden transition-all duration-300 ${
-        isOpen ? 'max-h-[400px]' : 'max-h-0'
+        isOpen ? 'max-h-[300px]' : 'max-h-0'
       }`}
     >
-      <div className="px-6 pb-4">
+      <div className="px-6 pb-4 overflow-y-auto max-h-[280px] scrollbar-thin scrollbar-thumb-[#2C4A7F]/20 scrollbar-track-transparent hover:scrollbar-thumb-[#2C4A7F]/30">
         {children}
       </div>
     </div>

@@ -3,7 +3,7 @@ const path = require('path');
 const https = require('https');
 
 // Sample program data (you would normally retrieve this from an API or another source)
-const programData = require("./deepconcentration.json");
+const programData = require("./7dayFocus.json");
 
 async function downloadFile(url, filePath) {
     return new Promise((resolve, reject) => {
@@ -22,8 +22,8 @@ async function downloadFile(url, filePath) {
 
 async function main() {
     const programTitle = programData.program.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-    const programDir = path.join(__dirname, "programs", programTitle);
-    
+    const programDir = path.join(__dirname, "..","public", "programs", programTitle);
+
     // Create program directory
     if (!fs.existsSync(programDir)) {
         fs.mkdirSync(programDir);
@@ -33,19 +33,20 @@ async function main() {
     const config = [];
 
     // Download each guide
+    let index = 1;
     for (const guide of programData.program.guides) {
         const guideTitle = guide.title.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-        const filePath = path.join(programDir, `${guideTitle}.m4a`);
+        const filePath = path.join(programDir, `${index}_${guideTitle}.m4a`);
         
         try {
             await downloadFile(guide.asset.download_url, filePath);
-            config.push({ fileName: `${guideTitle}.m4a`, guideName: guide.title });
+            config.push({ fileName: `${index}_${guideTitle}.m4a`, guideName: `${index}. ${guide.title}` });
             console.log(`Downloaded: ${guide.title}`);
         } catch (error) {
             console.error(`Failed to download ${guide.title}:`, error.message);
         }
+        index++;
     }
-
     // Create a config file
     const configFilePath = path.join(programDir, 'config.json');
     fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2));
