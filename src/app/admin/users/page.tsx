@@ -11,12 +11,13 @@ interface User {
     _id: string;
     fullname: string;
     email: string;
+    isAdmin: boolean;
 }
 
 function AdminPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [editingUser, setEditingUser] = useState<string | null>(null);
-    const [formData, setFormData] = useState({ fullname: "", email: "", password: "" });
+    const [formData, setFormData] = useState({ fullname: "", email: "", password: "", isAdmin: false });
     const { data: session, status } = useSession();
     const router = useRouter();
 
@@ -45,6 +46,7 @@ function AdminPage() {
             fullname: user.fullname,
             email: user.email,
             password: "",
+            isAdmin: user.isAdmin || false,
         });
     };
 
@@ -94,6 +96,7 @@ function AdminPage() {
                             <tr className="bg-gray-100">
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -122,6 +125,18 @@ function AdminPage() {
                                             />
                                         ) : (
                                             user.email
+                                        )}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        {editingUser === user._id ? (
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.isAdmin}
+                                                onChange={(e) => setFormData({ ...formData, isAdmin: e.target.checked })}
+                                                className="form-checkbox h-5 w-5 text-blue-600"
+                                            />
+                                        ) : (
+                                            user.isAdmin ? "Yes" : "No"
                                         )}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">
