@@ -44,18 +44,18 @@ function RegisterPage() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-[#020817]">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#F0F7FF] via-[#E6F0FF] to-[#F0F7FF] py-8 px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-[#0F1629] shadow-lg rounded-lg p-8 w-96 border border-gray-800"
+        className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-[#2C4A7F]/10 p-8 w-full max-w-md border border-[#84B9EF]/20"
       >
         {error && (
-          <div className="bg-red-900/30 text-red-400 px-4 py-2 rounded mb-4">
+          <div className="bg-red-100/80 text-red-700 px-4 py-2 rounded-xl mb-4">
             {error}
           </div>
         )}
 
-        <h1 className="text-3xl font-extrabold text-white mb-6 text-center">
+        <h1 className="text-3xl font-extrabold text-[#0A2342] mb-6 text-center">
           Create an Account
         </h1>
 
@@ -63,7 +63,7 @@ function RegisterPage() {
           type="text"
           placeholder="Full Name"
           name="fullname"
-          className="bg-[#1A1F2E] border border-gray-800 text-gray-300 rounded-lg px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-[#F0F7FF] border border-[#84B9EF]/20 rounded-xl px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-[#2C4A7F] focus:border-transparent"
           required
         />
 
@@ -71,7 +71,7 @@ function RegisterPage() {
           type="email"
           placeholder="Email Address"
           name="email"
-          className="bg-[#1A1F2E] border border-gray-800 text-gray-300 rounded-lg px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-[#F0F7FF] border border-[#84B9EF]/20 rounded-xl px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-[#2C4A7F] focus:border-transparent"
           pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
           title="Please enter a valid email address"
           required
@@ -81,21 +81,21 @@ function RegisterPage() {
           type="password"
           placeholder="Password"
           name="password"
-          className="bg-[#1A1F2E] border border-gray-800 text-gray-300 rounded-lg px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-[#F0F7FF] border border-[#84B9EF]/20 rounded-xl px-4 py-2 block mb-6 w-full focus:outline-none focus:ring-2 focus:ring-[#2C4A7F] focus:border-transparent"
           required
         />
 
         <button
           type="submit"
-          className="bg-blue-600 text-white font-bold rounded-lg px-4 py-2 w-full hover:bg-blue-700 transition duration-300"
+          className="bg-[#2C4A7F] text-white font-bold rounded-xl px-4 py-2 w-full hover:bg-[#0A2342] transition duration-300"
         >
-          Sign Up
+          Create Account
         </button>
 
-        <p className="text-sm text-gray-400 mt-4 text-center">
+        <p className="text-sm text-gray-600 mt-4 text-center">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-400 hover:underline">
-            Login
+          <a href="/login" className="text-[#2C4A7F] hover:text-[#0A2342] font-medium">
+            Sign in
           </a>
         </p>
       </form>
