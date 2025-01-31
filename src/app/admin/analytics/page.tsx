@@ -1,4 +1,6 @@
 'use client';
+export const dynamic = 'force-dynamic';
+
 
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
@@ -124,34 +126,34 @@ const AnalyticsDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-[#F0F7FF] via-[#E6F0FF] to-[#F0F7FF] py-8 px-4">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold mb-8">Meditation Analytics Dashboard</h1>
+        <h1 className="text-3xl font-bold text-[#0A2342] mb-8">Meditation Analytics Dashboard</h1>
         
         {/* Date Range and User Selector */}
-        <div className="bg-white p-4 rounded-lg shadow mb-6 flex gap-4">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-[#2C4A7F]/10 p-6 mb-6 flex gap-4 border border-[#84B9EF]/20">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Start Date</label>
+            <label className="block text-sm font-medium text-[#0A2342]">Start Date</label>
             <DatePicker
               selected={startDate}
-              onChange={(date: Date) => setStartDate(date)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              onChange={(date: Date | null) => setStartDate(date || new Date())}
+              className="mt-1 block w-full rounded-xl border-[#84B9EF]/20 shadow-sm bg-[#F0F7FF] p-2"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">End Date</label>
+            <label className="block text-sm font-medium text-[#0A2342]">End Date</label>
             <DatePicker
               selected={endDate}
-              onChange={(date: Date) => setEndDate(date)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              onChange={(date: Date | null) => setEndDate(date || new Date())}
+              className="mt-1 block w-full rounded-xl border-[#84B9EF]/20 shadow-sm bg-[#F0F7FF] p-2"
             />
           </div>
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700">User</label>
+            <label className="block text-sm font-medium text-[#0A2342]">User</label>
             <select
               value={selectedUser}
               onChange={(e) => setSelectedUser(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+              className="mt-1 block w-full rounded-xl border-[#84B9EF]/20 shadow-sm bg-[#F0F7FF] p-2"
             >
               <option value="">All Users</option>
               {users.map((user) => (
@@ -164,23 +166,24 @@ const AnalyticsDashboard = () => {
         </div>
 
         {loading ? (
-          <div>Loading...</div>
+          <div className="text-[#0A2342]">Loading...</div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Daily Meditation Minutes */}
-            <div className="bg-white p-4 rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4">Daily Meditation Minutes</h2>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-[#2C4A7F]/10 p-6 border border-[#84B9EF]/20">
+              <h2 className="text-xl font-semibold mb-4 text-[#0A2342]">Daily Meditation Minutes</h2>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={stats}>
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="#84B9EF" />
                   <XAxis 
                     dataKey="_id.date" 
                     tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { 
                       month: 'short', 
                       day: 'numeric' 
                     })}
+                    stroke="#0A2342"
                   />
-                  <YAxis domain={[0, 'auto']} />
+                  <YAxis domain={[0, 'auto']} stroke="#0A2342" />
                   <Tooltip 
                     labelFormatter={(label) => new Date(label).toLocaleDateString('en-US', {
                       year: 'numeric',
@@ -191,9 +194,9 @@ const AnalyticsDashboard = () => {
                   <Legend />
                   <Line 
                     type="monotone" 
-                    dataKey="totalDuration" 
-                    stroke="#8884d8" 
+                    stroke="#2C4A7F" 
                     name="Minutes"
+                    dataKey={(dataPoint) => Math.round(dataPoint.totalDuration / 60)}
                     connectNulls={false}
                   />
                 </LineChart>
@@ -201,24 +204,36 @@ const AnalyticsDashboard = () => {
             </div>
 
             {/* Sessions Per Program */}
-            <div className="bg-white p-4 rounded-lg shadow">
-              <h2 className="text-xl font-semibold mb-4">Sessions Per Program</h2>
+            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-[#2C4A7F]/10 p-6 border border-[#84B9EF]/20">
+              <h2 className="text-xl font-semibold mb-4 text-[#0A2342]">Daily Sessions</h2>
               <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={stats}>
-                  <CartesianGrid strokeDasharray="3 3" />
+                <LineChart data={stats}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#84B9EF" />
                   <XAxis 
-                    dataKey="_id.programName"
-                    tickFormatter={(value) => value === 'No Program' ? '' : value}
+                    dataKey="_id.date"
+                    tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { 
+                      month: 'short', 
+                      day: 'numeric' 
+                    })}
+                    stroke="#0A2342"
                   />
-                  <YAxis domain={[0, 'auto']} />
-                  <Tooltip />
+                  <YAxis domain={[0, 'auto']} stroke="#0A2342" />
+                  <Tooltip 
+                    labelFormatter={(label) => new Date(label).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  />
                   <Legend />
-                  <Bar 
+                  <Line 
+                    type="monotone" 
                     dataKey="count" 
-                    fill="#82ca9d" 
+                    stroke="#64B6AC" 
                     name="Sessions"
+                    connectNulls={false}
                   />
-                </BarChart>
+                </LineChart>
               </ResponsiveContainer>
             </div>
           </div>

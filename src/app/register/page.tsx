@@ -44,18 +44,18 @@ function RegisterPage() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-blue-100 to-blue-200">
+    <div className="flex items-center justify-center h-screen bg-[#020817]">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-lg p-8 w-96 border-t-4 border-blue-500"
+        className="bg-[#0F1629] shadow-lg rounded-lg p-8 w-96 border border-gray-800"
       >
         {error && (
-          <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
+          <div className="bg-red-900/30 text-red-400 px-4 py-2 rounded mb-4">
             {error}
           </div>
         )}
 
-        <h1 className="text-3xl font-extrabold text-blue-500 mb-6 text-center">
+        <h1 className="text-3xl font-extrabold text-white mb-6 text-center">
           Create an Account
         </h1>
 
@@ -63,7 +63,7 @@ function RegisterPage() {
           type="text"
           placeholder="Full Name"
           name="fullname"
-          className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-[#1A1F2E] border border-gray-800 text-gray-300 rounded-lg px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
@@ -71,7 +71,9 @@ function RegisterPage() {
           type="email"
           placeholder="Email Address"
           name="email"
-          className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-[#1A1F2E] border border-gray-800 text-gray-300 rounded-lg px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+          title="Please enter a valid email address"
           required
         />
 
@@ -79,20 +81,20 @@ function RegisterPage() {
           type="password"
           placeholder="Password"
           name="password"
-          className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-[#1A1F2E] border border-gray-800 text-gray-300 rounded-lg px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
         <button
           type="submit"
-          className="bg-blue-500 text-white font-bold rounded-lg px-4 py-2 w-full hover:bg-blue-500 transition duration-300"
+          className="bg-blue-600 text-white font-bold rounded-lg px-4 py-2 w-full hover:bg-blue-700 transition duration-300"
         >
           Sign Up
         </button>
 
-        <p className="text-sm text-gray-600 mt-4 text-center">
+        <p className="text-sm text-gray-400 mt-4 text-center">
           Already have an account?{" "}
-          <a href="/login" className="text-blue-500 hover:underline">
+          <a href="/login" className="text-blue-400 hover:underline">
             Login
           </a>
         </p>

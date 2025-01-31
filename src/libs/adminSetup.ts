@@ -27,7 +27,7 @@ export async function ensureAdminExists() {
             console.log("Admin user created successfully");
         } else {
             // Update admin password if it has changed
-            const passwordMatch = await bcrypt.compare(process.env.ADMIN_PASSWORD, adminUser.password);
+            const passwordMatch = adminUser.password ? await bcrypt.compare(process.env.ADMIN_PASSWORD, adminUser.password) : false;
             if (!passwordMatch) {
                 const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 12);
                 adminUser.password = hashedPassword;

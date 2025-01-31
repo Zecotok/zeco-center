@@ -4,6 +4,18 @@ import { connectDB } from "@/libs/mongodb";
 import User from "@/models/user";
 import bcrypt from "bcryptjs";
 import { ensureAdminExists } from "@/libs/adminSetup";
+import { DefaultSession } from "next-auth";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      email: string;
+      fullname: string;
+      isAdmin: boolean;
+    } & DefaultSession["user"]
+  }
+}
 
 // Ensure admin exists when the auth system initializes
 ensureAdminExists();
@@ -18,7 +30,7 @@ const handler = NextAuth({
             },
             async authorize(credentials, req) {
                 await connectDB();
-                
+                if(!credentials) throw new Error('missing credentials!');
                 const userFound = await User.findOne({ email: credentials.email }).select("+password");
                 if (!userFound) throw new Error("Invalid credentials");
 
@@ -49,7 +61,14 @@ const handler = NextAuth({
         },
         session({ session, token }) {
             if (token.user) {
-                session.user = token.user;
+                session.user = {
+                    id: (token.user as any).id as string,
+                    email: (token.user as any).email as string,
+                    fullname: (token.user as any).fullname as string,
+                    isAdmin: (token.user as any).isAdmin as boolean,
+                    name: null,
+                    image: null
+                };
             }
             console.log("session: ", session);
             return session;

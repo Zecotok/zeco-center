@@ -13,6 +13,10 @@ export const authOptions: AuthOptions = {
                 password: { label: "Password", type: "password", placeholder: "********" }
             },
             async authorize(credentials, req) {
+                if (!credentials?.email || !credentials?.password) {
+                    throw new Error("Missing credentials");
+                }
+                
                 await connectDB();
                 
                 const userFound = await User.findOne({ email: credentials.email }).select("+password");
@@ -44,7 +48,14 @@ export const authOptions: AuthOptions = {
         },
         session({ session, token }) {
             if (token.user) {
-                session.user = token.user;
+                session.user = {
+                    id: (token.user as any).id,
+                    email: (token.user as any).email,
+                    fullname: (token.user as any).fullname,
+                    isAdmin: (token.user as any).isAdmin,
+                    name: null,
+                    image: null
+                };
             }
             return session;
         }

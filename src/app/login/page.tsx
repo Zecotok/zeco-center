@@ -39,18 +39,18 @@ function LoginPage() {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-blue-100 to-blue-300">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-[#F0F7FF] via-[#E6F0FF] to-[#F0F7FF] py-8 px-4">
       <form
         onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-lg p-8 w-96 border-t-4 border-blue-500"
+        className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-[#2C4A7F]/10 p-8 w-96 border border-[#84B9EF]/20"
       >
         {error && (
-          <div className="bg-red-100 text-red-700 px-4 py-2 rounded mb-4">
+          <div className="bg-red-100/80 text-red-700 px-4 py-2 rounded-xl mb-4">
             {error}
           </div>
         )}
 
-        <h1 className="text-3xl font-extrabold text-blue-600 mb-6 text-center">
+        <h1 className="text-3xl font-extrabold text-[#0A2342] mb-6 text-center">
           Welcome Back
         </h1>
 
@@ -58,7 +58,7 @@ function LoginPage() {
           type="email"
           placeholder="Email Address"
           name="email"
-          className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-[#F0F7FF] border border-[#84B9EF]/20 rounded-xl px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-[#2C4A7F] focus:border-transparent"
           required
         />
 
@@ -66,14 +66,14 @@ function LoginPage() {
           type="password"
           placeholder="Password"
           name="password"
-          className="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-[#F0F7FF] border border-[#84B9EF]/20 rounded-xl px-4 py-2 block mb-4 w-full focus:outline-none focus:ring-2 focus:ring-[#2C4A7F] focus:border-transparent"
           required
         />
 
         <button
           type="submit"
           disabled={isLoading}
-          className="bg-blue-500 text-white font-bold rounded-lg px-4 py-2 w-full hover:bg-blue-600 transition duration-300 disabled:opacity-70 flex items-center justify-center"
+          className="bg-[#2C4A7F] text-white font-bold rounded-xl px-4 py-2 w-full hover:bg-[#0A2342] transition duration-300 disabled:opacity-70 flex items-center justify-center"
         >
           {isLoading ? (
             <>

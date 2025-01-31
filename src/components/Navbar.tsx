@@ -40,19 +40,6 @@ function Navbar() {
           <ul className="flex items-center space-x-8">
             <li>
               <Link
-                href="/security"
-                className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-5"
-              >
-                <FontAwesomeIcon 
-                  icon={faShieldAlt} 
-                  className="w-4 h-4 mr-2 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300" 
-                />
-                <span className="font-medium">Security</span>
-              </Link>
-            </li>
-
-            <li>
-              <Link
                 href="/meditate"
                 className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-5"
               >
