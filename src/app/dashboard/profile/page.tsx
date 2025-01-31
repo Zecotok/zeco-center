@@ -1,11 +1,25 @@
 "use client";
 
 import { useSession, signOut } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faEnvelope, faSignOutAlt, faPhone, faAddressCard } from "@fortawesome/free-solid-svg-icons";
 
 function ProfilePage() {
-  const { data: session} = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login"); // Redirect to login if not authenticated
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>; // Optional loading state
+  }
+
   const fullName = session?.user?.fullname || "Guest User";
   const firstName = fullName.split(" ")[0];
 

@@ -1,11 +1,26 @@
 "use client";
 
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faShieldAlt, faSpa, faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/navigation";
 
 function HomePage() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login"); // Redirect to login if not authenticated
+    }
+  }, [status, router]);
+
+  if (status === "loading") {
+    return <div>Loading...</div>; // Optional loading state
+  }
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#EEF2F6] p-8">
       <h1 className="font-bold text-4xl mb-12 text-[#1a73e8] tracking-tight">
@@ -19,8 +34,7 @@ function HomePage() {
           className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[#4285f4]/5 to-[#34a853]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300"
-          >
+          <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300">
             <div className="relative z-10 flex flex-col items-center">
               <div className="p-3 rounded-xl bg-[#e8f0fe] mb-4 group-hover:bg-[#d2e3fc] transition-colors duration-300">
                 <FontAwesomeIcon 
@@ -45,8 +59,7 @@ function HomePage() {
           className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[#34a853]/5 to-[#fbbc04]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300"
-          >
+          <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300">
             <div className="relative z-10 flex flex-col items-center">
               <div className="p-3 rounded-xl bg-[#e6f4ea] mb-4 group-hover:bg-[#ceead6] transition-colors duration-300">
                 <FontAwesomeIcon 
@@ -71,8 +84,7 @@ function HomePage() {
           className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[#ea4335]/5 to-[#fbbc04]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300"
-          >
+          <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300">
             <div className="relative z-10 flex flex-col items-center">
               <div className="p-3 rounded-xl bg-[#fce8e6] mb-4 group-hover:bg-[#fad2cf] transition-colors duration-300">
                 <FontAwesomeIcon 

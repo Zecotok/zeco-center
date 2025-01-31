@@ -60,16 +60,28 @@ export async function GET(req: Request) {
     const stats = await MeditationSession.aggregate([
       { $match: query },
       {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'userInfo'
+        }
+      },
+      {
+        $unwind: '$userInfo'
+      },
+      {
         $group: {
           _id: {
             date: { $dateToString: { format: "%Y-%m-%d", date: "$completedAt" } },
-            programName: "$programName"
+            userId: "$userId",
+            userEmail: "$userInfo.email"
           },
           totalDuration: { $sum: "$duration" },
           count: { $sum: 1 }
         }
       },
-      { $sort: { "_id.date": 1 } }
+      { $sort: { "_id.date": 1, "_id.userEmail": 1 } }
     ]);
 
     return NextResponse.json(stats);

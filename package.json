@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3002",
+    "dev:local": "dotenv -e .env.local.dev next dev -p 3002",
     "build": "next build",
     "start": "next start -p 3002",
     "lint": "next lint",
@@ -23,9 +24,11 @@
     "mongoose": "^8.0.0",
     "next": "14.0.2",
     "next-auth": "^4.24.5",
+    "plotly.js": "^3.0.0",
     "react": "^18",
     "react-datepicker": "^7.6.0",
     "react-dom": "^18",
+    "react-plotly.js": "^2.6.0",
     "recharts": "^2.15.1"
   },
   "devDependencies": {
@@ -34,6 +37,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.0.2",
     "postcss": "^8",
