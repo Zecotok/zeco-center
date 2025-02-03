@@ -1,7 +1,6 @@
 'use client';
 export const dynamic = 'force-dynamic';
 
-
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -20,7 +19,10 @@ import {
 } from 'recharts';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import Plot from 'react-plotly.js';
+import dynamicPlot from 'next/dynamic';
+
+// Dynamically import Plot to avoid SSR issues
+const Plot = dynamicPlot(() => import('react-plotly.js'), { ssr: false });
 
 interface MeditationStats {
   _id: {
@@ -48,6 +50,7 @@ const AnalyticsDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState<string>('');
   const [users, setUsers] = useState<Array<{ id: string, email: string }>>([]);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -69,6 +72,10 @@ const AnalyticsDashboard = () => {
       fetchUsers();
     }
   }, [session]);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const fillMissingDates = (data: MeditationStats[]) => {
     const filledData: MeditationStats[] = [];
@@ -179,7 +186,6 @@ const AnalyticsDashboard = () => {
               selected={startDate}
               onChange={(date: Date | null) => setStartDate(date || new Date())}
               className="mt-1 block w-full rounded-xl border-[#84B9EF]/20 shadow-sm bg-[#F0F7FF] p-2 z-20"
-
             />
           </div>
           <div>
@@ -215,17 +221,19 @@ const AnalyticsDashboard = () => {
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-[#2C4A7F]/10 p-6 border border-[#84B9EF]/20 flex flex-col">
               <h2 className="text-xl font-semibold mb-4 text-[#0A2342]">Daily Meditation Minutes</h2>
               <div className="flex-1 w-full">
-                <Plot
-                  data={preparePlotlyData(stats)}
-                  layout={{
-                    title: 'Daily Meditation Minutes',
-                    xaxis: { title: 'Date' },
-                    yaxis: { title: 'Minutes' },
-                    showlegend: true,
-                    autosize: true,
-                  }}
-                  style={{ width: '100%', height: '400px' }}
-                />
+                {isClient && (
+                  <Plot
+                    data={preparePlotlyData(stats)}
+                    layout={{
+                      title: 'Daily Meditation Minutes',
+                      xaxis: { title: 'Date' },
+                      yaxis: { title: 'Minutes' },
+                      showlegend: true,
+                      autosize: true,
+                    }}
+                    style={{ width: '100%', height: '400px' }}
+                  />
+                )}
               </div>
             </div>
 
@@ -233,17 +241,19 @@ const AnalyticsDashboard = () => {
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg shadow-[#2C4A7F]/10 p-6 border border-[#84B9EF]/20 flex flex-col">
               <h2 className="text-xl font-semibold mb-4 text-[#0A2342]">Daily Sessions</h2>
               <div className="flex-1 w-full">
-                <Plot
-                  data={preparePlotlyData(stats)}
-                  layout={{
-                    title: 'Daily Sessions',
-                    xaxis: { title: 'Date' },
-                    yaxis: { title: 'Sessions' },
-                    showlegend: true,
-                    autosize: true,
-                  }}
-                  style={{ width: '100%', height: '400px' }}
-                />
+                {isClient && (
+                  <Plot
+                    data={preparePlotlyData(stats)}
+                    layout={{
+                      title: 'Daily Sessions',
+                      xaxis: { title: 'Date' },
+                      yaxis: { title: 'Sessions' },
+                      showlegend: true,
+                      autosize: true,
+                    }}
+                    style={{ width: '100%', height: '400px' }}
+                  />
+                )}
               </div>
             </div>
           </div>

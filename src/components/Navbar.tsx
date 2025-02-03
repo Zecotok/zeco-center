@@ -14,10 +14,14 @@ import {
   faDashboard,
   faUserShield,
   faChartLine,
+  faTimes,
+  faBars,
 } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 function Navbar() {
   const { data: session } = useSession();
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <nav className="bg-white shadow-md border-b border-[#84B9EF]/20 sticky top-0 z-50">
@@ -36,8 +40,16 @@ function Navbar() {
             ZecoCenter
           </Link>
 
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setIsOpen(!isOpen)} 
+            className="md:hidden flex items-center text-[#0A2342] hover:text-[#2C4A7F]"
+          >
+            <FontAwesomeIcon icon={isOpen ? faTimes : faBars} />
+          </button>
+
           {/* Navigation Links */}
-          <ul className="flex items-center space-x-8">
+          <ul className={`flex-col md:flex md:flex-row ${isOpen ? 'flex' : 'hidden'} md:flex items-center space-x-8`}>
             <li>
               <Link
                 href="/meditate"
