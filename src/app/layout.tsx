@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Providers from "./Providers";
 import Navbar from '@/components/Navbar';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const metadata: Metadata = {
   title: 'ZecoCenter',
