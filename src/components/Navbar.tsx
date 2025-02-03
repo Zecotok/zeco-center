@@ -139,7 +139,7 @@ function Navbar() {
       </div>
 
       {/* Mobile Drawer */}
-      <div className={`fixed inset-0 bg-white transition-transform transform ${isOpen ? 'translate-y-0' : '-translate-y-full'} duration-300 ease-in-out`} style={{ height: '50vh', top: '0', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderBottom: '1px solid #E0E0E0' }}>
+      <div className={`fixed inset-0 bg-white transition-transform transform ${isOpen ? 'translate-x-0' : 'translate-x-full'} duration-300 ease-in-out`} style={{ top: '0', boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)', borderBottom: '1px solid #E0E0E0', borderRadius: '20px 20px 0 0', background: 'linear-gradient(to bottom, #f0f4f8, #e0e7ef)' }}>
         <div className="flex flex-col items-center pt-4">
           <button 
             onClick={() => setIsOpen(false)} 
@@ -149,7 +149,7 @@ function Navbar() {
           </button>
 
           {/* Navigation Links */}
-          <ul className="flex flex-col items-center space-y-4">
+          <ul className="flex flex-col items-center space-y-4 pb-4">
             <li>
               <Link
                 href="/meditate"
