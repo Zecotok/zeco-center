@@ -16,6 +16,10 @@
           "guideName": "10 minutes"
         },
         {
+          "fileName": "15_minutes.m4a",
+          "guideName": "15 minutes"
+        },
+        {
           "fileName": "20_minutes.m4a",
           "guideName": "20 minutes"
         },
@@ -26,10 +30,6 @@
         {
           "fileName": "30_minutes.m4a",
           "guideName": "30 minutes"
-        },
-        {
-          "fileName": "15_minutes.m4a",
-          "guideName": "15 minutes"
         }
       ]
     },
@@ -37,32 +37,33 @@
       "programName": "7_days_of_focus",
       "guides": [
         {
-          "fileName": "1_rejuvenation.m4a",
-          "guideName": "1. Rejuvenation"
+          "fileName": "7_awareness.m4a",
+          "guideName": "1. Awareness"
         },
         {
-          "fileName": "2_digital_distractions.m4a",
-          "guideName": "2. Digital Distractions"
+          "fileName": "5_prioritization.m4a",
+          "guideName": "2. Prioritization"
         },
         {
           "fileName": "3_deepening_concentration.m4a",
           "guideName": "3. Deepening Concentration"
         },
         {
-          "fileName": "4_one_step_at_a_time.m4a",
-          "guideName": "4. One Step at a Time"
+          "fileName": "2_digital_distractions.m4a",
+          "guideName": "4. Digital Distractions"
         },
-        {
-          "fileName": "5_prioritization.m4a",
-          "guideName": "5. Prioritization"
-        },
+        
         {
           "fileName": "6_information_overload.m4a",
-          "guideName": "6. Information Overload"
+          "guideName": "5. Information Overload"
         },
         {
-          "fileName": "7_awareness.m4a",
-          "guideName": "7. Awareness"
+          "fileName": "4_one_step_at_a_time.m4a",
+          "guideName": "6. One Step at a Time"
+        },
+        {
+          "fileName": "1_rejuvenation.m4a",
+          "guideName": "7. Rejuvenation"
         }
       ]
     }
