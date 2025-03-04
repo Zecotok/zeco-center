@@ -81,17 +81,20 @@ const AnalyticsDashboard = () => {
     const filledData: MeditationStats[] = [];
     const start = new Date(startDate);
     const end = new Date(endDate);
+    
+    // Create a map that accounts for both date and userId
     const dataMap = new Map(
-      data.map(item => [item._id.date, item])
+      data.map(item => [`${item._id.date}-${item._id.userId}`, item])
     );
 
-    for (let date = start; date <= end; date.setDate(date.getDate() + 1)) {
+    for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
       const dateStr = date.toISOString().split('T')[0];
-      const existingData = dataMap.get(dateStr);
-
-      // Assuming we have a list of all users to fill data for
+      
       users.forEach(user => {
-        if (existingData && existingData._id.userId === user.id) {
+        const key = `${dateStr}-${user.id}`;
+        const existingData = dataMap.get(key);
+        
+        if (existingData) {
           filledData.push(existingData);
         } else {
           filledData.push({
@@ -107,34 +110,63 @@ const AnalyticsDashboard = () => {
         }
       });
     }
-    console.log('filledData', filledData);
-
+    
     return filledData;
   };
 
-  const preparePlotlyData = (filledStats: MeditationStats[]) => {
+  const prepareSessionCountData = (filledStats: MeditationStats[]) => {
     const data: any[] = [];
-    const userIds = new Set(filledStats.map(stat => stat._id.userId)); // Use a Set to get unique user IDs
+    const userIds = new Set(filledStats.map(stat => stat._id.userId));
     const allDates = Array.from({ length: (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24) + 1 }, (_, i) => {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
-      return date.toISOString().split('T')[0]; // Format date as YYYY-MM-DD
+      return date.toISOString().split('T')[0];
     });
 
     userIds.forEach(userId => {
       const userStats = filledStats.filter(stat => stat._id.userId === userId);
-      const userDataMap = new Map(userStats.map(stat => [stat._id.date, Math.round(stat.totalDuration / 60)]));
+      const userDataMap = new Map(userStats.map(stat => [stat._id.date, stat.count]));
 
-      const yValues = allDates.map(date => userDataMap.get(date) || 0); // Use 0 if no data for the date
+      const yValues = allDates.map(date => userDataMap.get(date) || 0);
 
-      const userEmail = userStats.length > 0 ? userStats[0]._id.userEmail : 'Unknown User'; // Handle case for unknown user
+      const userEmail = userStats.length > 0 ? userStats[0]._id.userEmail : 'Unknown User';
 
       data.push({
         x: allDates,
         y: yValues,
         type: 'scatter',
         mode: 'lines+markers',
-        name: `User: ${userEmail}`, // Display user email
+        name: `User: ${userEmail}`,
+        line: { shape: 'linear' },
+      });
+    });
+
+    return data;
+  };
+
+  const preparePlotlyData = (filledStats: MeditationStats[]) => {
+    const data: any[] = [];
+    const userIds = new Set(filledStats.map(stat => stat._id.userId));
+    const allDates = Array.from({ length: (endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24) + 1 }, (_, i) => {
+      const date = new Date(startDate);
+      date.setDate(startDate.getDate() + i);
+      return date.toISOString().split('T')[0];
+    });
+
+    userIds.forEach(userId => {
+      const userStats = filledStats.filter(stat => stat._id.userId === userId);
+      const userDataMap = new Map(userStats.map(stat => [stat._id.date, Math.round(stat.totalDuration / 60)]));
+
+      const yValues = allDates.map(date => userDataMap.get(date) || 0);
+
+      const userEmail = userStats.length > 0 ? userStats[0]._id.userEmail : 'Unknown User';
+
+      data.push({
+        x: allDates,
+        y: yValues,
+        type: 'scatter',
+        mode: 'lines+markers',
+        name: `User: ${userEmail}`,
         line: { shape: 'linear' },
       });
     });
@@ -243,7 +275,7 @@ const AnalyticsDashboard = () => {
               <div className="flex-1 w-full">
                 {isClient && (
                   <Plot
-                    data={preparePlotlyData(stats)}
+                    data={prepareSessionCountData(stats)}
                     layout={{
                       title: 'Daily Sessions',
                       xaxis: { title: 'Date' },
