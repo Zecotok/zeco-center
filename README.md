@@ -34,3 +34,27 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Video Recording Module
+
+This application includes a comprehensive video recording module with the following features:
+
+- Screen recording with adjustable quality settings (480p to 2K)
+- Camera recording option
+- Audio recording option
+- Pause and resume recording functionality
+- Video storage in the `uploads` directory
+- Video browsing, searching, and playback
+- Video metadata management (title, description, etc.)
+- Full-featured video player with custom controls
+
+To use the video recording functionality:
+
+1. Navigate to the `/videos` page
+2. Click "Record New Video" to start recording
+3. Configure recording options (quality, audio, screen/camera)
+4. Record your video
+5. Save with a title and optional description
+6. Browse, play, edit, or delete your recorded videos
+
+The video module uses the browser's MediaRecorder API for capturing screen content, and stores videos in WebM format for optimal compatibility.

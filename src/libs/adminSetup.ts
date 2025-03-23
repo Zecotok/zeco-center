@@ -13,7 +13,6 @@ export async function ensureAdminExists() {
 
         // Check if admin exists
         const adminUser = await User.findOne({ email: process.env.ADMIN_EMAIL });
-        console.log("adminUser: ", adminUser);
         if (!adminUser) {
             // Create admin user if doesn't exist
             const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 12);

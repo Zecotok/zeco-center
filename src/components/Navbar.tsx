@@ -16,6 +16,7 @@ import {
   faChartLine,
   faTimes,
   faBars,
+  faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
@@ -60,6 +61,19 @@ function Navbar() {
                   className={`w-4 h-4 mr-2 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300`} 
                 />
                 <span className="font-medium">Meditate</span>
+              </Link>
+            </li>
+            
+            <li>
+              <Link
+                href="/videos"
+                className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-1"
+              >
+                <FontAwesomeIcon 
+                  icon={faVideo} 
+                  className={`w-4 h-4 mr-2 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300`} 
+                />
+                <span className="font-medium">Videos</span>
               </Link>
             </li>
 
@@ -160,6 +174,19 @@ function Navbar() {
                   className="w-6 h-6 mr-2 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300" 
                 />
                 <span className="font-medium">Meditate</span>
+              </Link>
+            </li>
+            
+            <li>
+              <Link
+                href="/videos"
+                className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group"
+              >
+                <FontAwesomeIcon 
+                  icon={faVideo} 
+                  className="w-6 h-6 mr-2 text-[#2C4A7F] group-hover:text-[#84B9EF] transition-colors duration-300" 
+                />
+                <span className="font-medium">Videos</span>
               </Link>
             </li>
 

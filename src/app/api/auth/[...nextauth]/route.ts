@@ -70,7 +70,6 @@ const handler = NextAuth({
                     image: null
                 };
             }
-            console.log("session callback: ", session);
             return session;
         }
     },
