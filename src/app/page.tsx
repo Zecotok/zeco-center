@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faShieldAlt, faSpa, faChartLine } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faShieldAlt, faSpa, faChartLine, faVideo } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 
 function HomePage() {
@@ -48,6 +48,31 @@ function HomePage() {
               </h2>
               <p className="text-center text-[#5f6368] group-hover:text-[#202124] transition-colors duration-300">
                 Relax and find inner peace.
+              </p>
+            </div>
+          </div>
+        </Link>
+        
+        {/* Videos Card */}
+        <Link 
+          href="/videos" 
+          className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-[#673ab7]/5 to-[#3f51b5]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300">
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="p-3 rounded-xl bg-[#ede7f6] mb-4 group-hover:bg-[#d1c4e9] transition-colors duration-300">
+                <FontAwesomeIcon 
+                  icon={faVideo} 
+                  className="w-8 h-8 text-[#673ab7] group-hover:text-[#5e35b1] transition-all duration-300 group-hover:scale-110"
+                  style={{ maxWidth: '2rem' }} 
+                />
+              </div>
+              <h2 className="font-semibold text-2xl text-[#202124] mb-2 group-hover:text-[#673ab7] transition-colors duration-300">
+                Videos
+              </h2>
+              <p className="text-center text-[#5f6368] group-hover:text-[#202124] transition-colors duration-300">
+                Record and manage videos.
               </p>
             </div>
           </div>
