@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { VideoRecorder, VideoList, VideoPlayer } from '@/components/video';
 import { RecordedVideo } from '@/types/videoRecording';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -16,9 +16,11 @@ enum VideoPageView {
 
 export default function VideosPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session, status } = useSession();
   const [currentView, setCurrentView] = useState<VideoPageView>(VideoPageView.LIST);
   const [selectedVideo, setSelectedVideo] = useState<RecordedVideo | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Redirect to login if not authenticated
   useEffect(() => {
@@ -32,8 +34,8 @@ export default function VideosPage() {
   };
 
   const handleVideoSelect = (video: RecordedVideo) => {
-    setSelectedVideo(video);
-    setCurrentView(VideoPageView.PLAY);
+    // Navigate to the dedicated video URL instead of just changing the view
+    router.push(`/videos/${video.id}`);
   };
 
   const renderContent = () => {
@@ -57,7 +59,7 @@ export default function VideosPage() {
   };
 
   // Show loading state while checking authentication
-  if (status === "loading") {
+  if (status === "loading" || loading) {
     return (
       <div className="container mx-auto px-4 py-8 flex justify-center items-center h-64">
         <div className="text-center">

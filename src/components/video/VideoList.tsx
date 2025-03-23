@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { RecordedVideo } from '@/types/videoRecording';
 import { getQualityById } from '@/libs/videoQualityConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEdit, faPlay, faSearch, faClock, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEdit, faPlay, faSearch, faClock, faVideo, faCopy, faCheck, faLink } from '@fortawesome/free-solid-svg-icons';
 
 interface VideoListProps {
   onVideoSelect: (video: RecordedVideo) => void;
@@ -20,6 +20,7 @@ const VideoList: React.FC<VideoListProps> = ({ onVideoSelect }) => {
   const [editDescription, setEditDescription] = useState<string>('');
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [copiedVideoId, setCopiedVideoId] = useState<string | null>(null);
 
   useEffect(() => {
     setIsMounted(true);
@@ -126,6 +127,21 @@ const VideoList: React.FC<VideoListProps> = ({ onVideoSelect }) => {
     }
   };
 
+  const handleCopyLink = (video: RecordedVideo) => {
+    const videoUrl = `${window.location.origin}/videos/${video.id}`;
+    navigator.clipboard.writeText(videoUrl)
+      .then(() => {
+        setCopiedVideoId(video.id);
+        // Reset the copied state after 2 seconds
+        setTimeout(() => {
+          setCopiedVideoId(null);
+        }, 2000);
+      })
+      .catch(err => {
+        console.error('Failed to copy link: ', err);
+      });
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleString();
@@ -214,16 +230,15 @@ const VideoList: React.FC<VideoListProps> = ({ onVideoSelect }) => {
               <div className="mt-5 flex justify-end space-x-3">
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSaveEdit}
                   className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  disabled={!editTitle.trim()}
                 >
-                  Save Changes
+                  Save
                 </button>
               </div>
             </div>
@@ -278,13 +293,31 @@ const VideoList: React.FC<VideoListProps> = ({ onVideoSelect }) => {
                   </div>
                   
                   <div className="mt-3 flex justify-between">
-                    <button
-                      onClick={() => onVideoSelect(video)}
-                      className="inline-flex items-center px-3 py-1 border border-transparent text-xs rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                      <FontAwesomeIcon icon={faPlay} className="mr-1" />
-                      Play
-                    </button>
+                    <div className="flex space-x-1">
+                      <button
+                        onClick={() => onVideoSelect(video)}
+                        className="inline-flex items-center px-3 py-1 border border-transparent text-xs rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                      >
+                        <FontAwesomeIcon icon={faPlay} className="mr-1" />
+                        Play
+                      </button>
+                      
+                      <button
+                        onClick={() => handleCopyLink(video)}
+                        className={`inline-flex items-center px-3 py-1 border border-transparent text-xs rounded-md shadow-sm text-white ${
+                          copiedVideoId === video.id 
+                            ? 'bg-green-600 hover:bg-green-700'
+                            : 'bg-blue-600 hover:bg-blue-700'
+                        } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+                        title="Copy video URL to clipboard"
+                      >
+                        <FontAwesomeIcon 
+                          icon={copiedVideoId === video.id ? faCheck : faLink} 
+                          className="mr-1" 
+                        />
+                        {copiedVideoId === video.id ? 'Copied!' : 'Copy Link'}
+                      </button>
+                    </div>
                     
                     <div className="flex space-x-2">
                       <button
