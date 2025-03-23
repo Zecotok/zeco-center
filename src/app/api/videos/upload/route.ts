@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/libs/authConfig';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs-extra';
 import path from 'path';
@@ -10,7 +11,7 @@ fs.ensureDirSync(uploadDir);
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -29,15 +30,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
+    const arrayBuffer = await file.arrayBuffer();
+    const uint8Array = new Uint8Array(arrayBuffer);
     const uniqueId = uuidv4();
     const fileExtension = path.extname(file.name);
     const fileName = `${uniqueId}${fileExtension}`;
     const filePath = path.join('uploads', fileName);
     const fullPath = path.join(process.cwd(), filePath);
 
-    // Save the file to the uploads directory
-    await fs.writeFile(fullPath, buffer);
+    // Save the file to the uploads directory - using Uint8Array to avoid type issues
+    await fs.promises.writeFile(fullPath, uint8Array);
 
     return NextResponse.json({ 
       success: true, 
@@ -51,10 +53,9 @@ export async function POST(req: NextRequest) {
   }
 }
 
-// Configure the Next.js API route to accept large file uploads
-export const config = {
-  api: {
-    bodyParser: false,
-    responseLimit: '50mb',
-  },
-}; 
+// Configure the API route using the new App Router syntax
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
+// Handle large file uploads with increased timeout
+export const maxDuration = 300; // 5 minutes in seconds 

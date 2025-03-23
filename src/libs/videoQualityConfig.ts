@@ -15,8 +15,22 @@ export const VIDEO_QUALITY_OPTIONS: VideoQuality[] = [
     label: 'Medium (720p)',
     width: 1280,
     height: 720,
-    frameRate: 25,
+    frameRate: 15,
     bitrate: 2000000/60
+  },
+  {
+    id: 'medium-auto-bitrate',
+    label: 'Medium (720p15) - Auto Bitrate',
+    width: 1280,
+    height: 720,
+    frameRate: 15,
+  },
+  {
+    id: 'medium-25-auto-bitrate',
+    label: 'Medium (720p25) - Auto Bitrate',
+    width: 1280,
+    height: 720,
+    frameRate: 25,
   },
   {
     id: 'high',
@@ -26,14 +40,6 @@ export const VIDEO_QUALITY_OPTIONS: VideoQuality[] = [
     frameRate: 30,
     bitrate: 3000000/60
   },
-  {
-    id: 'ultra',
-    label: 'Ultra (2K)',
-    width: 2560,
-    height: 1440,
-    frameRate: 30,
-    bitrate: 4000000/60
-  }
 ];
 
 export const AUDIO_QUALITY_OPTIONS: AudioQuality[] = [

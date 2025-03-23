@@ -1,16 +1,26 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import { VideoQuality, RecordingStatus, AudioQuality, RecordingMode } from '@/types/videoRecording';
 import { VIDEO_QUALITY_OPTIONS, DEFAULT_QUALITY_ID, getQualityById, AUDIO_QUALITY_OPTIONS, DEFAULT_AUDIO_QUALITY_ID, getAudioQualityById } from '@/libs/videoQualityConfig';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faVideo, faVideoSlash, faPause, faPlay, faStop, faTrash, faCog, faCheckCircle, faMicrophone, faDesktop } from '@fortawesome/free-solid-svg-icons';
 
+// Safe browser API access
+const isBrowser = typeof window !== 'undefined';
+
+// Helper function to check browser recording support
+const checkBrowserSupport = (): boolean => {
+  if (!isBrowser) return false;
+  return !!(navigator.mediaDevices && window.MediaRecorder);
+};
+
 interface VideoRecorderProps {
   onVideoSaved: (videoData: any) => void;
 }
 
-const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
+const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
   const [selectedQuality, setSelectedQuality] = useState<VideoQuality>(
     getQualityById(DEFAULT_QUALITY_ID)
   );
@@ -28,13 +38,17 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
   const [error, setError] = useState<string | null>(null);
   const [videoDuration, setVideoDuration] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const [isMounted, setIsMounted] = useState<boolean>(true);
   const [mediaBlobUrl, setMediaBlobUrl] = useState<string | null>(null);
   const [browserSupported, setBrowserSupported] = useState<boolean>(true);
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
   
   // New state for file size info
   const [fileSize, setFileSize] = useState<number | null>(null);
   const [fileSizePerMinute, setFileSizePerMinute] = useState<number | null>(null);
+  const [videoBitrate, setVideoBitrate] = useState<number | null>(null);
+  const [videoFps, setVideoFps] = useState<number | null>(null);
   
   // Add this state to track stopping progress
   const [isStopping, setIsStopping] = useState<boolean>(false);
@@ -48,14 +62,21 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
   
   // Initialize component on mount
   useEffect(() => {
-    setIsLoading(false);
-    setIsMounted(true);
+    if (typeof window !== 'undefined') { // Only run on client side
+      setIsLoading(false);
+      setIsMounted(true);
 
-    // Check browser support
-    if (typeof window === 'undefined' || 
-        !navigator.mediaDevices || 
-        !window.MediaRecorder) {
-      setBrowserSupported(false);
+      // Check browser support - only run this check after component is mounted
+      // and we're sure we're on the client side
+      if (!navigator.mediaDevices || !window.MediaRecorder) {
+        console.log('Browser API not supported:', {
+          mediaDevices: !!navigator.mediaDevices,
+          mediaRecorder: !!window.MediaRecorder
+        });
+        setBrowserSupported(false);
+      } else {
+        setBrowserSupported(true);
+      }
     }
     
     return () => {
@@ -130,6 +151,12 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
 
   // Initialize and set up media stream
   const setupMediaStream = async () => {
+    if (!isBrowser) {
+      setError('Browser environment not available');
+      setRecordingStatus(RecordingStatus.ERROR);
+      return null;
+    }
+
     try {
       stopMediaTracks();
       setError(null);
@@ -203,7 +230,19 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
 
   // Start recording with the configured settings
   const startRecording = async () => {
+    if (!isBrowser) {
+      setError('Recording is not supported in this environment');
+      return;
+    }
+
     if (recordingStatus !== RecordingStatus.IDLE && recordingStatus !== RecordingStatus.STOPPED) {
+      return;
+    }
+    
+    // Check browser support again just to be safe
+    if (!checkBrowserSupport()) {
+      setError('Your browser does not support recording. Please try a different browser.');
+      setBrowserSupported(false);
       return;
     }
     
@@ -301,6 +340,17 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
             const minutesDuration = durationInSeconds / 60;
             const mbPerMinute = fileSizeInMB / minutesDuration;
             setFileSizePerMinute(mbPerMinute);
+            
+            // Calculate and set bitrate in Kbps (kilobits per second)
+            const bitrate = (fileSizeInBytes * 8) / (durationInSeconds * 1000);
+            setVideoBitrate(bitrate);
+          }
+          
+          // Set FPS based on recording quality or default to the selected quality
+          if (recordingMode === RecordingMode.VIDEO || recordingMode === RecordingMode.SCREEN_SHARE) {
+            setVideoFps(selectedQuality.frameRate);
+          } else {
+            setVideoFps(null);
           }
           
           // Update preview source
@@ -461,6 +511,8 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
 
     setRecordingStatus(RecordingStatus.PROCESSING);
     setError(null);
+    setIsUploading(true);
+    setUploadProgress(0);
 
     try {
       // Convert blob URL to file
@@ -479,21 +531,45 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
         { type: blob.type }
       );
 
-      // Upload file to server
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('recordingMode', recordingMode);
-
-      const uploadRes = await fetch('/api/videos/upload', {
-        method: 'POST',
-        body: formData
+      // Use XMLHttpRequest to track upload progress
+      const uploadData = await new Promise<any>((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('recordingMode', recordingMode);
+        
+        // Track upload progress
+        xhr.upload.addEventListener('progress', (event) => {
+          if (event.lengthComputable) {
+            const percentComplete = Math.round((event.loaded / event.total) * 100);
+            setUploadProgress(percentComplete);
+          }
+        });
+        
+        xhr.addEventListener('load', () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              const data = JSON.parse(xhr.responseText);
+              resolve(data);
+            } catch (err) {
+              reject(new Error('Invalid response format'));
+            }
+          } else {
+            reject(new Error(`Upload failed with status ${xhr.status}`));
+          }
+        });
+        
+        xhr.addEventListener('error', () => {
+          reject(new Error('Network error during upload'));
+        });
+        
+        xhr.addEventListener('abort', () => {
+          reject(new Error('Upload aborted'));
+        });
+        
+        xhr.open('POST', '/api/videos/upload');
+        xhr.send(formData);
       });
-
-      if (!uploadRes.ok) {
-        throw new Error('Failed to upload recording');
-      }
-
-      const uploadData = await uploadRes.json();
 
       // Save recording metadata
       const recordingData = {
@@ -536,6 +612,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
       setFileSizePerMinute(null);
       recordingStartTime.current = null;
       setMediaBlobUrl(null);
+      setIsUploading(false);
       
       // Notify parent component
       onVideoSaved(result.video);
@@ -543,6 +620,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
       console.error("Error saving recording:", err);
       setError(`Error saving recording: ${err.message || 'Unknown error'}`);
       setRecordingStatus(RecordingStatus.ERROR);
+      setIsUploading(false);
     }
   };
 
@@ -802,7 +880,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
             <button
               onClick={handleStartRecording}
               className="flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-              disabled={recordingStatus === RecordingStatus.PROCESSING || recordingStatus === RecordingStatus.ERROR || isStopping}
+              disabled={recordingStatus !== RecordingStatus.IDLE && recordingStatus !== RecordingStatus.STOPPED || isStopping}
             >
               <FontAwesomeIcon 
                 icon={
@@ -821,7 +899,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
               <button
                 onClick={handlePauseResumeRecording}
                 className="flex-1 bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
-                disabled={recordingStatus === RecordingStatus.PROCESSING || recordingStatus === RecordingStatus.ERROR}
+                disabled={recordingStatus === RecordingStatus.ERROR}
               >
                 <FontAwesomeIcon
                   icon={recordingStatus === RecordingStatus.PAUSED ? faPlay : faPause}
@@ -888,25 +966,86 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
                 </div>
               )}
             </div>
+
+            {/* Technical information section - expanded */}
+            <div className="bg-gray-50 p-3 rounded-md">
+              <h3 className="text-sm font-medium text-gray-700 mb-2">Technical Details</h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm text-gray-600">
+                {videoDuration > 0 && (
+                  <div>
+                    <span className="font-medium">Duration:</span> {formatDuration(videoDuration)}
+                  </div>
+                )}
+                
+                {fileSize !== null && (
+                  <div>
+                    <span className="font-medium">File Size:</span> {formatFileSize(fileSize)}
+                  </div>
+                )}
+                
+                {fileSizePerMinute !== null && (
+                  <div>
+                    <span className="font-medium">Data Rate per minute:</span> {fileSizePerMinute.toFixed(2)} MB/min {(Number(fileSizePerMinute.toFixed(2)) * 60/1024).toFixed(2)} GB/hr
+                  </div>
+                )}
+
+                {videoBitrate !== null && (
+                  <div>
+                    <span className="font-medium">Bitrate:</span> {videoBitrate.toFixed(2)} Kbps
+                  </div>
+                )}
+                
+                {videoFps !== null && (
+                  <div>
+                    <span className="font-medium">FPS:</span> {videoFps}
+                  </div>
+                )}
+                
+                <div>
+                  <span className="font-medium">Format:</span> {recordingMode === RecordingMode.AUDIO_ONLY ? "Audio" : "Video"}
+                </div>
+                
+                <div>
+                  <span className="font-medium">Quality:</span> {recordingMode === RecordingMode.AUDIO_ONLY 
+                    ? selectedAudioQuality.label 
+                    : selectedQuality.label}
+                </div>
+              </div>
+            </div>
             
             <div className="flex space-x-2 pt-2">
               <button
                 onClick={handleSaveRecording}
                 className="flex-1 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                disabled={!title.trim() || recordingStatus !== RecordingStatus.STOPPED}
+                disabled={!title.trim() || recordingStatus !== RecordingStatus.STOPPED || isUploading}
               >
                 <FontAwesomeIcon icon={faCheckCircle} className="mr-2" />
-                {recordingStatus === RecordingStatus.PROCESSING ? "Saving..." : "Save Recording"}
+                {isUploading ? `Uploading... ${uploadProgress}%` : "Save Recording"}
               </button>
               <button
                 onClick={handleDiscardRecording}
                 className="flex-1 bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
-                disabled={recordingStatus !== RecordingStatus.STOPPED}
+                disabled={recordingStatus !== RecordingStatus.STOPPED || isUploading}
               >
                 <FontAwesomeIcon icon={faTrash} className="mr-2" />
                 Discard
               </button>
             </div>
+
+            {/* Upload Progress Bar */}
+            {isUploading && (
+              <div className="mt-2">
+                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                  <div 
+                    className="bg-indigo-600 h-2.5 rounded-full transition-all duration-150"
+                    style={{ width: `${uploadProgress}%` }}
+                  ></div>
+                </div>
+                <p className="text-xs text-gray-500 text-center mt-1">
+                  Uploading: {uploadProgress}% complete
+                </p>
+              </div>
+            )}
           </div>
         )}
 
@@ -921,4 +1060,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
   );
 };
 
-export default VideoRecorder;   
+// Export with dynamic import to prevent SSR
+export default dynamic(() => Promise.resolve(VideoRecorderComponent), {
+  ssr: false
+});   
