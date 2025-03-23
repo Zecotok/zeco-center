@@ -813,15 +813,76 @@ const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) 
   // Return early for unsupported browsers or loading state
   if (!browserSupported) {
     console.log('[VideoRecorder] Rendering unsupported browser message');
+    
+    // Determine if the issue is specifically due to secure context
+    const isSecureContextIssue = !window.isSecureContext && navigator.mediaDevices === null;
+    const isChrome = /chrome/i.test(navigator.userAgent) && !/edge|edg/i.test(navigator.userAgent);
+    
     return (
       <div className="border rounded-lg p-4 bg-white shadow-sm">
         <div className="text-center p-6">
           <FontAwesomeIcon icon={faVideoSlash} className="text-red-500 text-4xl mb-4" />
           <h3 className="text-lg font-medium text-gray-900 mb-2">Recording Not Supported</h3>
-          <p className="text-gray-600">
-            Your browser does not support recording functionality. 
-            Please try using a modern browser like Chrome, Firefox, or Edge.
-          </p>
+          
+          {isSecureContextIssue ? (
+            <>
+              <p className="text-red-600 font-medium mb-2">
+                Secure Context Required
+              </p>
+              <div className="text-gray-600 mb-4">
+                <p className="mb-2">
+                  The media recording features require a secure context (HTTPS or localhost).
+                </p>
+                <div className="bg-yellow-50 border border-yellow-200 rounded p-3 text-left mb-3">
+                  <p className="font-medium">How to fix this in {isChrome ? 'Chrome' : 'your browser'}:</p>
+                  <ol className="list-decimal list-inside space-y-1 text-sm mt-1">
+                    <li>Access this page using <code className="bg-gray-100 px-1 rounded">http://localhost:3002</code> instead of an IP address</li>
+                    <li>OR use HTTPS if on a production server</li>
+                    {isChrome && (
+                      <>
+                        <li className="font-medium text-gray-700 mt-2">Chrome-specific options:</li>
+                        <li>In Chrome, open <code className="bg-gray-100 px-1 rounded">chrome://flags/#unsafely-treat-insecure-origin-as-secure</code></li>
+                        <li>Add your IP/port (e.g., <code className="bg-gray-100 px-1 rounded">http://192.168.1.100:3002</code>) to the list</li>
+                        <li>Set to &quot;Enabled&quot; and restart Chrome</li>
+                      </>
+                    )}
+                  </ol>
+                </div>
+                
+                {isChrome && (
+                  <div className="bg-blue-50 border border-blue-200 rounded p-3 text-left mt-4">
+                    <p className="font-medium">Advanced Chrome flag workaround:</p>
+                    <div className="flex flex-col space-y-2 text-sm mt-1">
+                      <input 
+                        type="text" 
+                        id="chrome-origin" 
+                        className="px-2 py-1 border rounded" 
+                        placeholder="Enter your URL (e.g., http://192.168.1.100:3002)" 
+                        defaultValue={window.location.origin}
+                      />
+                      <button
+                        className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        onClick={() => {
+                          const origin = (document.getElementById('chrome-origin') as HTMLInputElement)?.value || window.location.origin;
+                          const flagUrl = `chrome://flags/#unsafely-treat-insecure-origin-as-secure`;
+                          window.open(`https://www.google.com/search?q=chrome+enable+${encodeURIComponent(origin)}+insecure+origins`, '_blank');
+                          alert(`Copy this URL to add to Chrome flags: ${origin}\n\nThen go to: ${flagUrl}`);
+                        }}
+                      >
+                        Get Chrome Flag Instructions
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <p className="text-gray-600">
+              Your browser does not support recording functionality. 
+              Please try using a modern browser like Chrome, Firefox, or Edge.
+            </p>
+          )}
+          
           <div className="mt-4 p-3 bg-gray-100 rounded text-left text-xs overflow-auto max-h-32">
             <p>Debug info:</p>
             {isBrowser && (
@@ -832,25 +893,64 @@ const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) 
                   mediaRecorder: !!window.MediaRecorder,
                   isSecureContext: !!window.isSecureContext,
                   features: detectMediaFeatures(),
+                  url: window.location.href,
+                  origin: window.location.origin,
                   timestamp: new Date().toISOString()
                 }, null, 2)}
               </pre>
             )}
           </div>
-          <button 
-            onClick={() => {
-              console.log('[VideoRecorder] Force browser support check triggered by user');
-              const features = detectMediaFeatures();
-              console.log('[VideoRecorder] Manual check results:', features);
-              alert('Debug info logged to console. Please open developer tools to view.');
-              if (features.mediaDevicesAPI === 'available' && features.mediaRecorderAPI === 'available') {
-                setBrowserSupported(true);
-              }
-            }}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            Run Debug Check
-          </button>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-4">
+            <button 
+              onClick={() => {
+                console.log('[VideoRecorder] Force browser support check triggered by user');
+                const features = detectMediaFeatures();
+                console.log('[VideoRecorder] Manual check results:', features);
+                alert('Debug info logged to console. Please open developer tools to view.');
+                if (features.mediaDevicesAPI === 'available' && features.mediaRecorderAPI === 'available') {
+                  setBrowserSupported(true);
+                }
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            >
+              Run Debug Check
+            </button>
+            
+            {isSecureContextIssue && (
+              <>
+                <a 
+                  href={`http://localhost:3002${window.location.pathname}`}
+                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 text-center"
+                >
+                  Open via localhost
+                </a>
+                
+                {isChrome && (
+                  <button
+                    onClick={() => {
+                      const chromeVersion = navigator.userAgent.match(/Chrome\/(\d+)/);
+                      const version = chromeVersion ? parseInt(chromeVersion[1]) : 0;
+                      
+                      if (version >= 127) {
+                        console.log('[VideoRecorder] Attempting Chrome secure origin override');
+                        try {
+                          // This is just a placeholder - Chrome doesn't actually allow this override directly
+                          alert('Chrome requires the flag: chrome://flags/#unsafely-treat-insecure-origin-as-secure\n\nAdd your URL and restart Chrome.');
+                        } catch (e) {
+                          console.error('[VideoRecorder] Override attempt failed:', e);
+                        }
+                      } else {
+                        alert("Your Chrome version may require different steps. Try using localhost instead.");
+                      }
+                    }}
+                    className="px-4 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700"
+                  >
+                    Chrome Help
+                  </button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       </div>
     );
