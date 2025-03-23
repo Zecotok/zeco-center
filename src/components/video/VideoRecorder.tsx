@@ -10,10 +10,84 @@ import { faVideo, faVideoSlash, faPause, faPlay, faStop, faTrash, faCog, faCheck
 // Safe browser API access
 const isBrowser = typeof window !== 'undefined';
 
+// Detailed feature detection for debugging
+const detectMediaFeatures = () => {
+  if (!isBrowser) return { environmentSupport: 'server-side' };
+  
+  return {
+    environmentSupport: 'client-side',
+    secure: window.isSecureContext ? 'yes' : 'no',
+    mediaDevicesAPI: navigator.mediaDevices ? 'available' : 'unavailable',
+    mediaRecorderAPI: window.MediaRecorder ? 'available' : 'unavailable',
+    mediaRecorderMethods: window.MediaRecorder ? {
+      isTypeSupported: typeof MediaRecorder.isTypeSupported === 'function' ? 'function' : 'unavailable'
+    } : 'unavailable',
+    mediaDevicesMethods: navigator.mediaDevices ? {
+      getUserMedia: typeof navigator.mediaDevices.getUserMedia === 'function' ? 'function' : 'unavailable',
+      getDisplayMedia: typeof navigator.mediaDevices.getDisplayMedia === 'function' ? 'function' : 'unavailable',
+      enumerateDevices: typeof navigator.mediaDevices.enumerateDevices === 'function' ? 'function' : 'unavailable'
+    } : 'unavailable',
+    supportedMimeTypes: window.MediaRecorder ? [
+      'video/webm',
+      'video/webm;codecs=vp9',
+      'video/webm;codecs=vp8',
+      'video/webm;codecs=h264',
+      'video/mp4',
+      'audio/webm',
+      'audio/mp4'
+    ].filter(type => {
+      try {
+        return MediaRecorder.isTypeSupported(type);
+      } catch (e) {
+        return false;
+      }
+    }) : [],
+    browserInfo: {
+      userAgent: navigator.userAgent,
+      vendor: navigator.vendor,
+      isChrome: /chrome/i.test(navigator.userAgent) && !/edge|edg/i.test(navigator.userAgent),
+      isFirefox: /firefox/i.test(navigator.userAgent),
+      isSafari: /safari/i.test(navigator.userAgent) && !/chrome|chromium/i.test(navigator.userAgent),
+      isEdge: /edge|edg/i.test(navigator.userAgent),
+      isIOS: /iphone|ipad|ipod/i.test(navigator.userAgent),
+      isAndroid: /android/i.test(navigator.userAgent)
+    }
+  };
+};
+
 // Helper function to check browser recording support
 const checkBrowserSupport = (): boolean => {
-  if (!isBrowser) return false;
-  return !!(navigator.mediaDevices && window.MediaRecorder);
+  if (!isBrowser) {
+    console.log('[VideoRecorder] Not in browser environment');
+    return false;
+  }
+  
+  const hasMediaDevices = !!navigator.mediaDevices;
+  const hasMediaRecorder = !!window.MediaRecorder;
+  const isSecureContext = !!window.isSecureContext;
+  
+  const mediaFeatures = detectMediaFeatures();
+  console.log('[VideoRecorder] Detailed media features:', mediaFeatures);
+  
+  console.log('[VideoRecorder] Browser support check:', {
+    hasMediaDevices,
+    hasMediaRecorder,
+    isSecureContext,
+    userAgent: navigator.userAgent,
+    browserInfo: {
+      isChrome: /chrome/i.test(navigator.userAgent) && !/edge|edg/i.test(navigator.userAgent),
+      isFirefox: /firefox/i.test(navigator.userAgent),
+      isSafari: /safari/i.test(navigator.userAgent) && !/chrome|chromium/i.test(navigator.userAgent),
+      isEdge: /edge|edg/i.test(navigator.userAgent)
+    }
+  });
+  
+  // MediaRecorder requires a secure context (HTTPS or localhost)
+  if (!isSecureContext) {
+    console.warn('[VideoRecorder] Not in a secure context, MediaRecorder may not work');
+  }
+  
+  return !!(hasMediaDevices && hasMediaRecorder);
 };
 
 interface VideoRecorderProps {
@@ -21,6 +95,8 @@ interface VideoRecorderProps {
 }
 
 const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
+  console.log('[VideoRecorder] Component initializing, isBrowser:', isBrowser);
+  
   const [selectedQuality, setSelectedQuality] = useState<VideoQuality>(
     getQualityById(DEFAULT_QUALITY_ID)
   );
@@ -62,24 +138,83 @@ const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) 
   
   // Initialize component on mount
   useEffect(() => {
+    console.log('[VideoRecorder] useEffect initialization running');
+    
+    // Force a check for browser support as early as possible
+    const featureCheck = detectMediaFeatures();
+    console.log('[VideoRecorder] Initial feature check:', featureCheck);
+    
     if (typeof window !== 'undefined') { // Only run on client side
+      console.log('[VideoRecorder] Running in browser environment');
       setIsLoading(false);
       setIsMounted(true);
 
       // Check browser support - only run this check after component is mounted
       // and we're sure we're on the client side
       if (!navigator.mediaDevices || !window.MediaRecorder) {
-        console.log('Browser API not supported:', {
+        console.log('[VideoRecorder] Browser APIs not available:', {
           mediaDevices: !!navigator.mediaDevices,
-          mediaRecorder: !!window.MediaRecorder
+          mediaDevicesGetUserMedia: !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia),
+          mediaRecorder: !!window.MediaRecorder,
+          mediaRecorderIsTypeSupported: !!(window.MediaRecorder && typeof MediaRecorder.isTypeSupported === 'function')
         });
         setBrowserSupported(false);
       } else {
-        setBrowserSupported(true);
+        console.log('[VideoRecorder] Browser APIs available');
+        
+        // Check if we're in a secure context
+        if (!window.isSecureContext) {
+          console.warn('[VideoRecorder] Not in a secure context, setting browserSupported to false');
+          setBrowserSupported(false);
+          setError('MediaRecorder requires a secure context (HTTPS or localhost)');
+          return;
+        }
+        
+        // Try to check for getUserMedia support
+        try {
+          if (typeof navigator.mediaDevices.getUserMedia !== 'function') {
+            console.warn('[VideoRecorder] getUserMedia is not a function');
+            setBrowserSupported(false);
+            return;
+          }
+          
+          // Check if MediaRecorder.isTypeSupported works
+          if (typeof MediaRecorder.isTypeSupported !== 'function') {
+            console.warn('[VideoRecorder] MediaRecorder.isTypeSupported is not a function');
+            setBrowserSupported(false);
+            return;
+          }
+          
+          // Check if any media types are supported
+          const hasAnySupportedType = [
+            'video/webm', 'audio/webm', 'video/mp4', 'audio/mp4'
+          ].some(type => {
+            try {
+              return MediaRecorder.isTypeSupported(type);
+            } catch (e) {
+              console.warn(`[VideoRecorder] Error checking support for ${type}:`, e);
+              return false;
+            }
+          });
+          
+          if (!hasAnySupportedType) {
+            console.warn('[VideoRecorder] No supported media types found');
+            setBrowserSupported(false);
+            return;
+          }
+          
+          setBrowserSupported(true);
+        } catch (e) {
+          console.error('[VideoRecorder] Error during browser support checks:', e);
+          setBrowserSupported(false);
+        }
       }
+    } else {
+      console.log('[VideoRecorder] Not in browser environment during mount');
     }
     
     return () => {
+      console.log('[VideoRecorder] Component unmounting');
       stopMediaTracks();
       setIsMounted(false);
     };
@@ -151,7 +286,10 @@ const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) 
 
   // Initialize and set up media stream
   const setupMediaStream = async () => {
+    console.log('[VideoRecorder] Setting up media stream, mode:', recordingMode);
+    
     if (!isBrowser) {
+      console.log('[VideoRecorder] Cannot setup media stream: Not in browser environment');
       setError('Browser environment not available');
       setRecordingStatus(RecordingStatus.ERROR);
       return null;
@@ -162,6 +300,20 @@ const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) 
       setError(null);
       
       let stream: MediaStream;
+      
+      // Log available media devices for debugging
+      if (navigator.mediaDevices && navigator.mediaDevices.enumerateDevices) {
+        try {
+          const devices = await navigator.mediaDevices.enumerateDevices();
+          console.log('[VideoRecorder] Available devices:', devices.map(d => ({
+            kind: d.kind,
+            label: d.label || 'No label available',
+            deviceId: d.deviceId ? 'Available' : 'Not available',
+          })));
+        } catch (err) {
+          console.warn('[VideoRecorder] Could not enumerate devices:', err);
+        }
+      }
       
       if (recordingMode === RecordingMode.SCREEN_SHARE) {
         // For screen capture
@@ -213,7 +365,17 @@ const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) 
       
       return stream;
     } catch (err: any) {
-      console.error('Error accessing media devices:', err);
+      console.error('[VideoRecorder] Error accessing media devices:', err);
+      
+      // Log more details about the error
+      console.log('[VideoRecorder] Error details:', {
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        recordingMode,
+        withAudio: isWithAudio,
+        constraints: getMediaConstraints()
+      });
       
       if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
         setError('Permission denied. Please allow access to camera/microphone or screen sharing.');
@@ -230,7 +392,10 @@ const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) 
 
   // Start recording with the configured settings
   const startRecording = async () => {
+    console.log('[VideoRecorder] Starting recording, browser support check:', checkBrowserSupport());
+    
     if (!isBrowser) {
+      console.log('[VideoRecorder] Cannot start recording: Not in browser environment');
       setError('Recording is not supported in this environment');
       return;
     }
@@ -241,6 +406,7 @@ const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) 
     
     // Check browser support again just to be safe
     if (!checkBrowserSupport()) {
+      console.log('[VideoRecorder] Browser support check failed on start recording');
       setError('Your browser does not support recording. Please try a different browser.');
       setBrowserSupported(false);
       return;
@@ -646,6 +812,7 @@ const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) 
 
   // Return early for unsupported browsers or loading state
   if (!browserSupported) {
+    console.log('[VideoRecorder] Rendering unsupported browser message');
     return (
       <div className="border rounded-lg p-4 bg-white shadow-sm">
         <div className="text-center p-6">
@@ -655,12 +822,42 @@ const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) 
             Your browser does not support recording functionality. 
             Please try using a modern browser like Chrome, Firefox, or Edge.
           </p>
+          <div className="mt-4 p-3 bg-gray-100 rounded text-left text-xs overflow-auto max-h-32">
+            <p>Debug info:</p>
+            {isBrowser && (
+              <pre>
+                {JSON.stringify({
+                  userAgent: navigator.userAgent,
+                  mediaDevices: !!navigator.mediaDevices,
+                  mediaRecorder: !!window.MediaRecorder,
+                  isSecureContext: !!window.isSecureContext,
+                  features: detectMediaFeatures(),
+                  timestamp: new Date().toISOString()
+                }, null, 2)}
+              </pre>
+            )}
+          </div>
+          <button 
+            onClick={() => {
+              console.log('[VideoRecorder] Force browser support check triggered by user');
+              const features = detectMediaFeatures();
+              console.log('[VideoRecorder] Manual check results:', features);
+              alert('Debug info logged to console. Please open developer tools to view.');
+              if (features.mediaDevicesAPI === 'available' && features.mediaRecorderAPI === 'available') {
+                setBrowserSupported(true);
+              }
+            }}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+          >
+            Run Debug Check
+          </button>
         </div>
       </div>
     );
   }
 
   if (isLoading || !isMounted) {
+    console.log('[VideoRecorder] Rendering loading state');
     return (
       <div className="border rounded-lg p-4 bg-white shadow-sm">
         <div className="flex flex-col items-center justify-center h-64">
