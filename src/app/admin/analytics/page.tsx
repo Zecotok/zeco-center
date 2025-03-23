@@ -59,25 +59,13 @@ const AnalyticsDashboard = () => {
   }, [status, router]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get('/api/users');
-        setUsers(response.data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
-
-    if (session?.user?.isAdmin) {
-      fetchUsers();
-    }
-  }, [session]);
-
-  useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const fillMissingDates = (data: MeditationStats[]) => {
+  // Function to fill missing dates with zero values
+  const fillMissingDates = (data: MeditationStats[], currentUsers: Array<{ id: string, email: string }>) => {
+    if (currentUsers.length === 0) return data;
+    
     const filledData: MeditationStats[] = [];
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -90,7 +78,7 @@ const AnalyticsDashboard = () => {
     for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
       const dateStr = date.toISOString().split('T')[0];
       
-      users.forEach(user => {
+      currentUsers.forEach(user => {
         const key = `${dateStr}-${user.id}`;
         const existingData = dataMap.get(key);
         
@@ -113,6 +101,49 @@ const AnalyticsDashboard = () => {
     
     return filledData;
   };
+
+  // Fetch users first
+  useEffect(() => {
+    const fetchUsers = async () => {
+      if (!session?.user?.isAdmin) return;
+      
+      try {
+        const response = await axios.get('/api/users');
+        setUsers(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+
+    fetchUsers();
+  }, [session]);
+
+  // Then fetch stats when users, dates or selected user changes
+  useEffect(() => {
+    const fetchStats = async () => {
+      if (!session?.user?.isAdmin || !isClient) return;
+      
+      try {
+        setLoading(true);
+        const response = await axios.get('/api/meditation/analytics', {
+          params: {
+            startDate: startDate.toISOString(),
+            endDate: endDate.toISOString(),
+            userId: selectedUser || undefined
+          }
+        });
+        
+        const filledStats = fillMissingDates(response.data, users);
+        setStats(filledStats);
+      } catch (error) {
+        console.error('Error fetching stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, [startDate, endDate, selectedUser, users, session, isClient]);
 
   const prepareSessionCountData = (filledStats: MeditationStats[]) => {
     const data: any[] = [];
@@ -173,33 +204,6 @@ const AnalyticsDashboard = () => {
 
     return data;
   };
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.get('/api/meditation/analytics', {
-          params: {
-            startDate: startDate.toISOString(),
-            endDate: endDate.toISOString(),
-            userId: selectedUser || undefined
-          }
-        });
-        console.log('response.data', response.data);
-        const filledStats = fillMissingDates(response.data);
-        console.log('filledStats', filledStats);
-        setStats(filledStats);
-      } catch (error) {
-        console.error('Error fetching stats:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    if (session?.user?.isAdmin) {
-      fetchStats();
-    }
-  }, [startDate, endDate, session, selectedUser]);
 
   if (!session?.user?.isAdmin) {
     return <div>Access Denied</div>;
