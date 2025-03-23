@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { VideoRecorder, VideoList, VideoPlayer } from '@/components/video';
 import { RecordedVideo } from '@/types/videoRecording';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,8 +15,17 @@ enum VideoPageView {
 }
 
 export default function VideosPage() {
+  const router = useRouter();
+  const { data: session, status } = useSession();
   const [currentView, setCurrentView] = useState<VideoPageView>(VideoPageView.LIST);
   const [selectedVideo, setSelectedVideo] = useState<RecordedVideo | null>(null);
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/login");
+    }
+  }, [status, router]);
 
   const handleVideoSaved = (video: RecordedVideo) => {
     setCurrentView(VideoPageView.LIST);
@@ -44,6 +55,23 @@ export default function VideosPage() {
         return <VideoList onVideoSelect={handleVideoSelect} />;
     }
   };
+
+  // Show loading state while checking authentication
+  if (status === "loading") {
+    return (
+      <div className="container mx-auto px-4 py-8 flex justify-center items-center h-64">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render content if not authenticated
+  if (status === "unauthenticated") {
+    return null;
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">

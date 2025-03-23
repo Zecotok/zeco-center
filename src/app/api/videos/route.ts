@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/libs/authConfig';
 import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs-extra';
 import path from 'path';
@@ -9,6 +10,12 @@ import { dbConnect } from '@/libs/dbConnect';
 // GET endpoint to retrieve all videos
 export async function GET(req: NextRequest) {
   try {
+    // Check authentication
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    
     await dbConnect();
     
     const url = new URL(req.url);
@@ -37,7 +44,7 @@ export async function POST(req: NextRequest) {
   try {
     await dbConnect();
     
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -57,7 +64,8 @@ export async function POST(req: NextRequest) {
       filePath,
       fileSize,
       duration,
-      quality
+      quality,
+      userId: session.user.id // Associate video with user
     });
     
     await newVideo.save();

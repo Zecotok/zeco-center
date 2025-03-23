@@ -1,4 +1,3 @@
-
 /* In your globals.css or main stylesheet */
 @import '@fortawesome/fontawesome-free/css/all.min.css';
 
@@ -8,29 +7,105 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0; 
-  --background-start-rgb: 240, 248, 255; 
-  --background-end-rgb: 173, 216, 230; 
-  --primary-blue: 70, 130, 180; 
-  --secondary-blue: 100, 149, 237; 
-  --accent-blue: 30, 144, 255;
+  --primary-color: #4f46e5; /* Indigo color similar to buttons in your app */
+  --primary-hover: #4338ca;
+  --secondary-color: #e5e7eb; /* Light gray for secondary elements */
+  --text-primary: #111827; /* Dark gray for text */
+  --text-secondary: #6b7280; /* Medium gray for secondary text */
+  --background-light: #ffffff;
+  --background-main: #f9fafb;
+  --accent-color: #10b981; /* Teal/green for accents */
+  --error-color: #ef4444; /* Red for errors */
+  --success-color: #22c55e; /* Green for success messages */
+  --border-color: #e5e7eb;
+}
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  min-height: 100vh;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: var(--text-primary);
+  background-color: var(--background-main);
 }
 
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
 
-a,
-button {
-  color: rgb(var(--accent-blue));
-  transition: color 0.3s ease;
+a:hover {
+  text-decoration: underline;
+}
+
+/* Common utility classes */
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.card {
+  background-color: var(--background-light);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+/* Form styling */
+.form-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+}
+
+.form-input:focus {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background-color: #d1d5db;
+}
+
+/* Layout utilities */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
 }
 
 

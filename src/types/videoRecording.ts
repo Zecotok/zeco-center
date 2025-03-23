@@ -6,6 +6,15 @@ export interface VideoQuality {
   frameRate: number;
 }
 
+export interface AudioQuality {
+  id: string;
+  label: string;
+  bitrate: number;
+  sampleRate: number;
+  bitDepth: number;
+  channels: number;
+}
+
 export interface RecordedVideo {
   id: string;
   title: string;
@@ -33,4 +42,11 @@ export enum RecordingStatus {
   STOPPED = 'stopped',
   PROCESSING = 'processing',
   ERROR = 'error'
+}
+
+// Define the RecordingMode enum with the values used in VideoRecorder component
+export enum RecordingMode {
+  AUDIO_ONLY = 'audio_only',
+  SCREEN_SHARE = 'screen_share',
+  VIDEO = 'video'
 } 

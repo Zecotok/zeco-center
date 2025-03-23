@@ -1,4 +1,4 @@
-import { VideoQuality } from '@/types/videoRecording';
+import { VideoQuality, AudioQuality } from '@/types/videoRecording';
 
 export const VIDEO_QUALITY_OPTIONS: VideoQuality[] = [
   {
@@ -31,7 +31,43 @@ export const VIDEO_QUALITY_OPTIONS: VideoQuality[] = [
   }
 ];
 
+export const AUDIO_QUALITY_OPTIONS: AudioQuality[] = [
+  {
+    id: 'audio-low',
+    label: 'Low',
+    bitrate: 64000,
+    sampleRate: 22050,
+    bitDepth: 16,
+    channels: 1
+  },
+  {
+    id: 'audio-medium',
+    label: 'Medium',
+    bitrate: 128000,
+    sampleRate: 44100,
+    bitDepth: 16,
+    channels: 2
+  },
+  {
+    id: 'audio-high',
+    label: 'High',
+    bitrate: 192000,
+    sampleRate: 48000,
+    bitDepth: 24,
+    channels: 2
+  },
+  {
+    id: 'audio-studio',
+    label: 'Studio',
+    bitrate: 320000,
+    sampleRate: 96000, 
+    bitDepth: 24,
+    channels: 2
+  }
+];
+
 export const DEFAULT_QUALITY_ID = 'medium';
+export const DEFAULT_AUDIO_QUALITY_ID = 'audio-low';
 
 export const getQualityById = (id: string): VideoQuality => {
   const quality = VIDEO_QUALITY_OPTIONS.find(q => q.id === id);
@@ -39,4 +75,9 @@ export const getQualityById = (id: string): VideoQuality => {
     return VIDEO_QUALITY_OPTIONS.find(q => q.id === DEFAULT_QUALITY_ID)!;
   }
   return quality;
+};
+
+export const getAudioQualityById = (id: string): AudioQuality => {
+  const quality = AUDIO_QUALITY_OPTIONS.find(q => q.id === id);
+  return quality || AUDIO_QUALITY_OPTIONS.find(q => q.id === DEFAULT_AUDIO_QUALITY_ID)!;
 }; 

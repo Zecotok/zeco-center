@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/libs/authConfig';
 import fs from 'fs-extra';
 import path from 'path';
 import Video from '@/models/Video';
@@ -9,6 +11,12 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    // Check authentication
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    
     await dbConnect();
     
     const { id } = params;
@@ -16,6 +24,12 @@ export async function GET(
     
     if (!video) {
       return NextResponse.json({ error: 'Video not found' }, { status: 404 });
+    }
+    
+    // Check if user has access to this video
+    // If the video has a userId, check if it belongs to the current user or if user is admin
+    if (video.userId && video.userId.toString() !== session.user.id && !session.user.isAdmin) {
+      return NextResponse.json({ error: 'You are not authorized to access this video' }, { status: 403 });
     }
     
     const filePath = path.join(process.cwd(), video.filePath);

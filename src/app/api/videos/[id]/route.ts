@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
+import { authOptions } from '@/libs/authConfig';
 import fs from 'fs-extra';
 import path from 'path';
 import Video from '@/models/Video';
@@ -11,6 +12,12 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
+    // Check authentication
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    
     await dbConnect();
     
     const { id } = params;
@@ -35,7 +42,7 @@ export async function DELETE(
   try {
     await dbConnect();
     
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -45,6 +52,11 @@ export async function DELETE(
     
     if (!video) {
       return NextResponse.json({ error: 'Video not found' }, { status: 404 });
+    }
+    
+    // Check if the user owns this video
+    if (video.userId && video.userId.toString() !== session.user.id && !session.user.isAdmin) {
+      return NextResponse.json({ error: 'You are not authorized to delete this video' }, { status: 403 });
     }
     
     // Delete the video file from the uploads folder
@@ -71,7 +83,7 @@ export async function PATCH(
   try {
     await dbConnect();
     
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -84,15 +96,22 @@ export async function PATCH(
       return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
     
+    // Get the video to check ownership
+    const video = await Video.findOne({ id });
+    if (!video) {
+      return NextResponse.json({ error: 'Video not found' }, { status: 404 });
+    }
+    
+    // Check if the user owns this video
+    if (video.userId && video.userId.toString() !== session.user.id && !session.user.isAdmin) {
+      return NextResponse.json({ error: 'You are not authorized to update this video' }, { status: 403 });
+    }
+    
     const updatedVideo = await Video.findOneAndUpdate(
       { id },
       { title, description, updatedAt: new Date() },
       { new: true }
     );
-    
-    if (!updatedVideo) {
-      return NextResponse.json({ error: 'Video not found' }, { status: 404 });
-    }
     
     return NextResponse.json({ success: true, video: updatedVideo }, { status: 200 });
   } catch (error) {
