@@ -36,6 +36,9 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
   const [fileSize, setFileSize] = useState<number | null>(null);
   const [fileSizePerMinute, setFileSizePerMinute] = useState<number | null>(null);
   
+  // Add this state to track stopping progress
+  const [isStopping, setIsStopping] = useState<boolean>(false);
+  
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const recordingStartTime = useRef<number | null>(null);
@@ -313,6 +316,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
         }
         
         setRecordingStatus(RecordingStatus.STOPPED);
+        setIsStopping(false);
       };
       
       mediaRecorder.onpause = () => setRecordingStatus(RecordingStatus.PAUSED);
@@ -335,10 +339,48 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
   
   // Stop the current recording
   const stopRecording = () => {
+    setIsStopping(true);
+    
     if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
-      mediaRecorderRef.current.stop();
-      stopMediaTracks();
+      try {
+        mediaRecorderRef.current.stop();
+        stopMediaTracks();
+      } catch (err) {
+        console.error('Error stopping recording:', err);
+        // Fallback in case of error
+        emergencyStopRecording();
+      }
+    } else {
+      // If the media recorder isn't available or already inactive
+      emergencyStopRecording();
     }
+    
+    // Reset the stopping indicator after a timeout
+    setTimeout(() => {
+      setIsStopping(false);
+    }, 1000);
+  };
+  
+  // Emergency stop function in case the normal stop doesn't work
+  const emergencyStopRecording = () => {
+    console.log('Emergency stop activated');
+    
+    // Force stop all media tracks
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => {
+        track.stop();
+      });
+      streamRef.current = null;
+    }
+    
+    // Force reset of MediaRecorder
+    mediaRecorderRef.current = null;
+    
+    // Clean up any recorded chunks
+    recordedChunksRef.current = [];
+    
+    // Reset state to stopped
+    setRecordingStatus(RecordingStatus.STOPPED);
   };
   
   // Pause the current recording
@@ -565,24 +607,51 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
           </button>
         </div>
 
+        {/* Recording Mode Selection - Moved outside of settings panel */}
+        <div className="flex justify-center space-x-3 mb-2">
+          <button
+            onClick={() => recordingStatus === RecordingStatus.IDLE && setRecordingMode(RecordingMode.AUDIO_ONLY)}
+            className={`px-3 py-2 rounded-md text-sm flex items-center ${
+              recordingMode === RecordingMode.AUDIO_ONLY 
+                ? 'bg-indigo-100 text-indigo-700 border border-indigo-300' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+            disabled={recordingStatus !== RecordingStatus.IDLE}
+          >
+            <FontAwesomeIcon icon={faMicrophone} className="mr-2" />
+            Audio Only
+          </button>
+          
+          <button
+            onClick={() => recordingStatus === RecordingStatus.IDLE && setRecordingMode(RecordingMode.SCREEN_SHARE)}
+            className={`px-3 py-2 rounded-md text-sm flex items-center ${
+              recordingMode === RecordingMode.SCREEN_SHARE 
+                ? 'bg-indigo-100 text-indigo-700 border border-indigo-300' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+            disabled={recordingStatus !== RecordingStatus.IDLE}
+          >
+            <FontAwesomeIcon icon={faDesktop} className="mr-2" />
+            Screen Sharing
+          </button>
+          
+          <button
+            onClick={() => recordingStatus === RecordingStatus.IDLE && setRecordingMode(RecordingMode.VIDEO)}
+            className={`px-3 py-2 rounded-md text-sm flex items-center ${
+              recordingMode === RecordingMode.VIDEO 
+                ? 'bg-indigo-100 text-indigo-700 border border-indigo-300' 
+                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+            }`}
+            disabled={recordingStatus !== RecordingStatus.IDLE}
+          >
+            <FontAwesomeIcon icon={faVideo} className="mr-2" />
+            Video (Camera)
+          </button>
+        </div>
+
         {isOptionsOpen && (
           <div className="bg-gray-50 p-3 rounded-md space-y-3">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Recording Mode
-              </label>
-              <select
-                value={recordingMode}
-                onChange={(e) => setRecordingMode(e.target.value as RecordingMode)}
-                className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                disabled={recordingStatus !== RecordingStatus.IDLE}
-              >
-                <option value={RecordingMode.AUDIO_ONLY}>Audio Only</option>
-                <option value={RecordingMode.SCREEN_SHARE}>Screen Sharing</option>
-                <option value={RecordingMode.VIDEO}>Video (Camera)</option>
-              </select>
-            </div>
-            
+            {/* Remove Recording Mode selection from here since it's now outside */}
             {recordingMode !== RecordingMode.AUDIO_ONLY && (
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -639,90 +708,92 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
           </div>
         )}
 
-        {/* Media Preview */}
-        <div className="border rounded-md bg-black aspect-video flex items-center justify-center overflow-hidden">
-          {recordingMode !== RecordingMode.AUDIO_ONLY ? (
-            // Video preview
-            recordingStatus === RecordingStatus.STOPPED && mediaBlobUrl ? (
-              <video
-                ref={videoPreviewRef}
-                controls
-                className="w-full h-full"
-                src={mediaBlobUrl}
-              />
-            ) : (
-              <div className="relative w-full h-full">
+        {/* Media Preview - Made smaller with max-width */}
+        <div className="mx-auto w-full" style={{ maxWidth: '500px' }}>
+          <div className="border rounded-md bg-black aspect-video flex items-center justify-center overflow-hidden">
+            {recordingMode !== RecordingMode.AUDIO_ONLY ? (
+              // Video preview
+              recordingStatus === RecordingStatus.STOPPED && mediaBlobUrl ? (
                 <video
                   ref={videoPreviewRef}
-                  autoPlay
-                  playsInline
-                  muted
-                  className={`w-full h-full ${recordingStatus === RecordingStatus.RECORDING ? 'border-2 border-red-500' : ''}`}
+                  controls
+                  className="w-full h-full"
+                  src={mediaBlobUrl}
                 />
-                
-                {recordingStatus !== RecordingStatus.RECORDING && recordingStatus !== RecordingStatus.PAUSED && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-center p-4">
-                    <div>
-                      <FontAwesomeIcon icon={recordingMode === RecordingMode.SCREEN_SHARE ? faDesktop : faVideo} size="3x" />
-                      <p className="mt-2">
-                        {recordingStatus === RecordingStatus.ERROR
-                          ? "Error occurred"
-                          : `Click 'Start Recording' to begin ${recordingMode === RecordingMode.SCREEN_SHARE ? 'screen sharing' : 'video recording'}`}
-                      </p>
+              ) : (
+                <div className="relative w-full h-full">
+                  <video
+                    ref={videoPreviewRef}
+                    autoPlay
+                    playsInline
+                    muted
+                    className={`w-full h-full ${recordingStatus === RecordingStatus.RECORDING ? 'border-2 border-red-500' : ''}`}
+                  />
+                  
+                  {recordingStatus !== RecordingStatus.RECORDING && recordingStatus !== RecordingStatus.PAUSED && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white text-center p-4">
+                      <div>
+                        <FontAwesomeIcon icon={recordingMode === RecordingMode.SCREEN_SHARE ? faDesktop : faVideo} size="3x" />
+                        <p className="mt-2">
+                          {recordingStatus === RecordingStatus.ERROR
+                            ? "Error occurred"
+                            : `Click 'Start Recording' to begin ${recordingMode === RecordingMode.SCREEN_SHARE ? 'screen sharing' : 'video recording'}`}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )}
-                
-                {recordingStatus === RecordingStatus.RECORDING && (
-                  <div className="absolute top-2 right-2 bg-red-600 px-2 py-1 rounded-md text-white text-sm font-medium animate-pulse">
-                    Recording...
-                  </div>
-                )}
-                
-                {recordingStatus === RecordingStatus.PAUSED && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white">
-                    <div className="text-center">
-                      <p className="text-xl font-bold">Recording Paused</p>
+                  )}
+                  
+                  {recordingStatus === RecordingStatus.RECORDING && (
+                    <div className="absolute top-2 right-2 bg-red-600 px-2 py-1 rounded-md text-white text-sm font-medium animate-pulse">
+                      Recording...
                     </div>
+                  )}
+                  
+                  {recordingStatus === RecordingStatus.PAUSED && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-60 text-white">
+                      <div className="text-center">
+                        <p className="text-xl font-bold">Recording Paused</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )
+            ) : (
+              // Audio preview
+              <div className="w-full h-full flex flex-col items-center justify-center text-white">
+                {recordingStatus === RecordingStatus.STOPPED && mediaBlobUrl ? (
+                  <div className="text-center w-full max-w-md">
+                    <div className="py-5">
+                      <FontAwesomeIcon icon={faMicrophone} size="3x" className="mb-4" />
+                      <h3 className="text-lg font-medium mb-2">Audio Recording</h3>
+                    </div>
+                    <audio 
+                      ref={audioPreviewRef}
+                      controls 
+                      className="w-full" 
+                      src={mediaBlobUrl}
+                    />
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <FontAwesomeIcon 
+                      icon={faMicrophone} 
+                      size="3x" 
+                      className={`mb-4 ${recordingStatus === RecordingStatus.RECORDING ? 'text-red-500 animate-pulse' : ''}`} 
+                    />
+                    <p className="text-lg">
+                      {recordingStatus === RecordingStatus.RECORDING
+                        ? "Recording audio..."
+                        : recordingStatus === RecordingStatus.PAUSED
+                        ? "Recording paused"
+                        : "Click 'Start Recording' to begin audio recording"}
+                    </p>
+                    <audio ref={audioPreviewRef} className="hidden" />
                   </div>
                 )}
               </div>
-            )
-          ) : (
-            // Audio preview
-            <div className="w-full h-full flex flex-col items-center justify-center text-white">
-              {recordingStatus === RecordingStatus.STOPPED && mediaBlobUrl ? (
-                <div className="text-center w-full max-w-md">
-                  <div className="py-5">
-                    <FontAwesomeIcon icon={faMicrophone} size="3x" className="mb-4" />
-                    <h3 className="text-lg font-medium mb-2">Audio Recording</h3>
-                  </div>
-                  <audio 
-                    ref={audioPreviewRef}
-                    controls 
-                    className="w-full" 
-                    src={mediaBlobUrl}
-                  />
-                </div>
-              ) : (
-                <div className="text-center">
-                  <FontAwesomeIcon 
-                    icon={faMicrophone} 
-                    size="3x" 
-                    className={`mb-4 ${recordingStatus === RecordingStatus.RECORDING ? 'text-red-500 animate-pulse' : ''}`} 
-                  />
-                  <p className="text-lg">
-                    {recordingStatus === RecordingStatus.RECORDING
-                      ? "Recording audio..."
-                      : recordingStatus === RecordingStatus.PAUSED
-                      ? "Recording paused"
-                      : "Click 'Start Recording' to begin audio recording"}
-                  </p>
-                  <audio ref={audioPreviewRef} className="hidden" />
-                </div>
-              )}
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Recording Controls */}
@@ -731,7 +802,7 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
             <button
               onClick={handleStartRecording}
               className="flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-              disabled={recordingStatus === RecordingStatus.PROCESSING || recordingStatus === RecordingStatus.ERROR}
+              disabled={recordingStatus === RecordingStatus.PROCESSING || recordingStatus === RecordingStatus.ERROR || isStopping}
             >
               <FontAwesomeIcon 
                 icon={
@@ -760,11 +831,11 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
               </button>
               <button
                 onClick={handleStopRecording}
-                className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
-                disabled={recordingStatus === RecordingStatus.PROCESSING || recordingStatus === RecordingStatus.ERROR}
+                className={`flex-1 ${isStopping ? 'bg-red-600 animate-pulse' : 'bg-gray-600'} text-white px-4 py-2 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2`}
+                disabled={recordingStatus === RecordingStatus.PROCESSING || recordingStatus === RecordingStatus.ERROR || isStopping}
               >
                 <FontAwesomeIcon icon={faStop} className="mr-2" />
-                Stop
+                {isStopping ? "Stopping..." : "Stop"}
               </button>
             </>
           )}
@@ -850,4 +921,4 @@ const VideoRecorder: React.FC<VideoRecorderProps> = ({ onVideoSaved }) => {
   );
 };
 
-export default VideoRecorder; 
+export default VideoRecorder;   

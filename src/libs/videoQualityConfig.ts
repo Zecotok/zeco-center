@@ -6,28 +6,33 @@ export const VIDEO_QUALITY_OPTIONS: VideoQuality[] = [
     label: 'Low (480p)',
     width: 854,
     height: 480,
-    frameRate: 15
+    frameRate: 15,
+    bitrate: 1000000/60
+
   },
   {
     id: 'medium',
     label: 'Medium (720p)',
     width: 1280,
     height: 720,
-    frameRate: 25
+    frameRate: 25,
+    bitrate: 2000000/60
   },
   {
     id: 'high',
     label: 'High (1080p)',
     width: 1920,
     height: 1080,
-    frameRate: 30
+    frameRate: 30,
+    bitrate: 3000000/60
   },
   {
     id: 'ultra',
     label: 'Ultra (2K)',
     width: 2560,
     height: 1440,
-    frameRate: 30
+    frameRate: 30,
+    bitrate: 4000000/60
   }
 ];
 

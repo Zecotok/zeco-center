@@ -4,6 +4,7 @@ export interface VideoQuality {
   width: number;
   height: number;
   frameRate: number;
+  bitrate: number;
 }
 
 export interface AudioQuality {
