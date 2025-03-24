@@ -81,8 +81,8 @@ export async function POST(req: NextRequest) {
     const bytes = await mediaFile.arrayBuffer();
     await writeFile(filepath, new Uint8Array(bytes));
     
-    // Create comment with media URL
-    const mediaUrl = `/${TASK_MEDIA_DIR}/${filename}`;
+    // Create comment with media URL - use the API route instead of direct path
+    const mediaUrl = `/api/uploads/${TASK_MEDIA_DIR.replace('uploads/', '')}/${filename}`;
     const comment = new TaskComment({
       task: taskId,
       author: userId,

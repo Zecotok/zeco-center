@@ -23,6 +23,8 @@ import {
   faDesktop,
   faTimes
 } from '@fortawesome/free-solid-svg-icons';
+import { MediaRecorder } from '@/components/video';
+import { RecordingMode } from '@/types/videoRecording';
 
 // Task status component
 const StatusBadge = ({ status }: { status: string }) => {
@@ -71,14 +73,14 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
   const [users, setUsers] = useState<any[]>([]);
   const [comment, setComment] = useState('');
   const [commentType, setCommentType] = useState<'text' | 'audio' | 'video' | 'screenshare'>('text');
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
-  const [isRecording, setIsRecording] = useState(false);
   const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [recordedMediaUrl, setRecordedMediaUrl] = useState<string | null>(null);
   const [submittingComment, setSubmittingComment] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [mediaDuration, setMediaDuration] = useState(0);
+  const [mediaFileSize, setMediaFileSize] = useState(0);
 
   // Fetch task data when component mounts
   useEffect(() => {
@@ -218,85 +220,35 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
     }
   };
 
-  // Function to start recording (audio/video)
-  const startRecording = async () => {
-    try {
-      // Clear any previous recordings
-      if (recordedMediaUrl) {
-        URL.revokeObjectURL(recordedMediaUrl);
-        setRecordedMediaUrl(null);
-      }
-      setRecordedBlob(null);
-      
-      // Get the appropriate media stream based on comment type
-      let stream: MediaStream;
-      if (commentType === 'audio') {
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      } else if (commentType === 'video') {
-        stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
-      } else if (commentType === 'screenshare') {
-        stream = await navigator.mediaDevices.getDisplayMedia({ audio: true, video: true });
-      } else {
-        throw new Error('Invalid media type for recording');
-      }
-      
-      // Create a media recorder and set up event handlers
-      const chunks: BlobPart[] = [];
-      const recorder = new MediaRecorder(stream);
-      
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          chunks.push(e.data);
-        }
-      };
-      
-      recorder.onstop = () => {
-        // Create a blob from the recorded chunks
-        const mimeType = commentType === 'audio' ? 'audio/webm' : 'video/webm';
-        const recordedBlob = new Blob(chunks, { type: mimeType });
-        setRecordedBlob(recordedBlob);
-        
-        // Create a URL for the blob and set it
-        const url = URL.createObjectURL(recordedBlob);
-        setRecordedMediaUrl(url);
-        
-        // Stop all tracks in the stream
-        stream.getTracks().forEach(track => track.stop());
-        
-        setIsRecording(false);
-      };
-      
-      // Start recording
-      recorder.start();
-      setMediaRecorder(recorder);
-      setIsRecording(true);
-      
-    } catch (err) {
-      console.error('Error starting recording:', err);
-      setError('Failed to access media devices. Please make sure you have granted the necessary permissions.');
-    }
-  };
-
-  // Function to stop recording
-  const stopRecording = () => {
-    if (mediaRecorder && isRecording) {
-      mediaRecorder.stop();
-    }
+  // Function to handle capturing media from the MediaRecorder component
+  const handleMediaCaptured = (blob: Blob, duration: number, fileSize: number) => {
+    setRecordedBlob(blob);
+    setMediaDuration(duration);
+    setMediaFileSize(fileSize);
+    
+    // Create a URL for the blob
+    const url = URL.createObjectURL(blob);
+    setRecordedMediaUrl(url);
   };
   
-  // Function to discard the recording
-  const discardRecording = () => {
-    if (isRecording && mediaRecorder) {
-      mediaRecorder.stop();
-    }
-    
+  // Function to handle canceling the recording
+  const handleCancelRecording = () => {
     if (recordedMediaUrl) {
       URL.revokeObjectURL(recordedMediaUrl);
       setRecordedMediaUrl(null);
     }
     
     setRecordedBlob(null);
-    setIsRecording(false);
+  };
+  
+  // Function to discard the recording
+  const discardRecording = () => {
+    if (recordedMediaUrl) {
+      URL.revokeObjectURL(recordedMediaUrl);
+      setRecordedMediaUrl(null);
+    }
+    
+    setRecordedBlob(null);
   };
 
   const handleSubmitComment = async (e: React.FormEvent) => {
@@ -335,10 +287,13 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
         const data = await res.json();
         
         // Update comments in the task
-        setTask(prev => ({
-          ...prev,
-          comments: [...(prev.comments || []), data.comment]
-        }));
+        setTask((prev: any) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            comments: [...(prev.comments || []), data.comment]
+          };
+        });
         
         setComment('');
       } 
@@ -363,10 +318,13 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
         const data = await res.json();
         
         // Update comments in the task
-        setTask(prev => ({
-          ...prev,
-          comments: [...(prev.comments || []), data.comment]
-        }));
+        setTask((prev: any) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            comments: [...(prev.comments || []), data.comment]
+          };
+        });
         
         // Clean up media recording
         if (recordedMediaUrl) {
@@ -802,39 +760,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       {/* Media comment input (audio, video, screenshare) */}
                       {(commentType === 'audio' || commentType === 'video' || commentType === 'screenshare') && (
                         <div className="space-y-3">
-                          {/* Recording controls */}
-                          <div className="flex items-center space-x-2">
-                            {!isRecording && !recordedMediaUrl && (
-                              <button
-                                type="button"
-                                onClick={startRecording}
-                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200 flex items-center"
-                              >
-                                <FontAwesomeIcon 
-                                  icon={commentType === 'audio' ? faMicrophone : commentType === 'video' ? faVideo : faDesktop} 
-                                  className="mr-2" 
-                                />
-                                Start Recording
-                              </button>
-                            )}
-                            
-                            {isRecording && (
-                              <>
-                                <div className="animate-pulse text-red-600 mr-2">●</div>
-                                <span className="text-gray-700">Recording {commentType === 'audio' ? 'audio' : 'video'}...</span>
-                                <button
-                                  type="button"
-                                  onClick={stopRecording}
-                                  className="ml-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition duration-200"
-                                >
-                                  Stop
-                                </button>
-                              </>
-                            )}
-                          </div>
-                          
-                          {/* Preview recorded media */}
-                          {recordedMediaUrl && (
+                          {recordedMediaUrl ? (
                             <div className="border rounded-lg p-3 bg-gray-50">
                               <div className="flex justify-between items-center mb-2">
                                 <h3 className="font-medium">Preview</h3>
@@ -865,6 +791,22 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                                 {submittingComment ? 'Sending...' : `Send ${commentType === 'audio' ? 'Audio' : commentType === 'video' ? 'Video' : 'Screen Recording'}`}
                               </button>
                             </div>
+                          ) : (
+                            <MediaRecorder 
+                              key={`media-recorder-${commentType}`}
+                              onMediaCaptured={handleMediaCaptured}
+                              onCancel={handleCancelRecording}
+                              uploadDirectory="/task-media"
+                              initialMode={
+                                commentType === 'audio' 
+                                  ? RecordingMode.AUDIO_ONLY 
+                                  : commentType === 'video' 
+                                    ? RecordingMode.VIDEO 
+                                    : RecordingMode.SCREEN_SHARE
+                              }
+                              showModeSelector={false}
+                              className="border-0 shadow"
+                            />
                           )}
                         </div>
                       )}
