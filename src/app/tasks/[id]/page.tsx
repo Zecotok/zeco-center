@@ -385,10 +385,12 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
       case 'video':
       case 'screenshare':
         return (
-          <video controls className="w-full rounded">
-            <source src={mediaUrl} type="video/webm" />
-            Your browser does not support the video element.
-          </video>
+          <div className="flex justify-center">
+            <video controls className="w-1/2 rounded" style={{ maxHeight: '50vh' }}>
+              <source src={mediaUrl} type="video/webm" />
+              Your browser does not support the video element.
+            </video>
+          </div>
         );
         
       default:
@@ -750,9 +752,11 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                           <source src={recordedMediaUrl} type="audio/webm" />
                         </audio>
                       ) : (
-                        <video controls className="w-full mb-3 rounded">
-                          <source src={recordedMediaUrl} type="video/webm" />
-                        </video>
+                        <div className="flex justify-center mb-3">
+                          <video controls className="w-1/2 rounded" style={{ maxHeight: '50vh' }}>
+                            <source src={recordedMediaUrl} type="video/webm" />
+                          </video>
+                        </div>
                       )}
                       
                       <button
