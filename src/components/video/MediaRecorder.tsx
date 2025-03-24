@@ -784,11 +784,11 @@ const MediaRecorderComponent: React.FC<MediaRecorderProps> = ({
             </div>
           </div>
         ) : (
-          <div className="aspect-video bg-black rounded-md overflow-hidden relative">
+          <div className="relative w-full max-h-[150px] h-[150px] overflow-hidden bg-black rounded">
             <video 
               ref={videoPreviewRef} 
               controls={recordingStatus === RecordingStatus.STOPPED} 
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             >
               Your browser does not support the video element.
             </video>

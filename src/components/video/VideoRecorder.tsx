@@ -1085,7 +1085,7 @@ const VideoRecorderComponent: React.FC<VideoRecorderProps> = ({ onVideoSaved }) 
 
         {/* Media Preview - Made smaller with max-width */}
         <div className="mx-auto w-full" style={{ maxWidth: '500px' }}>
-          <div className="border rounded-md bg-black aspect-video flex items-center justify-center overflow-hidden">
+          <div className="border rounded-md bg-black h-[180px] flex items-center justify-center overflow-hidden">
             {recordingMode !== RecordingMode.AUDIO_ONLY ? (
               // Video preview
               recordingStatus === RecordingStatus.STOPPED && mediaBlobUrl ? (

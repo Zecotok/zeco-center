@@ -262,7 +262,7 @@ const VideoList: React.FC<VideoListProps> = ({ onVideoSelect }) => {
                 className="border rounded-md overflow-hidden hover:shadow-md transition-shadow"
               >
                 <div
-                  className="aspect-video bg-gray-100 cursor-pointer"
+                  className="h-[150px] bg-gray-100 cursor-pointer"
                   onClick={() => onVideoSelect(video)}
                 >
                   {/* Video Thumbnail - We're using a placeholder */}

@@ -210,7 +210,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, onClose }) => {
         
         <div 
           ref={containerRef}
-          className={`relative bg-black ${isFullscreen ? 'w-full h-full' : 'aspect-video'}`}
+          className={`relative bg-black ${isFullscreen ? 'w-full h-full' : 'h-[150px]'}`}
         >
           {loading && (
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white">
@@ -226,7 +226,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, onClose }) => {
           
           <video
             ref={videoRef}
-            className="w-full h-full"
+            className="w-full h-full object-contain"
             controls={false}
             preload="metadata"
           />
