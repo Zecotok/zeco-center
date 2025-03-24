@@ -30,16 +30,16 @@ import { RecordingMode } from '@/types/videoRecording';
 const StatusBadge = ({ status }: { status: string }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'COMPLETED': return 'bg-green-100 text-green-800';
-      case 'IN_PROGRESS': return 'bg-blue-100 text-blue-800';
-      case 'NOT_STARTED': return 'bg-gray-100 text-gray-800';
-      case 'BLOCKED': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'COMPLETED': return 'bg-green-100 text-green-800 border border-green-200';
+      case 'IN_PROGRESS': return 'bg-blue-100 text-blue-800 border border-blue-200';
+      case 'NOT_STARTED': return 'bg-gray-100 text-gray-800 border border-gray-200';
+      case 'BLOCKED': return 'bg-red-100 text-red-800 border border-red-200';
+      default: return 'bg-gray-100 text-gray-800 border border-gray-200';
     }
   };
 
   return (
-    <span className={`text-sm font-medium px-2.5 py-0.5 rounded ${getStatusColor(status)}`}>
+    <span className={`text-sm font-medium px-3 py-1 rounded-full ${getStatusColor(status)}`}>
       {status.replace('_', ' ')}
     </span>
   );
@@ -49,15 +49,15 @@ const StatusBadge = ({ status }: { status: string }) => {
 const PriorityBadge = ({ priority }: { priority: string }) => {
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'HIGH': return 'bg-red-100 text-red-800';
-      case 'MEDIUM': return 'bg-yellow-100 text-yellow-800';
-      case 'LOW': return 'bg-green-100 text-green-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'HIGH': return 'bg-red-100 text-red-800 border border-red-200';
+      case 'MEDIUM': return 'bg-yellow-100 text-yellow-800 border border-yellow-200';
+      case 'LOW': return 'bg-green-100 text-green-800 border border-green-200';
+      default: return 'bg-gray-100 text-gray-800 border border-gray-200';
     }
   };
 
   return (
-    <span className={`text-sm font-medium px-2.5 py-0.5 rounded ${getPriorityColor(priority)}`}>
+    <span className={`text-sm font-medium px-3 py-1 rounded-full ${getPriorityColor(priority)}`}>
       {priority}
     </span>
   );
@@ -430,12 +430,12 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-8 font-sans">
       <div className="max-w-4xl mx-auto">
         {/* Back button */}
         <div className="mb-6">
           <Link href="/tasks/taskboard">
-            <button className="inline-flex items-center text-blue-600 hover:text-blue-800">
+            <button className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200 font-medium">
               <FontAwesomeIcon icon={faArrowLeft} className="mr-2" />
               Back to Taskboard
             </button>
@@ -444,19 +444,19 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
         
         {/* Success message */}
         {successMessage && (
-          <div className="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4" role="alert">
+          <div className="mb-6 bg-green-50 border-l-4 border-green-500 text-green-700 p-4 rounded-r shadow-sm" role="alert">
             <div className="flex items-center">
-              <FontAwesomeIcon icon={faCheckCircle} className="mr-2" />
-              <span>{successMessage}</span>
+              <FontAwesomeIcon icon={faCheckCircle} className="mr-2 text-green-500" />
+              <span className="font-medium">{successMessage}</span>
             </div>
           </div>
         )}
         
         {/* Error message */}
         {error && (
-          <div className="mb-6 bg-red-100 border-l-4 border-red-500 text-red-700 p-4" role="alert">
+          <div className="mb-6 bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-r shadow-sm" role="alert">
             <div className="flex items-center">
-              <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2" />
+              <FontAwesomeIcon icon={faExclamationTriangle} className="mr-2 text-red-500" />
               <span className="font-medium">Error:</span>
               <span className="ml-1">{error}</span>
             </div>
@@ -464,9 +464,9 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
         )}
         
         {/* Task details card */}
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6 transition-all duration-200 hover:shadow-md">
           {/* Task header */}
-          <div className="p-6 border-b border-gray-200">
+          <div className="p-6 border-b border-gray-100">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div>
                 {isEditing ? (
@@ -475,33 +475,33 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                     name="title"
                     value={editedTask.title}
                     onChange={handleInputChange}
-                    className="text-2xl font-bold w-full border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
+                    className="text-2xl font-bold w-full border border-gray-200 rounded-lg shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-4 py-2"
                   />
                 ) : (
                   <h1 className="text-2xl font-bold text-gray-800">{task?.title}</h1>
                 )}
                 
-                <div className="flex flex-wrap gap-2 mt-2">
+                <div className="flex flex-wrap gap-2 mt-3">
                   <StatusBadge status={task?.status} />
                   <PriorityBadge priority={task?.priority} />
                 </div>
               </div>
               
               {!isEditing && (
-                <div className="flex space-x-2">
+                <div className="flex space-x-3">
                   <button 
                     onClick={() => setIsEditing(true)}
-                    className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200 flex items-center"
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center shadow-sm"
                   >
-                    <FontAwesomeIcon icon={faEdit} className="mr-1" />
+                    <FontAwesomeIcon icon={faEdit} className="mr-2" />
                     Edit
                   </button>
                   
                   <button 
                     onClick={handleDeleteTask}
-                    className={`px-3 py-1 ${confirmDelete ? 'bg-red-600' : 'bg-gray-600'} text-white rounded hover:bg-red-700 transition duration-200 flex items-center`}
+                    className={`px-4 py-2 ${confirmDelete ? 'bg-red-600' : 'bg-gray-600'} text-white rounded-lg hover:bg-red-700 transition-colors duration-200 flex items-center shadow-sm`}
                   >
-                    <FontAwesomeIcon icon={faTrash} className="mr-1" />
+                    <FontAwesomeIcon icon={faTrash} className="mr-2" />
                     {confirmDelete ? 'Confirm Delete' : 'Delete'}
                   </button>
                 </div>
@@ -513,22 +513,23 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
           <div className="p-6">
             {isEditing ? (
               <form onSubmit={handleSubmitEdit}>
-                <div className="mb-4">
-                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                <div className="mb-5">
+                  <label className="block text-gray-700 text-sm font-semibold mb-2">
                     Description
                   </label>
                   <textarea
                     name="description"
                     value={editedTask.description || ''}
                     onChange={handleInputChange}
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    className="shadow-sm border border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-colors duration-200"
                     rows={4}
+                    placeholder="Add a description..."
                   />
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-5">
                   <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                    <label className="block text-gray-700 text-sm font-semibold mb-2">
                       Due Date
                     </label>
                     <input
@@ -536,12 +537,12 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       name="dueDate"
                       value={editedTask.dueDate ? new Date(editedTask.dueDate).toISOString().split('T')[0] : ''}
                       onChange={handleInputChange}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow-sm border border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-colors duration-200"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                    <label className="block text-gray-700 text-sm font-semibold mb-2">
                       Assigned To
                     </label>
                     <select
@@ -549,7 +550,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       multiple
                       value={editedTask.assignedTo?.map((user: any) => user._id || user) || []}
                       onChange={handleAssigneeChange}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow-sm border border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-colors duration-200"
                     >
                       {users.map(user => (
                         <option key={user.id} value={user.id}>
@@ -557,20 +558,20 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                         </option>
                       ))}
                     </select>
-                    <p className="text-xs text-gray-500 mt-1">Hold Ctrl (or Cmd) to select multiple users</p>
+                    <p className="text-xs text-gray-500 mt-1 italic">Hold Ctrl (or Cmd) to select multiple users</p>
                   </div>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
                   <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                    <label className="block text-gray-700 text-sm font-semibold mb-2">
                       Status
                     </label>
                     <select
                       name="status"
                       value={editedTask.status}
                       onChange={handleInputChange}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow-sm border border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-colors duration-200"
                     >
                       <option value="NOT_STARTED">Not Started</option>
                       <option value="IN_PROGRESS">In Progress</option>
@@ -580,14 +581,14 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                   </div>
                   
                   <div>
-                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                    <label className="block text-gray-700 text-sm font-semibold mb-2">
                       Priority
                     </label>
                     <select
                       name="priority"
                       value={editedTask.priority}
                       onChange={handleInputChange}
-                      className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                      className="shadow-sm border border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-colors duration-200"
                     >
                       <option value="HIGH">High</option>
                       <option value="MEDIUM">Medium</option>
@@ -596,21 +597,21 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                   </div>
                 </div>
                 
-                <div className="flex justify-end space-x-2">
+                <div className="flex justify-end space-x-3">
                   <button
                     type="button"
                     onClick={() => {
                       setIsEditing(false);
                       setEditedTask(task);
                     }}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition duration-150"
+                    className="px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors duration-200 font-medium"
                   >
                     Cancel
                   </button>
                   
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200"
+                    className="px-5 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 shadow-sm font-medium"
                     disabled={loading}
                   >
                     {loading ? 'Saving...' : 'Save Changes'}
@@ -619,19 +620,21 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
               </form>
             ) : (
               <div>
-                <div className="mb-6">
-                  <h2 className="text-lg font-medium text-gray-800 mb-2">Description</h2>
-                  <p className="text-gray-600 whitespace-pre-wrap">{task?.description || 'No description provided'}</p>
+                <div className="mb-8">
+                  <h2 className="text-xl font-semibold text-gray-800 mb-3 pb-2 border-b border-gray-100">Description</h2>
+                  <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{task?.description || 'No description provided'}</p>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                   <div>
-                    <h2 className="text-lg font-medium text-gray-800 mb-2">Details</h2>
-                    <ul className="space-y-3">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-100">Details</h2>
+                    <ul className="space-y-4">
                       <li className="flex items-start">
-                        <FontAwesomeIcon icon={faCalendarAlt} className="text-gray-500 mt-1 mr-3" />
+                        <div className="bg-blue-50 p-2 rounded-full mr-3">
+                          <FontAwesomeIcon icon={faCalendarAlt} className="text-blue-500" />
+                        </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-600">Due Date</p>
+                          <p className="text-sm font-semibold text-gray-600 mb-1">Due Date</p>
                           <p className={`${isOverdue(task?.dueDate) && task?.status !== 'COMPLETED' ? 'text-red-600 font-semibold' : 'text-gray-800'}`}>
                             {formatDate(task?.dueDate)}
                           </p>
@@ -639,17 +642,21 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       </li>
                       
                       <li className="flex items-start">
-                        <FontAwesomeIcon icon={faFlag} className="text-gray-500 mt-1 mr-3" />
+                        <div className="bg-blue-50 p-2 rounded-full mr-3">
+                          <FontAwesomeIcon icon={faFlag} className="text-blue-500" />
+                        </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-600">Priority</p>
+                          <p className="text-sm font-semibold text-gray-600 mb-1">Priority</p>
                           <p className="text-gray-800">{task?.priority}</p>
                         </div>
                       </li>
                       
                       <li className="flex items-start">
-                        <FontAwesomeIcon icon={faClock} className="text-gray-500 mt-1 mr-3" />
+                        <div className="bg-blue-50 p-2 rounded-full mr-3">
+                          <FontAwesomeIcon icon={faClock} className="text-blue-500" />
+                        </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-600">Status</p>
+                          <p className="text-sm font-semibold text-gray-600 mb-1">Status</p>
                           <p className="text-gray-800">{task?.status?.replace('_', ' ')}</p>
                         </div>
                       </li>
@@ -657,24 +664,28 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                   </div>
                   
                   <div>
-                    <h2 className="text-lg font-medium text-gray-800 mb-2">People</h2>
-                    <ul className="space-y-3">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-100">People</h2>
+                    <ul className="space-y-4">
                       <li className="flex items-start">
-                        <FontAwesomeIcon icon={faUser} className="text-gray-500 mt-1 mr-3" />
+                        <div className="bg-blue-50 p-2 rounded-full mr-3">
+                          <FontAwesomeIcon icon={faUser} className="text-blue-500" />
+                        </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-600">Created By</p>
+                          <p className="text-sm font-semibold text-gray-600 mb-1">Created By</p>
                           <p className="text-gray-800">{task?.createdBy?.email || 'Unknown'}</p>
                         </div>
                       </li>
                       
                       <li className="flex items-start">
-                        <FontAwesomeIcon icon={faUser} className="text-gray-500 mt-1 mr-3" />
+                        <div className="bg-blue-50 p-2 rounded-full mr-3">
+                          <FontAwesomeIcon icon={faUser} className="text-blue-500" />
+                        </div>
                         <div>
-                          <p className="text-sm font-medium text-gray-600">Assigned To</p>
+                          <p className="text-sm font-semibold text-gray-600 mb-1">Assigned To</p>
                           {task?.assignedTo?.length > 0 ? (
-                            <ul className="list-disc list-inside">
+                            <ul className="list-none">
                               {task.assignedTo.map((user: any) => (
-                                <li key={user._id} className="text-gray-800">
+                                <li key={user._id} className="text-gray-800 py-1 border-b border-gray-100 last:border-0">
                                   {user.email || user.fullname || 'Unknown'}
                                 </li>
                               ))}
@@ -688,22 +699,22 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                   </div>
                 </div>
                 
-                <div className="border-t border-gray-200 pt-4">
-                  <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-lg font-medium text-gray-800">
-                      <FontAwesomeIcon icon={faComment} className="mr-2 text-gray-500" />
+                <div className="border-t border-gray-100 pt-6">
+                  <div className="flex justify-between items-center mb-5">
+                    <h2 className="text-xl font-semibold text-gray-800">
+                      <FontAwesomeIcon icon={faComment} className="mr-2 text-blue-500" />
                       Comments ({task?.comments?.length || 0})
                     </h2>
                   </div>
                   
                   {/* Comment form */}
-                  <div className="mb-6">
+                  <div className="mb-8">
                     {/* Comment type selector */}
-                    <div className="flex mb-3 space-x-2 border-b pb-3">
+                    <div className="flex mb-4 space-x-2 border-b border-gray-100 pb-4">
                       <button
                         type="button"
                         onClick={() => setCommentType('text')}
-                        className={`px-3 py-2 rounded-md flex items-center ${commentType === 'text' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'}`}
+                        className={`px-4 py-2 rounded-lg flex items-center transition-colors duration-200 ${commentType === 'text' ? 'bg-blue-100 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-100'}`}
                       >
                         <FontAwesomeIcon icon={faFont} className="mr-2" />
                         Text
@@ -711,7 +722,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       <button
                         type="button"
                         onClick={() => setCommentType('audio')}
-                        className={`px-3 py-2 rounded-md flex items-center ${commentType === 'audio' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'}`}
+                        className={`px-4 py-2 rounded-lg flex items-center transition-colors duration-200 ${commentType === 'audio' ? 'bg-blue-100 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-100'}`}
                       >
                         <FontAwesomeIcon icon={faMicrophone} className="mr-2" />
                         Audio
@@ -719,7 +730,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       <button
                         type="button"
                         onClick={() => setCommentType('video')}
-                        className={`px-3 py-2 rounded-md flex items-center ${commentType === 'video' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'}`}
+                        className={`px-4 py-2 rounded-lg flex items-center transition-colors duration-200 ${commentType === 'video' ? 'bg-blue-100 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-100'}`}
                       >
                         <FontAwesomeIcon icon={faVideo} className="mr-2" />
                         Video
@@ -727,7 +738,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       <button
                         type="button"
                         onClick={() => setCommentType('screenshare')}
-                        className={`px-3 py-2 rounded-md flex items-center ${commentType === 'screenshare' ? 'bg-blue-100 text-blue-700' : 'text-gray-600 hover:bg-gray-100'}`}
+                        className={`px-4 py-2 rounded-lg flex items-center transition-colors duration-200 ${commentType === 'screenshare' ? 'bg-blue-100 text-blue-700 font-medium' : 'text-gray-600 hover:bg-gray-100'}`}
                       >
                         <FontAwesomeIcon icon={faDesktop} className="mr-2" />
                         Screen
@@ -737,20 +748,20 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                     <form onSubmit={handleSubmitComment}>
                       {/* Text comment input */}
                       {commentType === 'text' && (
-                        <div className="flex items-start space-x-2">
+                        <div className="flex items-start space-x-3">
                           <div className="flex-grow">
                             <textarea
                               value={comment}
                               onChange={(e) => setComment(e.target.value)}
                               placeholder="Add a comment..."
-                              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                              className="shadow-sm border border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-colors duration-200"
                               rows={2}
                             />
                           </div>
                           <button
                             type="submit"
                             disabled={submittingComment || !comment.trim()}
-                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
                           >
                             <FontAwesomeIcon icon={faPaperPlane} />
                           </button>
@@ -759,26 +770,26 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       
                       {/* Media comment input (audio, video, screenshare) */}
                       {(commentType === 'audio' || commentType === 'video' || commentType === 'screenshare') && (
-                        <div className="space-y-3">
+                        <div className="space-y-4">
                           {recordedMediaUrl ? (
-                            <div className="border rounded-lg p-3 bg-gray-50">
-                              <div className="flex justify-between items-center mb-2">
-                                <h3 className="font-medium">Preview</h3>
+                            <div className="border border-gray-200 rounded-lg p-4 bg-gray-50 shadow-sm">
+                              <div className="flex justify-between items-center mb-3">
+                                <h3 className="font-medium text-gray-800">Preview</h3>
                                 <button
                                   type="button"
                                   onClick={discardRecording}
-                                  className="text-gray-500 hover:text-gray-700"
+                                  className="text-gray-500 hover:text-gray-700 bg-white p-2 rounded-full hover:bg-gray-100 transition-colors duration-200"
                                 >
                                   <FontAwesomeIcon icon={faTimes} />
                                 </button>
                               </div>
                               
                               {commentType === 'audio' ? (
-                                <audio controls className="w-full mb-3">
+                                <audio controls className="w-full mb-4">
                                   <source src={recordedMediaUrl} type="audio/webm" />
                                 </audio>
                               ) : (
-                                <video controls className="w-full mb-3 rounded">
+                                <video controls className="w-full mb-4 rounded-lg">
                                   <source src={recordedMediaUrl} type="video/webm" />
                                 </video>
                               )}
@@ -786,7 +797,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                               <button
                                 type="submit"
                                 disabled={submittingComment}
-                                className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-200 disabled:opacity-50"
+                                className="w-full px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 disabled:opacity-50 font-medium shadow-sm"
                               >
                                 {submittingComment ? 'Sending...' : `Send ${commentType === 'audio' ? 'Audio' : commentType === 'video' ? 'Video' : 'Screen Recording'}`}
                               </button>
@@ -805,7 +816,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                                     : RecordingMode.SCREEN_SHARE
                               }
                               showModeSelector={false}
-                              className="border-0 shadow"
+                              className="border-0 shadow-sm rounded-lg overflow-hidden"
                             />
                           )}
                         </div>
@@ -815,18 +826,18 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                   
                   {/* Comments list */}
                   {task?.comments?.length > 0 ? (
-                    <ul className="space-y-4">
+                    <ul className="space-y-5">
                       {task.comments.map((comment: any) => (
-                        <li key={comment._id} className="bg-gray-50 rounded-lg p-4">
+                        <li key={comment._id} className="bg-gray-50 rounded-lg p-5 border border-gray-100 shadow-sm transition-all duration-200 hover:shadow">
                           <div className="flex justify-between items-start">
                             <div className="flex items-center">
-                              <div className="mr-2 bg-blue-100 text-blue-800 rounded-full w-8 h-8 flex items-center justify-center">
+                              <div className="mr-3 bg-blue-100 text-blue-800 rounded-full w-10 h-10 flex items-center justify-center font-medium">
                                 {comment.author?.email?.charAt(0).toUpperCase() || 'U'}
                               </div>
                               <div>
-                                <span className="font-medium">{comment.author?.email || 'Unknown'}</span>
+                                <span className="font-medium text-gray-800">{comment.author?.email || 'Unknown'}</span>
                                 {comment.commentType && comment.commentType !== 'text' && (
-                                  <span className="ml-2 text-xs px-2 py-1 bg-gray-200 rounded-full">
+                                  <span className="ml-2 text-xs px-2.5 py-1 bg-blue-100 text-blue-800 rounded-full border border-blue-200">
                                     {comment.commentType === 'audio' ? 'Audio' : 
                                      comment.commentType === 'video' ? 'Video' : 
                                      comment.commentType === 'screenshare' ? 'Screen Recording' : ''}
@@ -836,17 +847,20 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                             </div>
                             <span className="text-xs text-gray-500">{formatDateTime(comment.createdAt)}</span>
                           </div>
-                          <div className="mt-2">
+                          <div className="mt-3 pl-13">
                             {comment.commentType && comment.commentType !== 'text' 
                               ? renderMediaComment(comment)
-                              : <p className="text-gray-700 whitespace-pre-wrap">{comment.content}</p>
+                              : <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{comment.content}</p>
                             }
                           </div>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-gray-500 italic text-center">No comments yet</p>
+                    <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-100">
+                      <p className="text-gray-500 italic">No comments yet</p>
+                      <p className="text-sm text-gray-400 mt-1">Be the first to add a comment!</p>
+                    </div>
                   )}
                 </div>
               </div>
