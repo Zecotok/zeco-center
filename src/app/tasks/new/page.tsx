@@ -317,7 +317,7 @@ export default function NewTaskPage() {
           </div>
         )}
       
-        <div className="mb-4">
+        <div className="mb-6">
           <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-2">
             Title *
           </label>
@@ -327,7 +327,7 @@ export default function NewTaskPage() {
             name="title"
             value={taskData.title}
             onChange={handleInputChange}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow-sm text-2xl font-semibold border border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-colors duration-200"
             placeholder="Task title"
             required
           />

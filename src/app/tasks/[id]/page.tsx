@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -83,6 +83,9 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [mediaDuration, setMediaDuration] = useState(0);
   const [mediaFileSize, setMediaFileSize] = useState(0);
+  const [isTitleEditing, setIsTitleEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState('');
+  const titleInputRef = useRef<HTMLInputElement>(null);
 
   // Fetch task data when component mounts
   useEffect(() => {
@@ -427,6 +430,63 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
     }
   };
 
+  // Add function to handle title editing
+  const handleTitleEdit = () => {
+    if (!isEditing) { // Only allow inline title editing when not in full edit mode
+      setEditedTitle(task?.title || '');
+      setIsTitleEditing(true);
+      setTimeout(() => {
+        titleInputRef.current?.focus();
+      }, 50);
+    }
+  };
+
+  // Add function to save title
+  const handleTitleSave = async () => {
+    if (editedTitle.trim() === '') return;
+    
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/tasks/${params.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ title: editedTitle })
+      });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to update title');
+      }
+      
+      // Update local task data
+      setTask((prev: any) => prev ? { ...prev, title: editedTitle } : null);
+      setIsTitleEditing(false);
+      setSuccessMessage('Title updated successfully');
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+    } catch (err: any) {
+      console.error('Error updating title:', err);
+      setError(err.message || 'Failed to update title');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Add function to handle key down for Enter and Escape
+  const handleTitleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleTitleSave();
+    } else if (e.key === 'Escape') {
+      setIsTitleEditing(false);
+    }
+  };
+
   if (loading && !task) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -506,8 +566,26 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                     onChange={handleInputChange}
                     className="text-2xl font-bold w-full border border-gray-200 rounded-lg shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-4 py-2"
                   />
+                ) : isTitleEditing ? (
+                  <div className="relative">
+                    <input
+                      ref={titleInputRef}
+                      type="text"
+                      value={editedTitle}
+                      onChange={(e) => setEditedTitle(e.target.value)}
+                      onBlur={handleTitleSave}
+                      onKeyDown={handleTitleKeyDown}
+                      className="text-2xl font-bold w-full border border-blue-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 focus:ring-opacity-50 px-4 py-2 bg-white"
+                      autoFocus
+                    />
+                  </div>
                 ) : (
-                  <h1 className="text-2xl font-bold text-gray-800">{task?.title}</h1>
+                  <h1 
+                    className="text-2xl font-bold text-gray-800 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded -mx-2"
+                    onClick={handleTitleEdit}
+                  >
+                    {task?.title}
+                  </h1>
                 )}
                 
                 <div className="flex flex-wrap gap-2 mt-3">
