@@ -60,6 +60,7 @@ const PriorityBadge = ({ priority }: { priority: string }) => {
 // User avatar component
 const UserAvatar = ({ user, isSelected, onClick }: { user: any, isSelected: boolean, onClick: () => void }) => {
   const [showTooltip, setShowTooltip] = useState(false);
+  console.log('user ------------',user);
   const initials = user.fullname 
     ? user.fullname.split(' ').map((n: string) => n[0]).join('').toUpperCase()
     : user.email.substring(0, 2).toUpperCase();

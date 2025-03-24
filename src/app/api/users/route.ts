@@ -15,11 +15,13 @@ export async function GET() {
 
     await connectDB();
     
-    const users = await User.find({}, 'email').sort({ email: 1 });
-    
+    const users = await User.find({}, { email: 1, id: 1, fullname: 1 }).sort({ email: 1 });
     return NextResponse.json(users.map(user => ({
       id: user._id.toString(),  // Ensure we're converting ObjectId to string
-      email: user.email
+      email: user.email,
+      fullname: user.fullname,
+      firstName: user.fullname.split(' ')[0],
+      lastName: user.fullname.split(' ')[1]
     })));
   } catch (error) {
     console.error('Error fetching users:', error);
