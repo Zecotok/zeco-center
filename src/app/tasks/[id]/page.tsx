@@ -21,7 +21,9 @@ import {
   faMicrophone,
   faVideo,
   faDesktop,
-  faTimes
+  faTimes,
+  faUserPlus,
+  faXmark
 } from '@fortawesome/free-solid-svg-icons';
 import { MediaRecorder } from '@/components/video';
 import { RecordingMode } from '@/types/videoRecording';
@@ -148,6 +150,32 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
         email: users.find(user => user.id === id)?.email || ''
       }))
     }));
+  };
+
+  const handleUserToggle = (userId: string) => {
+    setEditedTask((prev: any) => {
+      const currentAssignees = prev.assignedTo || [];
+      const userIds = currentAssignees.map((user: any) => user._id || user);
+      
+      // Check if the user is already assigned
+      if (userIds.includes(userId)) {
+        // Remove user
+        return {
+          ...prev,
+          assignedTo: currentAssignees.filter((user: any) => (user._id || user) !== userId)
+        };
+      } else {
+        // Add user
+        const userToAdd = users.find(user => user.id === userId);
+        return {
+          ...prev,
+          assignedTo: [
+            ...currentAssignees,
+            { _id: userId, email: userToAdd?.email || '' }
+          ]
+        };
+      }
+    });
   };
 
   const handleSubmitEdit = async (e: React.FormEvent) => {
@@ -513,6 +541,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
           <div className="p-6">
             {isEditing ? (
               <form onSubmit={handleSubmitEdit}>
+                {/* Description section - Jira style */}
                 <div className="mb-5">
                   <label className="block text-gray-700 text-sm font-semibold mb-2">
                     Description
@@ -545,24 +574,81 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                     <label className="block text-gray-700 text-sm font-semibold mb-2">
                       Assigned To
                     </label>
-                    <select
-                      name="assignedTo"
-                      multiple
-                      value={editedTask.assignedTo?.map((user: any) => user._id || user) || []}
-                      onChange={handleAssigneeChange}
-                      className="shadow-sm border border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-colors duration-200"
-                    >
-                      {users.map(user => (
-                        <option key={user.id} value={user.id}>
-                          {user.email}
-                        </option>
-                      ))}
-                    </select>
-                    <p className="text-xs text-gray-500 mt-1 italic">Hold Ctrl (or Cmd) to select multiple users</p>
+                    <div className="mb-2">
+                      {editedTask.assignedTo?.length > 0 ? (
+                        <div className="flex flex-wrap gap-2 mb-3">
+                          {editedTask.assignedTo.map((user: any) => {
+                            const userId = user._id || user;
+                            const userEmail = user.email || users.find(u => u.id === userId)?.email || 'Unknown';
+                            const initial = userEmail.charAt(0).toUpperCase();
+                            
+                            return (
+                              <div 
+                                key={userId} 
+                                className="flex items-center bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full border border-blue-100"
+                              >
+                                <div className="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 font-medium mr-2">
+                                  {initial}
+                                </div>
+                                <span className="text-sm max-w-[150px] truncate">{userEmail}</span>
+                                <button 
+                                  type="button"
+                                  onClick={() => handleUserToggle(userId)}
+                                  className="ml-1.5 text-blue-400 hover:text-blue-700 transition-colors"
+                                >
+                                  <FontAwesomeIcon icon={faXmark} />
+                                </button>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <p className="text-gray-500 italic text-sm mb-3">No users assigned</p>
+                      )}
+                    </div>
+                    
+                    <div className="relative">
+                      <div className="border border-gray-200 rounded-lg p-2 bg-white shadow-sm">
+                        <div className="flex items-center text-gray-600 p-1">
+                          <FontAwesomeIcon icon={faUserPlus} className="mr-2 text-gray-400" />
+                          <span className="text-sm font-medium">Add users</span>
+                        </div>
+                        
+                        <div className="mt-2 max-h-40 overflow-y-auto">
+                          {users.map(user => {
+                            const isAssigned = editedTask.assignedTo?.some(
+                              (u: any) => (u._id || u) === user.id
+                            );
+                            
+                            return (
+                              <div 
+                                key={user.id}
+                                onClick={() => handleUserToggle(user.id)}
+                                className={`flex items-center p-2 rounded-md cursor-pointer transition-colors ${
+                                  isAssigned 
+                                    ? 'bg-blue-50 text-blue-700' 
+                                    : 'hover:bg-gray-50 text-gray-700'
+                                }`}
+                              >
+                                <div className={`w-8 h-8 rounded-full ${isAssigned ? 'bg-blue-200 text-blue-700' : 'bg-gray-200 text-gray-700'} flex items-center justify-center font-medium mr-2`}>
+                                  {user.email.charAt(0).toUpperCase()}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-medium truncate">{user.email}</p>
+                                </div>
+                                {isAssigned && (
+                                  <span className="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">
+                                    Assigned
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+                  
                   <div>
                     <label className="block text-gray-700 text-sm font-semibold mb-2">
                       Status
@@ -620,9 +706,30 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
               </form>
             ) : (
               <div>
-                <div className="mb-8">
-                  <h2 className="text-xl font-semibold text-gray-800 mb-3 pb-2 border-b border-gray-100">Description</h2>
-                  <p className="text-gray-700 whitespace-pre-wrap leading-relaxed">{task?.description || 'No description provided'}</p>
+                {/* Description section - Jira style */}
+                <div className="mb-8 group relative">
+                  <div className="flex items-center justify-between mb-2">
+                    <h2 className="text-base font-semibold text-gray-800">Description</h2>
+                    <button
+                      onClick={() => setIsEditing(true)}
+                      className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-blue-600 hover:text-blue-800 text-sm bg-white border border-gray-200 rounded px-2 py-1 flex items-center shadow-sm"
+                    >
+                      <FontAwesomeIcon icon={faEdit} className="mr-1" />
+                      Edit
+                    </button>
+                  </div>
+                  <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 hover:bg-white transition-colors duration-200">
+                    {task?.description ? (
+                      <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+                        {task.description}
+                      </div>
+                    ) : (
+                      <div className="text-gray-500 italic flex items-center">
+                        <FontAwesomeIcon icon={faEdit} className="mr-2 text-gray-400" />
+                        No description provided. Click &apos;Edit&apos; to add a description for this task.
+                      </div>
+                    )}
+                  </div>
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">

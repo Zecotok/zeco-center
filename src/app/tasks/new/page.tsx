@@ -13,7 +13,9 @@ import {
   faCamera,
   faMicrophone,
   faDesktop,
-  faCog
+  faCog,
+  faUserPlus,
+  faXmark
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { VideoRecorder } from '@/components/video';
@@ -145,6 +147,27 @@ export default function NewTaskPage() {
       ...prev,
       assignedTo: selectedOptions
     }));
+  };
+
+  const handleUserToggle = (userId: string) => {
+    setTaskData(prev => {
+      const currentAssignees = [...prev.assignedTo];
+      
+      // Check if user is already assigned
+      if (currentAssignees.includes(userId)) {
+        // Remove user
+        return {
+          ...prev,
+          assignedTo: currentAssignees.filter(id => id !== userId)
+        };
+      } else {
+        // Add user
+        return {
+          ...prev,
+          assignedTo: [...currentAssignees, userId]
+        };
+      }
+    });
   };
 
   const handleVideoSaved = (video: RecordedVideo) => {
@@ -345,24 +368,81 @@ export default function NewTaskPage() {
             </div>
           </div>
           
-          <div>
-            <label htmlFor="assignedTo" className="block text-gray-700 text-sm font-bold mb-2">
-              Assign To
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-semibold mb-2" htmlFor="assignedTo">
+              Assigned To
             </label>
-            <select
-              id="assignedTo"
-              name="assignedTo"
-              multiple
-              onChange={handleAssigneeChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            >
-              {users.map(user => (
-                <option key={user.id} value={user.id}>
-                  {user.email}
-                </option>
-              ))}
-            </select>
-            <p className="text-sm text-gray-500 mt-1">Hold Ctrl (or Cmd) to select multiple users</p>
+            <div className="mb-2">
+              {taskData.assignedTo.length > 0 ? (
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {taskData.assignedTo.map(userId => {
+                    const user = users.find(u => u.id === userId);
+                    const userEmail = user?.email || 'Unknown';
+                    const initial = userEmail.charAt(0).toUpperCase();
+                    
+                    return (
+                      <div 
+                        key={userId} 
+                        className="flex items-center bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full border border-blue-100"
+                      >
+                        <div className="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 font-medium mr-2">
+                          {initial}
+                        </div>
+                        <span className="text-sm max-w-[150px] truncate">{userEmail}</span>
+                        <button 
+                          type="button"
+                          onClick={() => handleUserToggle(userId)}
+                          className="ml-1.5 text-blue-400 hover:text-blue-700 transition-colors"
+                        >
+                          <FontAwesomeIcon icon={faXmark} />
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <p className="text-gray-500 italic text-sm mb-3">No users assigned</p>
+              )}
+            </div>
+            
+            <div className="relative">
+              <div className="border border-gray-200 rounded-lg p-2 bg-white shadow-sm">
+                <div className="flex items-center text-gray-600 p-1">
+                  <FontAwesomeIcon icon={faUserPlus} className="mr-2 text-gray-400" />
+                  <span className="text-sm font-medium">Add users</span>
+                </div>
+                
+                <div className="mt-2 max-h-40 overflow-y-auto">
+                  {users.map(user => {
+                    const isAssigned = taskData.assignedTo.includes(user.id);
+                    
+                    return (
+                      <div 
+                        key={user.id}
+                        onClick={() => handleUserToggle(user.id)}
+                        className={`flex items-center p-2 rounded-md cursor-pointer transition-colors ${
+                          isAssigned 
+                            ? 'bg-blue-50 text-blue-700' 
+                            : 'hover:bg-gray-50 text-gray-700'
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-full ${isAssigned ? 'bg-blue-200 text-blue-700' : 'bg-gray-200 text-gray-700'} flex items-center justify-center font-medium mr-2`}>
+                          {user.email.charAt(0).toUpperCase()}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium truncate">{user.email}</p>
+                        </div>
+                        {isAssigned && (
+                          <span className="inline-flex items-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-800">
+                            Assigned
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         
