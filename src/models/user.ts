@@ -1,3 +1,4 @@
+import { ROLES } from "@/libs/rolesConfig";
 import {Schema, model, models} from "mongoose";
 
 const userSchema = new Schema({
@@ -14,6 +15,11 @@ const userSchema = new Schema({
         type: String,
         required: [true, "Password is required"],
         select: false
+    },
+    role: {
+        type: String,
+        enum: Object.keys(ROLES),
+        default: ROLES.USER
     },
     fullname: {
         type: String,

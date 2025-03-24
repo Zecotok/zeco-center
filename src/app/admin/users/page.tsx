@@ -12,12 +12,19 @@ interface User {
     fullname: string;
     email: string;
     isAdmin: boolean;
+    role?: string;
 }
 
 function AdminPage() {
     const [users, setUsers] = useState<User[]>([]);
     const [editingUser, setEditingUser] = useState<string | null>(null);
-    const [formData, setFormData] = useState({ fullname: "", email: "", password: "", isAdmin: false });
+    const [formData, setFormData] = useState({ 
+        fullname: "", 
+        email: "", 
+        password: "", 
+        isAdmin: false, 
+        role: "USER"
+    });
     const { data: session, status } = useSession();
     const router = useRouter();
 
@@ -47,6 +54,7 @@ function AdminPage() {
             email: user.email,
             password: "",
             isAdmin: user.isAdmin || false,
+            role: user.role || (user.isAdmin ? "ADMIN" : "USER")
         });
     };
 
@@ -97,6 +105,7 @@ function AdminPage() {
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
@@ -132,11 +141,40 @@ function AdminPage() {
                                             <input
                                                 type="checkbox"
                                                 checked={formData.isAdmin}
-                                                onChange={(e) => setFormData({ ...formData, isAdmin: e.target.checked })}
+                                                onChange={(e) => {
+                                                    const isAdmin = e.target.checked;
+                                                    setFormData({ 
+                                                        ...formData, 
+                                                        isAdmin,
+                                                        role: isAdmin ? "ADMIN" : formData.role
+                                                    });
+                                                }}
                                                 className="form-checkbox h-5 w-5 text-blue-600"
                                             />
                                         ) : (
                                             user.isAdmin ? "Yes" : "No"
+                                        )}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        {editingUser === user._id ? (
+                                            <select
+                                                value={formData.role}
+                                                onChange={(e) => {
+                                                    const role = e.target.value;
+                                                    setFormData({ 
+                                                        ...formData, 
+                                                        role,
+                                                        isAdmin: role === "ADMIN" ? true : formData.isAdmin
+                                                    });
+                                                }}
+                                                className="border rounded px-2 py-1"
+                                            >
+                                                <option value="USER">User</option>
+                                                <option value="TEAM_MEMBER">Team Member</option>
+                                                <option value="ADMIN">Admin</option>
+                                            </select>
+                                        ) : (
+                                            user.role || (user.isAdmin ? "ADMIN" : "USER")
                                         )}
                                     </td>
                                     <td className="px-6 py-4 whitespace-nowrap">

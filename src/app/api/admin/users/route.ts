@@ -21,6 +21,7 @@ class UserController {
         try {
             await connectDB();
             const users = await User.find({}).select('-password');
+            console.log(users.map(user => user.role));
             return NextResponse.json(users);
         } catch (error) {
             return NextResponse.json({ error: "Error fetching users" }, { status: 500 });
@@ -34,19 +35,27 @@ class UserController {
         }
 
         try {
-            const { id, fullname, email, password, isAdmin } = await request.json();
+            const { id, fullname, email, password, isAdmin, role } = await request.json();
             await connectDB();
 
             // Prevent modifying admin user except by themselves
             const session = await getServerSession();
             const targetUser = await User.findById(id);
 
-            const updateData: any = { fullname, email };
+            const updateData: any = { fullname, email, role };
             if (password) {
                 updateData.password = await bcrypt.hash(password, 12);
             }
             if (typeof isAdmin === 'boolean') {
                 updateData.isAdmin = isAdmin;
+            }
+            // Handle role field
+            if (role) {
+                updateData.role = role;
+                // Ensure isAdmin is aligned with role
+                if (role === 'ADMIN') {
+                    updateData.isAdmin = true;
+                }
             }
 
             const updatedUser = await User.findByIdAndUpdate(
@@ -54,7 +63,7 @@ class UserController {
                 updateData,
                 { new: true }
             ).select('-password');
-
+            console.log(updatedUser);
             return NextResponse.json(updatedUser);
         } catch (error) {
             return NextResponse.json({ error: "Error updating user" }, { status: 500 });

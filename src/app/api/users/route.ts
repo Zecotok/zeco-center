@@ -21,7 +21,7 @@ export async function GET() {
       email: user.email,
       fullname: user.fullname,
       firstName: user.fullname.split(' ')[0],
-      lastName: user.fullname.split(' ')[1]
+      lastName: user.lastName
     })));
   } catch (error) {
     console.error('Error fetching users:', error);
