@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faShieldAlt, faSpa, faChartLine, faVideo } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faSpa, faChartLine, faVideo, faTasks } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/navigation";
 
 function HomePage() {
@@ -77,6 +77,32 @@ function HomePage() {
             </div>
           </div>
         </Link>
+        
+        {/* Tasks Card */}
+        <Link 
+          href="/tasks/taskboard" 
+          className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out no-underline hover:no-underline"
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-[#34a853]/5 to-[#fbbc04]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300">
+            <div className="relative z-10 flex flex-col items-center">
+              <div className="p-3 rounded-xl bg-[#e6f4ea] mb-4 group-hover:bg-[#ceead6] transition-colors duration-300">
+                <FontAwesomeIcon 
+                  icon={faTasks} 
+                  className="w-8 h-8 text-[#34a853] group-hover:text-[#1e8e3e] transition-all duration-300 group-hover:scale-110"
+                  style={{ maxWidth: '2rem' }} 
+                />
+              </div>
+              <h2 className="font-semibold text-2xl text-[#202124] mb-2 group-hover:text-[#34a853] transition-colors duration-300"> 
+                Tasks
+              </h2>
+              <p className="text-center text-[#5f6368] group-hover:text-[#202124] transition-colors duration-300">
+                Manage your tasks.
+              </p>
+            </div>  
+          </div>
+        </Link>
+        
         
         {/* Analytics Card */}
         <Link 
