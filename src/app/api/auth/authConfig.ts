@@ -29,7 +29,8 @@ export const authOptions: AuthOptions = {
                     id: userFound._id,
                     email: userFound.email,
                     fullname: userFound.fullname,
-                    isAdmin: userFound.isAdmin
+                    isAdmin: userFound.isAdmin,
+                    role: userFound.role || (userFound.isAdmin ? 'ADMIN' : 'USER')
                 };
             },
         }),
@@ -41,7 +42,8 @@ export const authOptions: AuthOptions = {
                     id: user.id,
                     email: user.email,
                     fullname: user.fullname,
-                    isAdmin: user.isAdmin
+                    isAdmin: user.isAdmin,
+                    role: user.role
                 };
             }
             return token;
@@ -53,6 +55,7 @@ export const authOptions: AuthOptions = {
                     email: (token.user as any).email,
                     fullname: (token.user as any).fullname,
                     isAdmin: (token.user as any).isAdmin,
+                    role: (token.user as any).role,
                     name: null,
                     image: null
                 };

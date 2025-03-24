@@ -16,7 +16,7 @@
     "upload-programs": "scp -i ~/.ssh/vdi241.pem -r public/programs ubuntu@3.109.245.201:/home/ubuntu/zecocenter/public/programs",
     "upload-scenes": "scp -i ~/.ssh/vdi241.pem -r public/scenes ubuntu@3.109.245.201:/home/ubuntu/zecocenter/public/scenes",
     "restart-prod": "ssh -i ~/.ssh/vdi241.pem ubuntu@3.109.245.201 'source ~/.nvm/nvm.sh && pm2 restart zecocenter'",
-    "deploy": "npm run clean-cache && npm run clean-dist && next build && npm run clean-cache && npm run upload-build && npm run restart-prod",
+    "deploy": "npm run clean-cache && npm run clean-dist && time next build && npm run clean-cache && time npm run upload-build && npm run restart-prod",
     "logs": "ssh -i ~/.ssh/vdi241.pem ubuntu@3.109.245.201 'source ~/.nvm/nvm.sh && pm2 logs --lines 10 --raw zecocenter'",
     "ssh": "ssh -i ~/.ssh/vdi241.pem ubuntu@3.109.245.201"
   },
