@@ -9,7 +9,6 @@ class UserController {
     static async isAdmin() {
         const session = await getServerSession(authOptions);
         if (!session?.user?.email) return false;
-        console.log('session', session);
         return session?.user?.isAdmin;
     }
 

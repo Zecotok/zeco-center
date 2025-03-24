@@ -218,7 +218,6 @@ export const DELETE = async (req: NextRequest, context: { params: { id: string }
               // Check if file exists before attempting to delete
               if (fs.existsSync(filePath)) {
                 await unlink(filePath);
-                console.log(`Deleted media file: ${filePath}`);
               }
             } catch (fileError) {
               console.error(`Error deleting media file: ${comment.mediaUrl}`, fileError);

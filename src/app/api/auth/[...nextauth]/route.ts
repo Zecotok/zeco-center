@@ -48,7 +48,6 @@ const handler = NextAuth({
     ],
     callbacks: {
         jwt({ account, token, user, profile, session }) {
-            console.log("user: ", user);
             if (user) {
                 token.user = {
                     id: user.id,
