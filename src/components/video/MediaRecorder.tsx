@@ -784,7 +784,7 @@ const MediaRecorderComponent: React.FC<MediaRecorderProps> = ({
             </div>
           </div>
         ) : (
-          <div className="relative w-full max-h-[150px] h-[150px] overflow-hidden bg-black rounded">
+          <div className="relative w-full max-h-[240px] h-[240px] overflow-hidden bg-black rounded">
             <video 
               ref={videoPreviewRef} 
               controls={recordingStatus === RecordingStatus.STOPPED} 
