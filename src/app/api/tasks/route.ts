@@ -89,9 +89,9 @@ export const POST = async (req: NextRequest) => {
     const body = await req.json();
     const userId = session.user.id;
     
-    // Validate required fields
-    if (!body.title || !body.dueDate) {
-      return NextResponse.json({ error: 'Title and due date are required' }, { status: 400 });
+    // Validate required fields - only title is required now
+    if (!body.title) {
+      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
     }
     
     // Check if Task model is available (server-side)
@@ -103,11 +103,11 @@ export const POST = async (req: NextRequest) => {
     const newTask = await Task.create({
       title: body.title,
       description: body.description || '',
-      assignedTo: body.assignedTo || [userId], // Default to self if not specified
+      assignedTo: body.assignedTo || [], // Assignee is now optional
       createdBy: userId,
-      dueDate: new Date(body.dueDate),
+      dueDate: body.dueDate ? new Date(body.dueDate) : undefined, // Due date is now optional
       priority: body.priority || TaskPriority.MEDIUM,
-      status: body.status || TaskStatus.NOT_STARTED,
+      status: body.status || TaskStatus.NOT_GROOMED, // Default to NOT_GROOMED
       attachments: body.attachments || [],
       videoIds: body.videoIds || []
     });

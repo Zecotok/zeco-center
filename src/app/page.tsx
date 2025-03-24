@@ -31,7 +31,7 @@ function HomePage() {
         {/* Meditate Card */}
         <Link 
           href="/meditate" 
-          className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out"
+          className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out no-underline hover:no-underline"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[#4285f4]/5 to-[#34a853]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300">
@@ -56,19 +56,19 @@ function HomePage() {
         {/* Videos Card */}
         <Link 
           href="/videos" 
-          className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out"
+          className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out no-underline hover:no-underline"
         >
-          <div className="absolute inset-0 bg-gradient-to-br from-[#673ab7]/5 to-[#3f51b5]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#9e9ee5]/5 to-[#a5b4e8]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300">
             <div className="relative z-10 flex flex-col items-center">
-              <div className="p-3 rounded-xl bg-[#ede7f6] mb-4 group-hover:bg-[#d1c4e9] transition-colors duration-300">
+              <div className="p-3 rounded-xl bg-[#f0f0fc] mb-4 group-hover:bg-[#e4e4f7] transition-colors duration-300">
                 <FontAwesomeIcon 
                   icon={faVideo} 
-                  className="w-8 h-8 text-[#673ab7] group-hover:text-[#5e35b1] transition-all duration-300 group-hover:scale-110"
+                  className="w-8 h-8 text-[#8787c8] group-hover:text-[#7878b9] transition-all duration-300 group-hover:scale-110"
                   style={{ maxWidth: '2rem' }} 
                 />
               </div>
-              <h2 className="font-semibold text-2xl text-[#202124] mb-2 group-hover:text-[#673ab7] transition-colors duration-300">
+              <h2 className="font-semibold text-2xl text-[#202124] mb-2 group-hover:text-[#8787c8] transition-colors duration-300">
                 Videos
               </h2>
               <p className="text-center text-[#5f6368] group-hover:text-[#202124] transition-colors duration-300">
@@ -81,7 +81,7 @@ function HomePage() {
         {/* Analytics Card */}
         <Link 
           href="/admin/analytics" 
-          className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out"
+          className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out no-underline hover:no-underline"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[#34a853]/5 to-[#fbbc04]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300">
@@ -106,7 +106,7 @@ function HomePage() {
         {/* Profile Card */}
         <Link 
           href="/dashboard/profile" 
-          className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out"
+          className="group relative rounded-2xl overflow-hidden hover:scale-105 transition-all duration-300 ease-out no-underline hover:no-underline"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-[#ea4335]/5 to-[#fbbc04]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
           <div className="relative bg-white/95 rounded-2xl p-8 h-full shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-all duration-300">

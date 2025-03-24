@@ -8,11 +8,11 @@ export enum TaskPriority {
 }
 
 export enum TaskStatus {
-  NOT_STARTED = 'NOT_STARTED',
+  NOT_GROOMED = 'NOT_GROOMED',
+  TODO = 'TODO',
   IN_PROGRESS = 'IN_PROGRESS',
-  COMPLETED = 'COMPLETED',
-  PENDING = 'PENDING',
-  ON_HOLD = 'ON_HOLD'
+  REVIEW = 'REVIEW',
+  COMPLETED = 'COMPLETED'
 }
 
 export enum AttachmentType {
@@ -30,19 +30,19 @@ export interface IAttachment {
 }
 
 export interface ITask {
-  _id?: string;
+  _id?: mongoose.Types.ObjectId | string;
   title: string;
   description?: string;
-  assignedTo: (mongoose.Types.ObjectId | string)[];
-  createdBy: mongoose.Types.ObjectId | string;
-  dueDate: Date | string;
-  priority: TaskPriority;
+  assignedTo?: mongoose.Types.ObjectId[] | string[];
+  dueDate?: Date;
   status: TaskStatus;
-  completedAt?: Date | string;
-  attachments?: IAttachment[];
-  videoIds?: string[];
-  createdAt?: Date | string;
-  updatedAt?: Date | string;
+  priority: TaskPriority;
+  createdBy: mongoose.Types.ObjectId | string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  completedAt?: Date;
+  attachments?: string[];
+  videoIds?: mongoose.Types.ObjectId[] | string[];
 }
 
 // Only define the schema on the server side
@@ -53,30 +53,30 @@ const TaskSchema = new Schema<ITask>(
       required: true 
     },
     description: { 
-      type: String 
+      type: String, 
+      default: '' 
     },
     assignedTo: [{ 
       type: Schema.Types.ObjectId, 
       ref: 'User' 
     }],
-    createdBy: { 
-      type: Schema.Types.ObjectId, 
-      ref: 'User', 
-      required: true 
-    },
     dueDate: { 
-      type: Date, 
-      required: true 
+      type: Date 
+    },
+    status: { 
+      type: String, 
+      enum: Object.values(TaskStatus), 
+      default: TaskStatus.NOT_GROOMED 
     },
     priority: { 
       type: String, 
       enum: Object.values(TaskPriority), 
       default: TaskPriority.MEDIUM 
     },
-    status: { 
-      type: String, 
-      enum: Object.values(TaskStatus), 
-      default: TaskStatus.NOT_STARTED 
+    createdBy: { 
+      type: Schema.Types.ObjectId, 
+      ref: 'User', 
+      required: true 
     },
     completedAt: { 
       type: Date 
@@ -102,11 +102,10 @@ const TaskSchema = new Schema<ITask>(
 );
 
 // Create indexes for faster queries
-TaskSchema.index({ assignedTo: 1 });
-TaskSchema.index({ createdBy: 1 });
-TaskSchema.index({ dueDate: 1 });
-TaskSchema.index({ status: 1 });
-TaskSchema.index({ priority: 1 });
+TaskSchema.index({ assignedTo: 1 }, { sparse: true });
+TaskSchema.index({ createdBy: 1 }, { sparse: true });
+TaskSchema.index({ status: 1 }, { sparse: true });
+TaskSchema.index({ priority: 1 }, { sparse: true });
 
 // Check if we're on the server side
 const isServer = typeof window === 'undefined';
