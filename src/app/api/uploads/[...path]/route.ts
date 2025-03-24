@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { stat, readFile } from 'fs/promises';
 import { join } from 'path';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/libs/authConfig';
 
 /**
  * GET handler to serve static files from the uploads directory

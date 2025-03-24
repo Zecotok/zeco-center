@@ -784,24 +784,22 @@ const MediaRecorderComponent: React.FC<MediaRecorderProps> = ({
             </div>
           </div>
         ) : (
-          <div className="flex justify-center">
-            <div className="aspect-video bg-black rounded-md overflow-hidden relative" style={{ maxHeight: '50vh', width: '50%' }}>
-              <video 
-                ref={videoPreviewRef} 
-                controls={recordingStatus === RecordingStatus.STOPPED} 
-                className="w-full h-full object-contain"
-              >
-                Your browser does not support the video element.
-              </video>
-              
-              {/* Recording indicator and timer */}
-              {recordingStatus === RecordingStatus.RECORDING && (
-                <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-sm px-2 py-1 rounded-md flex items-center">
-                  <div className="animate-pulse mr-2 w-2 h-2 rounded-full bg-red-600"></div>
-                  {formatDuration(recordingTime)}
-                </div>
-              )}
-            </div>
+          <div className="aspect-video bg-black rounded-md overflow-hidden relative">
+            <video 
+              ref={videoPreviewRef} 
+              controls={recordingStatus === RecordingStatus.STOPPED} 
+              className="w-full h-full object-contain"
+            >
+              Your browser does not support the video element.
+            </video>
+            
+            {/* Recording indicator and timer */}
+            {recordingStatus === RecordingStatus.RECORDING && (
+              <div className="absolute top-2 right-2 bg-black bg-opacity-70 text-white text-sm px-2 py-1 rounded-md flex items-center">
+                <div className="animate-pulse mr-2 w-2 h-2 rounded-full bg-red-600"></div>
+                {formatDuration(recordingTime)}
+              </div>
+            )}
           </div>
         )}
       </div>

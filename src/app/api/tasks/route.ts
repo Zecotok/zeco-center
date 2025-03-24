@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/api/auth/authConfig';
 import { connectDB } from '@/libs/mongodb';
 import Task from '@/models/Task';
 import { TaskPriority, TaskStatus } from '@/models/Task';

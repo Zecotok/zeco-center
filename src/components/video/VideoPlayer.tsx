@@ -208,84 +208,77 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, onClose }) => {
           <p className="text-sm text-gray-600">{video.description}</p>
         )}
         
-        <div className="flex justify-center items-center">
-          <div 
-            ref={containerRef}
-            className={`relative bg-black ${isFullscreen ? 'w-full h-full' : 'w-full'}`}
-            style={{ 
-              height: isFullscreen ? '100%' : '50vh',
-              maxWidth: isFullscreen ? '100%' : '90%',
-              aspectRatio: '16/9'
-            }}
-          >
-            {loading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white">
-                Loading...
+        <div 
+          ref={containerRef}
+          className={`relative bg-black ${isFullscreen ? 'w-full h-full' : 'aspect-video'}`}
+        >
+          {loading && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white">
+              Loading...
+            </div>
+          )}
+          
+          {error && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white">
+              {error}
+            </div>
+          )}
+          
+          <video
+            ref={videoRef}
+            className="w-full h-full"
+            controls={false}
+            preload="metadata"
+          />
+          
+          {/* Custom Video Controls */}
+          <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white px-4 py-2">
+            <div className="flex items-center space-x-3">
+              <button
+                onClick={handlePlayPause}
+                className="text-white hover:text-indigo-400 transition-colors"
+              >
+                <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+              </button>
+              
+              <div className="flex-grow flex items-center space-x-2">
+                <span className="text-sm">{formatTime(currentTime)}</span>
+                <input
+                  type="range"
+                  className="w-full h-1"
+                  min={0}
+                  max={duration || 100}
+                  step={0.01}
+                  value={currentTime}
+                  onChange={handleSeek}
+                />
+                <span className="text-sm">{formatTime(duration)}</span>
               </div>
-            )}
-            
-            {error && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white">
-                {error}
-              </div>
-            )}
-            
-            <video
-              ref={videoRef}
-              className="w-full h-full object-contain"
-              controls={false}
-              preload="metadata"
-            />
-            
-            {/* Custom Video Controls */}
-            <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-70 text-white px-4 py-2">
-              <div className="flex items-center space-x-3">
+              
+              <div className="flex items-center space-x-2">
                 <button
-                  onClick={handlePlayPause}
+                  onClick={handleToggleMute}
                   className="text-white hover:text-indigo-400 transition-colors"
                 >
-                  <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} />
+                  <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolumeUp} />
                 </button>
                 
-                <div className="flex-grow flex items-center space-x-2">
-                  <span className="text-sm">{formatTime(currentTime)}</span>
-                  <input
-                    type="range"
-                    className="w-full h-1"
-                    min={0}
-                    max={duration || 100}
-                    step={0.01}
-                    value={currentTime}
-                    onChange={handleSeek}
-                  />
-                  <span className="text-sm">{formatTime(duration)}</span>
-                </div>
+                <input
+                  type="range"
+                  className="w-16 h-1"
+                  min={0}
+                  max={1}
+                  step={0.01}
+                  value={isMuted ? 0 : volume}
+                  onChange={handleVolumeChange}
+                />
                 
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={handleToggleMute}
-                    className="text-white hover:text-indigo-400 transition-colors"
-                  >
-                    <FontAwesomeIcon icon={isMuted ? faVolumeMute : faVolumeUp} />
-                  </button>
-                  
-                  <input
-                    type="range"
-                    className="w-16 h-1"
-                    min={0}
-                    max={1}
-                    step={0.01}
-                    value={isMuted ? 0 : volume}
-                    onChange={handleVolumeChange}
-                  />
-                  
-                  <button
-                    onClick={handleToggleFullscreen}
-                    className="text-white hover:text-indigo-400 transition-colors"
-                  >
-                    <FontAwesomeIcon icon={isFullscreen ? faCompress : faExpand} />
-                  </button>
-                </div>
+                <button
+                  onClick={handleToggleFullscreen}
+                  className="text-white hover:text-indigo-400 transition-colors"
+                >
+                  <FontAwesomeIcon icon={isFullscreen ? faCompress : faExpand} />
+                </button>
               </div>
             </div>
           </div>
