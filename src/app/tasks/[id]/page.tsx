@@ -155,23 +155,24 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
   const handleUserToggle = (userId: string) => {
     setEditedTask((prev: any) => {
       const currentAssignees = prev.assignedTo || [];
-      const userIds = currentAssignees.map((user: any) => user._id || user);
+      const isUserAssigned = currentAssignees.some((user: any) => user._id === userId);
       
-      // Check if the user is already assigned
-      if (userIds.includes(userId)) {
+      if (isUserAssigned) {
         // Remove user
         return {
           ...prev,
-          assignedTo: currentAssignees.filter((user: any) => (user._id || user) !== userId)
+          assignedTo: currentAssignees.filter((user: any) => user._id !== userId)
         };
       } else {
         // Add user
-        const userToAdd = users.find(user => user.id === userId);
         return {
           ...prev,
           assignedTo: [
             ...currentAssignees,
-            { _id: userId, email: userToAdd?.email || '' }
+            {
+              _id: userId,
+              email: users.find(user => user.id === userId)?.email || ''
+            }
           ]
         };
       }
@@ -575,16 +576,15 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       Assigned To
                     </label>
                     <div className="mb-2">
-                      {editedTask.assignedTo?.length > 0 ? (
+                      {editedTask.assignedTo && editedTask.assignedTo.length > 0 ? (
                         <div className="flex flex-wrap gap-2 mb-3">
                           {editedTask.assignedTo.map((user: any) => {
-                            const userId = user._id || user;
-                            const userEmail = user.email || users.find(u => u.id === userId)?.email || 'Unknown';
+                            const userEmail = user.email || 'Unknown';
                             const initial = userEmail.charAt(0).toUpperCase();
                             
                             return (
                               <div 
-                                key={userId} 
+                                key={user._id} 
                                 className="flex items-center bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full border border-blue-100"
                               >
                                 <div className="w-6 h-6 rounded-full bg-blue-200 flex items-center justify-center text-blue-700 font-medium mr-2">
@@ -593,7 +593,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                                 <span className="text-sm max-w-[150px] truncate">{userEmail}</span>
                                 <button 
                                   type="button"
-                                  onClick={() => handleUserToggle(userId)}
+                                  onClick={() => handleUserToggle(user._id)}
                                   className="ml-1.5 text-blue-400 hover:text-blue-700 transition-colors"
                                 >
                                   <FontAwesomeIcon icon={faXmark} />
@@ -616,9 +616,9 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                         
                         <div className="mt-2 max-h-40 overflow-y-auto">
                           {users.map(user => {
-                            const isAssigned = editedTask.assignedTo?.some(
-                              (u: any) => (u._id || u) === user.id
-                            );
+                            const isAssigned = editedTask.assignedTo ? 
+                              editedTask.assignedTo.some((assigned: any) => assigned._id === user.id) : 
+                              false;
                             
                             return (
                               <div 
