@@ -7,8 +7,7 @@ import TaskComment from '@/models/TaskComment';
 import { writeFile } from 'fs/promises';
 import { join } from 'path';
 import { mkdir } from 'fs/promises';
-
-export const TASK_MEDIA_DIR = '/uploads/task-media';
+import { TASK_MEDIA_DIR } from '@/constants/paths';
 
 // Helper function to check if a user has access to a task
 async function hasTaskAccess(taskId: string, userId: string) {
@@ -70,9 +69,7 @@ export async function POST(req: NextRequest) {
     }
     
     // Create uploads directory if it doesn't exist
-
-    // make it a constant in start of file
-    const uploadsDir = join(process.cwd(),  TASK_MEDIA_DIR);
+    const uploadsDir = join(process.cwd(), TASK_MEDIA_DIR);
     await mkdir(uploadsDir, { recursive: true });
     
     // Generate a unique filename
@@ -85,7 +82,7 @@ export async function POST(req: NextRequest) {
     await writeFile(filepath, new Uint8Array(bytes));
     
     // Create comment with media URL
-    const mediaUrl = `${TASK_MEDIA_DIR}/${filename}`;
+    const mediaUrl = `/${TASK_MEDIA_DIR}/${filename}`;
     const comment = new TaskComment({
       task: taskId,
       author: userId,
