@@ -1,4 +1,3 @@
-import { ROLES } from "@/libs/rolesConfig";
 import {Schema, model, models} from "mongoose";
 
 const userSchema = new Schema({
@@ -25,11 +24,6 @@ const userSchema = new Schema({
     isAdmin: {
         type: Boolean,
         default: false
-    },
-    role: {
-        type: String,
-        enum: Object.values(ROLES),
-        default: ROLES.USER
     }
 });
 

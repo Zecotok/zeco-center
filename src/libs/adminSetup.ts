@@ -20,8 +20,7 @@ export async function ensureAdminExists() {
                 email: process.env.ADMIN_EMAIL,
                 password: hashedPassword,
                 fullname: process.env.ADMIN_FULLNAME,
-                isAdmin: true,
-                role: 'ADMIN' // Add role field
+                isAdmin: true // Add this new field
             });
             await newAdmin.save();
             console.log("Admin user created successfully");
@@ -35,12 +34,10 @@ export async function ensureAdminExists() {
                 console.log("Admin password updated successfully");
             }
             
-            // Ensure admin has isAdmin flag and ADMIN role
-            if (!adminUser.isAdmin || adminUser.role !== 'ADMIN') {
+            // Ensure admin has isAdmin flag
+            if (!adminUser.isAdmin) {
                 adminUser.isAdmin = true;
-                adminUser.role = 'ADMIN';
                 await adminUser.save();
-                console.log("Admin role and privileges updated");
             }
         }
     } catch (error) {
