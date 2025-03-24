@@ -1,5 +1,6 @@
 "use client"
 import { SessionProvider } from "next-auth/react";
+import { AuthProvider } from "@/context/AuthContext";
 
 interface Props {
     children: React.ReactNode
@@ -8,7 +9,9 @@ interface Props {
 function Providers({ children }: Props ) {
   return (
     <SessionProvider>
-      {children}
+      <AuthProvider>
+        {children}
+      </AuthProvider>
     </SessionProvider>
   )
 }

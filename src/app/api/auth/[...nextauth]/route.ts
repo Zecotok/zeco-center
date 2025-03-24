@@ -13,7 +13,16 @@ declare module "next-auth" {
       email: string;
       fullname: string;
       isAdmin: boolean;
+      role: string;
     } & DefaultSession["user"]
+  }
+  
+  interface User {
+    id?: string;
+    email?: string;
+    fullname?: string;
+    isAdmin?: boolean;
+    role?: string;
   }
 }
 
@@ -41,7 +50,8 @@ const handler = NextAuth({
                     id: userFound._id,
                     email: userFound.email,
                     fullname: userFound.fullname,
-                    isAdmin: userFound.isAdmin
+                    isAdmin: userFound.isAdmin,
+                    role: userFound.role || (userFound.isAdmin ? 'ADMIN' : 'USER')
                 };
             },
         }),
@@ -53,7 +63,8 @@ const handler = NextAuth({
                     id: user.id,
                     email: user.email,
                     fullname: user.fullname,
-                    isAdmin: user.isAdmin
+                    isAdmin: user.isAdmin,
+                    role: user.role
                 };
             }
             return token;
@@ -65,6 +76,7 @@ const handler = NextAuth({
                     email: (token.user as any).email as string,
                     fullname: (token.user as any).fullname as string,
                     isAdmin: (token.user as any).isAdmin as boolean,
+                    role: (token.user as any).role as string,
                     name: null,
                     image: null
                 };
