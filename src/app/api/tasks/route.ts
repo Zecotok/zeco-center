@@ -27,7 +27,6 @@ export const GET = async (req: NextRequest) => {
     // Build query based on parameters
     const query: any = {
       $or: [
-        { assignedTo: { $in: [userId] } },
         { createdBy: userId }
       ]
     };
