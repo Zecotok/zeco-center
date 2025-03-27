@@ -94,7 +94,7 @@ const UserAvatar = ({ user, isSelected, onClick }: { user: any, isSelected: bool
   );
 };
 
-// First, update the task-card-wrapper styles
+// Update the task card wrapper styles
 const taskCardWrapperStyles = `
   .task-card-wrapper {
     position: relative;
@@ -103,19 +103,23 @@ const taskCardWrapperStyles = `
   
   .task-card-wrapper.dragging {
     opacity: 0.6;
+    z-index: 999;
   }
   
   .task-card {
     cursor: pointer;
   }
 
-  .task-card .drag-handle {
+  .drag-handle {
     cursor: grab;
   }
   
-  /* Prevent interactions during dragging */
+  .task-card-wrapper[draggable=true] {
+    cursor: grab;
+  }
+  
   .task-card-wrapper.dragging .task-card {
-    pointer-events: none;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
 `;
 
@@ -134,80 +138,98 @@ const TaskCard = ({ task, onDragStart }: { task: any, onDragStart?: (e: React.Dr
     return due < now;
   };
 
-  const handleDragStart = (e: React.DragEvent) => {
-    // Only handle drag if initiated from the grip icon
-    if (!(e.target as HTMLElement).closest('.drag-handle') && onDragStart) {
-      e.preventDefault();
-      return false;
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    console.log("Drag started on task:", task.title);
+    
+    // Set the drag data
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', JSON.stringify({
+      taskId: task._id,
+      currentStatus: task.status
+    }));
+    
+    // Set a drag image (optional, for better visual feedback)
+    const ghostElement = document.createElement('div');
+    ghostElement.classList.add('task-card');
+    ghostElement.innerHTML = `<div>${task.title}</div>`;
+    ghostElement.style.width = '200px';
+    ghostElement.style.background = 'white';
+    ghostElement.style.padding = '10px';
+    ghostElement.style.borderRadius = '8px';
+    ghostElement.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+    ghostElement.style.position = 'absolute';
+    ghostElement.style.top = '-1000px';
+    document.body.appendChild(ghostElement);
+    
+    e.dataTransfer.setDragImage(ghostElement, 10, 10);
+    
+    // Add dragging class
+    const wrapper = (e.target as HTMLElement).closest('.task-card-wrapper');
+    if (wrapper) {
+      wrapper.classList.add('dragging');
     }
     
+    setTimeout(() => {
+      document.body.removeChild(ghostElement);
+    }, 0);
+    
     if (onDragStart) {
-      e.stopPropagation();
-      
-      // Add dragging class to parent
-      const wrapper = (e.target as HTMLElement).closest('.task-card-wrapper');
-      if (wrapper) {
-        wrapper.classList.add('dragging');
-      }
-
-      // Set drag data
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', JSON.stringify({
-        taskId: task._id,
-        currentStatus: task.status
-      }));
-      
       onDragStart(e, task._id, task.status);
     }
   };
 
   return (
-    <Link 
-      href={`/tasks/${task._id}`}
-      className="no-underline hover:no-underline block"
-      draggable={false}
+    <div 
+      className="task-card-wrapper"
+      draggable={true}
+      onDragStart={handleDragStart}
     >
-      <div 
-        draggable={true}
-        onDragStart={handleDragStart}
-        className="task-card bg-white p-3 rounded-lg shadow hover:shadow-md transition-shadow mb-3 border-l-4 border-blue-500 group"
-      >
+      <div className="task-card bg-white p-3 rounded-lg shadow hover:shadow-md transition-shadow mb-3 border-l-4 border-blue-500 group">
         <div className="flex justify-between items-start">
-          <h3 className="font-medium text-sm text-gray-900 mb-1 truncate no-underline">{task.title}</h3>
-          <div 
-            className="drag-handle p-1 rounded hover:bg-gray-100" 
-            onClick={(e) => e.preventDefault()}
+          <Link 
+            href={`/tasks/${task._id}`}
+            className="block flex-grow no-underline hover:no-underline"
+            onClick={(e) => e.stopPropagation()}
           >
+            <h3 className="font-medium text-sm text-gray-900 mb-1 truncate no-underline">{task.title}</h3>
+          </Link>
+          <div className="drag-handle p-1 rounded hover:bg-gray-100">
             <FontAwesomeIcon icon={faGripLines} className="text-gray-300 group-hover:text-gray-500" />
           </div>
         </div>
         
-        <p className="text-xs text-gray-500 mb-2 line-clamp-2 no-underline">
-          {task.description || 'No description'}
-        </p>
-        
-        <div className="flex justify-between items-center">
-          <PriorityBadge priority={task.priority} />
+        <Link 
+          href={`/tasks/${task._id}`}
+          className="block no-underline hover:no-underline"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <p className="text-xs text-gray-500 mb-2 line-clamp-2 no-underline">
+            {task.description || 'No description'}
+          </p>
           
-          {task.dueDate && (
-            <div className={`text-xs ${isOverdue(task.dueDate) ? 'text-red-500 font-medium' : 'text-gray-500'}`}>
-              <FontAwesomeIcon icon={faCalendarAlt} className="mr-1" />
-              {formatDate(task.dueDate)}
+          <div className="flex justify-between items-center">
+            <PriorityBadge priority={task.priority} />
+            
+            {task.dueDate && (
+              <div className={`text-xs ${isOverdue(task.dueDate) ? 'text-red-500 font-medium' : 'text-gray-500'}`}>
+                <FontAwesomeIcon icon={faCalendarAlt} className="mr-1" />
+                {formatDate(task.dueDate)}
+              </div>
+            )}
+          </div>
+          
+          {task.assignedTo && task.assignedTo.length > 0 && (
+            <div className="mt-2 flex -space-x-2 overflow-hidden">
+              {task.assignedTo.map((user: any, index: number) => (
+                <div key={index} className="inline-block h-6 w-6 rounded-full bg-gray-200 text-xs flex items-center justify-center border border-white">
+                  {user.fullname ? user.fullname.charAt(0) : user.email.charAt(0)}
+                </div>
+              ))}
             </div>
           )}
-        </div>
-        
-        {task.assignedTo && task.assignedTo.length > 0 && (
-          <div className="mt-2 flex -space-x-2 overflow-hidden">
-            {task.assignedTo.map((user: any, index: number) => (
-              <div key={index} className="inline-block h-6 w-6 rounded-full bg-gray-200 text-xs flex items-center justify-center border border-white">
-                {user.fullname ? user.fullname.charAt(0) : user.email.charAt(0)}
-              </div>
-            ))}
-          </div>
-        )}
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 };
 
@@ -381,6 +403,8 @@ export default function TaskBoard() {
     e.preventDefault();
     e.stopPropagation();
     
+    console.log("Drop event triggered for status:", newStatus);
+    
     try {
       // Get the data
       const dataStr = e.dataTransfer.getData('text/plain');
@@ -389,16 +413,26 @@ export default function TaskBoard() {
         return;
       }
       
+      console.log("Drop data:", dataStr);
+      
       const data = JSON.parse(dataStr);
       const { taskId, currentStatus } = data;
+      
+      console.log(`Task ${taskId} from ${currentStatus} dropped to ${newStatus}`);
       
       if (currentStatus === newStatus || !taskId) return;
       
       // Find the task in the current list
       const taskToUpdate = tasks.find((t: any) => t._id === taskId);
-      if (!taskToUpdate) return;
+      if (!taskToUpdate) {
+        console.error("Task not found:", taskId);
+        return;
+      }
       
-      console.log(`Moving task ${taskId} from ${currentStatus} to ${newStatus}`);
+      // Clear dragging state
+      document.querySelectorAll('.task-card-wrapper.dragging').forEach(el => {
+        el.classList.remove('dragging');
+      });
       
       // Optimistically update the UI first (no waiting)
       setTasks(prevTasks => 
@@ -407,12 +441,8 @@ export default function TaskBoard() {
         )
       );
       
-      // Remove dragging class from all task cards
-      document.querySelectorAll('.task-card-wrapper.dragging').forEach(el => {
-        el.classList.remove('dragging');
-      });
-      
       // Update on the server
+      console.log("Sending update to server");
       const res = await fetch(`/api/tasks/${taskId}`, {
         method: 'PUT',
         headers: {
@@ -424,8 +454,8 @@ export default function TaskBoard() {
       });
       
       if (!res.ok) {
+        console.error('Server returned error status:', res.status);
         // If the update fails, revert the UI
-        console.error('Failed to update task status on server');
         setTasks(prevTasks => 
           prevTasks.map((t: any) => 
             t._id === taskId ? { ...t, status: currentStatus } : t
@@ -434,7 +464,9 @@ export default function TaskBoard() {
         return;
       }
       
-      // Just fetch the tasks again without page reload
+      console.log("Task updated successfully");
+      
+      // Refresh the task list
       const tasksRes = await fetch('/api/tasks');
       if (tasksRes.ok) {
         const tasksData = await tasksRes.json();
