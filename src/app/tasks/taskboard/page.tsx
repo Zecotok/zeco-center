@@ -94,7 +94,32 @@ const UserAvatar = ({ user, isSelected, onClick }: { user: any, isSelected: bool
   );
 };
 
-// Task card component
+// First, update the task-card-wrapper styles
+const taskCardWrapperStyles = `
+  .task-card-wrapper {
+    position: relative;
+    display: block;
+  }
+  
+  .task-card-wrapper.dragging {
+    opacity: 0.6;
+  }
+  
+  .task-card {
+    cursor: pointer;
+  }
+
+  .task-card .drag-handle {
+    cursor: grab;
+  }
+  
+  /* Prevent interactions during dragging */
+  .task-card-wrapper.dragging .task-card {
+    pointer-events: none;
+  }
+`;
+
+// Update the TaskCard component to include the link properly
 const TaskCard = ({ task, onDragStart }: { task: any, onDragStart?: (e: React.DragEvent, taskId: string, status: string) => void }) => {
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
@@ -110,55 +135,79 @@ const TaskCard = ({ task, onDragStart }: { task: any, onDragStart?: (e: React.Dr
   };
 
   const handleDragStart = (e: React.DragEvent) => {
+    // Only handle drag if initiated from the grip icon
+    if (!(e.target as HTMLElement).closest('.drag-handle') && onDragStart) {
+      e.preventDefault();
+      return false;
+    }
+    
     if (onDragStart) {
       e.stopPropagation();
-      // Set the effectAllowed to move
+      
+      // Add dragging class to parent
+      const wrapper = (e.target as HTMLElement).closest('.task-card-wrapper');
+      if (wrapper) {
+        wrapper.classList.add('dragging');
+      }
+
+      // Set drag data
       e.dataTransfer.effectAllowed = 'move';
-      // Store the task data
-      e.dataTransfer.setData('application/json', JSON.stringify({
+      e.dataTransfer.setData('text/plain', JSON.stringify({
         taskId: task._id,
         currentStatus: task.status
       }));
+      
       onDragStart(e, task._id, task.status);
     }
   };
 
   return (
-    <div 
-      draggable={true}
-      onDragStart={handleDragStart}
-      className="bg-white p-3 rounded-lg shadow hover:shadow-md transition-shadow mb-3 cursor-move border-l-4 border-blue-500 group"
+    <Link 
+      href={`/tasks/${task._id}`}
+      className="no-underline hover:no-underline block"
+      draggable={false}
     >
-      <div className="flex justify-between items-start">
-        <h3 className="font-medium text-sm text-gray-900 mb-1 truncate no-underline">{task.title}</h3>
-        <FontAwesomeIcon icon={faGripLines} className="text-gray-300 group-hover:text-gray-500 mt-1" />
-      </div>
-      
-      <p className="text-xs text-gray-500 mb-2 line-clamp-2 no-underline">
-        {task.description || 'No description'}
-      </p>
-      
-      <div className="flex justify-between items-center">
-        <PriorityBadge priority={task.priority} />
+      <div 
+        draggable={true}
+        onDragStart={handleDragStart}
+        className="task-card bg-white p-3 rounded-lg shadow hover:shadow-md transition-shadow mb-3 border-l-4 border-blue-500 group"
+      >
+        <div className="flex justify-between items-start">
+          <h3 className="font-medium text-sm text-gray-900 mb-1 truncate no-underline">{task.title}</h3>
+          <div 
+            className="drag-handle p-1 rounded hover:bg-gray-100" 
+            onClick={(e) => e.preventDefault()}
+          >
+            <FontAwesomeIcon icon={faGripLines} className="text-gray-300 group-hover:text-gray-500" />
+          </div>
+        </div>
         
-        {task.dueDate && (
-          <div className={`text-xs ${isOverdue(task.dueDate) ? 'text-red-500 font-medium' : 'text-gray-500'}`}>
-            <FontAwesomeIcon icon={faCalendarAlt} className="mr-1" />
-            {formatDate(task.dueDate)}
+        <p className="text-xs text-gray-500 mb-2 line-clamp-2 no-underline">
+          {task.description || 'No description'}
+        </p>
+        
+        <div className="flex justify-between items-center">
+          <PriorityBadge priority={task.priority} />
+          
+          {task.dueDate && (
+            <div className={`text-xs ${isOverdue(task.dueDate) ? 'text-red-500 font-medium' : 'text-gray-500'}`}>
+              <FontAwesomeIcon icon={faCalendarAlt} className="mr-1" />
+              {formatDate(task.dueDate)}
+            </div>
+          )}
+        </div>
+        
+        {task.assignedTo && task.assignedTo.length > 0 && (
+          <div className="mt-2 flex -space-x-2 overflow-hidden">
+            {task.assignedTo.map((user: any, index: number) => (
+              <div key={index} className="inline-block h-6 w-6 rounded-full bg-gray-200 text-xs flex items-center justify-center border border-white">
+                {user.fullname ? user.fullname.charAt(0) : user.email.charAt(0)}
+              </div>
+            ))}
           </div>
         )}
       </div>
-      
-      {task.assignedTo && task.assignedTo.length > 0 && (
-        <div className="mt-2 flex -space-x-2 overflow-hidden">
-          {task.assignedTo.map((user: any, index: number) => (
-            <div key={index} className="inline-block h-6 w-6 rounded-full bg-gray-200 text-xs flex items-center justify-center border border-white">
-              {user.fullname ? user.fullname.charAt(0) : user.email.charAt(0)}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+    </Link>
   );
 };
 
@@ -332,14 +381,14 @@ export default function TaskBoard() {
     e.preventDefault();
     e.stopPropagation();
     
-    // Get task data from dataTransfer
-    const dataStr = e.dataTransfer.getData('application/json');
-    if (!dataStr) {
-      console.error('No data found in drop event');
-      return;
-    }
-    
     try {
+      // Get the data
+      const dataStr = e.dataTransfer.getData('text/plain');
+      if (!dataStr) {
+        console.error('No data found in drop event');
+        return;
+      }
+      
       const data = JSON.parse(dataStr);
       const { taskId, currentStatus } = data;
       
@@ -349,12 +398,19 @@ export default function TaskBoard() {
       const taskToUpdate = tasks.find((t: any) => t._id === taskId);
       if (!taskToUpdate) return;
       
-      // Optimistically update the UI
+      console.log(`Moving task ${taskId} from ${currentStatus} to ${newStatus}`);
+      
+      // Optimistically update the UI first (no waiting)
       setTasks(prevTasks => 
         prevTasks.map((t: any) => 
           t._id === taskId ? { ...t, status: newStatus } : t
         )
       );
+      
+      // Remove dragging class from all task cards
+      document.querySelectorAll('.task-card-wrapper.dragging').forEach(el => {
+        el.classList.remove('dragging');
+      });
       
       // Update on the server
       const res = await fetch(`/api/tasks/${taskId}`, {
@@ -363,27 +419,27 @@ export default function TaskBoard() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          status: newStatus,
-          title: taskToUpdate.title,
-          description: taskToUpdate.description,
-          priority: taskToUpdate.priority,
-          dueDate: taskToUpdate.dueDate,
-          assignedTo: taskToUpdate.assignedTo
+          status: newStatus
         })
       });
       
       if (!res.ok) {
         // If the update fails, revert the UI
+        console.error('Failed to update task status on server');
         setTasks(prevTasks => 
           prevTasks.map((t: any) => 
             t._id === taskId ? { ...t, status: currentStatus } : t
           )
         );
-        throw new Error('Failed to update task status');
+        return;
       }
       
-      // Refresh analytics after successful update
-      fetchTaskData();
+      // Just fetch the tasks again without page reload
+      const tasksRes = await fetch('/api/tasks');
+      if (tasksRes.ok) {
+        const tasksData = await tasksRes.json();
+        setTasks(tasksData.tasks || []);
+      }
     } catch (error) {
       console.error('Error handling drop:', error);
     } finally {
@@ -580,18 +636,6 @@ export default function TaskBoard() {
               getTasksByStatus('NOT_GROOMED').map((task: any) => (
                 <div key={task._id} className="task-card-wrapper">
                   <TaskCard task={task} onDragStart={handleDragStart} />
-                  <Link 
-                    href={`/tasks/${task._id}`} 
-                    className="absolute inset-0 z-10 opacity-0 cursor-pointer no-underline hover:no-underline"
-                    onClick={(e) => {
-                      // Only navigate if not dragging
-                      if (draggingTask) {
-                        e.preventDefault();
-                      }
-                    }}
-                  >
-                    <span className="sr-only">View task</span>
-                  </Link>
                 </div>
               ))
             )}
@@ -625,18 +669,6 @@ export default function TaskBoard() {
               getTasksByStatus('TODO').map((task: any) => (
                 <div key={task._id} className="task-card-wrapper">
                   <TaskCard task={task} onDragStart={handleDragStart} />
-                  <Link 
-                    href={`/tasks/${task._id}`} 
-                    className="absolute inset-0 z-10 opacity-0 cursor-pointer no-underline hover:no-underline"
-                    onClick={(e) => {
-                      // Only navigate if not dragging
-                      if (draggingTask) {
-                        e.preventDefault();
-                      }
-                    }}
-                  >
-                    <span className="sr-only">View task</span>
-                  </Link>
                 </div>
               ))
             )}
@@ -670,18 +702,6 @@ export default function TaskBoard() {
               getTasksByStatus('IN_PROGRESS').map((task: any) => (
                 <div key={task._id} className="task-card-wrapper">
                   <TaskCard task={task} onDragStart={handleDragStart} />
-                  <Link 
-                    href={`/tasks/${task._id}`} 
-                    className="absolute inset-0 z-10 opacity-0 cursor-pointer no-underline hover:no-underline"
-                    onClick={(e) => {
-                      // Only navigate if not dragging
-                      if (draggingTask) {
-                        e.preventDefault();
-                      }
-                    }}
-                  >
-                    <span className="sr-only">View task</span>
-                  </Link>
                 </div>
               ))
             )}
@@ -715,18 +735,6 @@ export default function TaskBoard() {
               getTasksByStatus('REVIEW').map((task: any) => (
                 <div key={task._id} className="task-card-wrapper">
                   <TaskCard task={task} onDragStart={handleDragStart} />
-                  <Link 
-                    href={`/tasks/${task._id}`} 
-                    className="absolute inset-0 z-10 opacity-0 cursor-pointer no-underline hover:no-underline"
-                    onClick={(e) => {
-                      // Only navigate if not dragging
-                      if (draggingTask) {
-                        e.preventDefault();
-                      }
-                    }}
-                  >
-                    <span className="sr-only">View task</span>
-                  </Link>
                 </div>
               ))
             )}
@@ -757,18 +765,6 @@ export default function TaskBoard() {
               getTasksByStatus('COMPLETED').map((task: any) => (
                 <div key={task._id} className="task-card-wrapper">
                   <TaskCard task={task} onDragStart={handleDragStart} />
-                  <Link 
-                    href={`/tasks/${task._id}`} 
-                    className="absolute inset-0 z-10 opacity-0 cursor-pointer no-underline hover:no-underline"
-                    onClick={(e) => {
-                      // Only navigate if not dragging
-                      if (draggingTask) {
-                        e.preventDefault();
-                      }
-                    }}
-                  >
-                    <span className="sr-only">View task</span>
-                  </Link>
                 </div>
               ))
             )}
