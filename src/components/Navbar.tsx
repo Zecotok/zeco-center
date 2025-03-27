@@ -24,6 +24,11 @@ import { useState } from "react";
 function Navbar() {
   const { data: session } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  
+  // Function to close the mobile menu
+  const handleNavLinkClick = () => {
+    setIsOpen(false);
+  };
 
   return (
     <nav className="bg-white shadow-md border-b border-[#84B9EF]/20 sticky top-0 z-50">
@@ -32,11 +37,12 @@ function Navbar() {
           {/* Logo and App Name */}
           <Link
             href="/"
+            onClick={handleNavLinkClick}
             className="flex items-center text-xl font-semibold text-[#0A2342] hover:text-[#2C4A7F] transition-colors duration-300"
           >
             <FontAwesomeIcon 
               icon={faDashboard} 
-              className="w-5 h-5 mr-2 text-[#2C4A7F]" 
+              className="w-5 h-5 mr-2 text-[#2C4A7F] hover:text-[#0A2342]" 
               style={{ maxWidth: '1.25rem' }} 
             />
             ZecoCenter
@@ -55,6 +61,7 @@ function Navbar() {
             <li>
               <Link
                 href="/meditate"
+                onClick={handleNavLinkClick}
                 className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-1"
               >
                 <FontAwesomeIcon 
@@ -68,6 +75,7 @@ function Navbar() {
             <li>
               <Link
                 href="/videos"
+                onClick={handleNavLinkClick}
                 className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-1"
               >
                 <FontAwesomeIcon 
@@ -81,6 +89,7 @@ function Navbar() {
             <li>
               <Link
                 href="/tasks/taskboard"
+                onClick={handleNavLinkClick}
                 className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-1"
               >
                 <FontAwesomeIcon 
@@ -98,6 +107,7 @@ function Navbar() {
                     <li>
                       <Link
                         href="/admin/users"
+                        onClick={handleNavLinkClick}
                         className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-1"
                       >
                         <FontAwesomeIcon 
@@ -110,6 +120,7 @@ function Navbar() {
                     <li>
                       <Link
                         href="/admin/analytics"
+                        onClick={handleNavLinkClick}
                         className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-1"
                       >
                         <FontAwesomeIcon 
@@ -124,6 +135,7 @@ function Navbar() {
                 <li>
                   <Link
                     href="/dashboard/profile"
+                    onClick={handleNavLinkClick}
                     className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-1"
                   >
                     <FontAwesomeIcon 
@@ -139,6 +151,7 @@ function Navbar() {
                 <li>
                   <Link
                     href="/login"
+                    onClick={handleNavLinkClick}
                     className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-1"
                   >
                     <FontAwesomeIcon 
@@ -151,6 +164,7 @@ function Navbar() {
                 <li>
                   <Link
                     href="/register"
+                    onClick={handleNavLinkClick}
                     className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group py-1"
                   >
                     <FontAwesomeIcon 
@@ -181,6 +195,7 @@ function Navbar() {
             <li>
               <Link
                 href="/meditate"
+                onClick={handleNavLinkClick}
                 className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group"
               >
                 <FontAwesomeIcon 
@@ -194,6 +209,7 @@ function Navbar() {
             <li>
               <Link
                 href="/videos"
+                onClick={handleNavLinkClick}
                 className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group"
               >
                 <FontAwesomeIcon 
@@ -207,6 +223,7 @@ function Navbar() {
             <li>
               <Link
                 href="/tasks/taskboard"
+                onClick={handleNavLinkClick}
                 className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group"
               >
                 <FontAwesomeIcon 
@@ -224,6 +241,7 @@ function Navbar() {
                     <li>
                       <Link
                         href="/admin/users"
+                        onClick={handleNavLinkClick}
                         className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group"
                       >
                         <FontAwesomeIcon 
@@ -236,6 +254,7 @@ function Navbar() {
                     <li>
                       <Link
                         href="/admin/analytics"
+                        onClick={handleNavLinkClick}
                         className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group"
                       >
                         <FontAwesomeIcon 
@@ -250,6 +269,7 @@ function Navbar() {
                 <li>
                   <Link
                     href="/dashboard/profile"
+                    onClick={handleNavLinkClick}
                     className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group"
                   >
                     <FontAwesomeIcon 
@@ -265,6 +285,7 @@ function Navbar() {
                 <li>
                   <Link
                     href="/login"
+                    onClick={handleNavLinkClick}
                     className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group"
                   >
                     <FontAwesomeIcon 
@@ -277,6 +298,7 @@ function Navbar() {
                 <li>
                   <Link
                     href="/register"
+                    onClick={handleNavLinkClick}
                     className="flex items-center text-[#0A2342] hover:text-[#2C4A7F] transition-all duration-300 group"
                   >
                     <FontAwesomeIcon 
