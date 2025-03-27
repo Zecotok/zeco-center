@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -15,7 +15,8 @@ import {
   faFilter,
   faSort,
   faUser,
-  faUserCircle
+  faUserCircle,
+  faGripLines
 } from '@fortawesome/free-solid-svg-icons';
 
 // Task status indicator component
@@ -94,7 +95,7 @@ const UserAvatar = ({ user, isSelected, onClick }: { user: any, isSelected: bool
 };
 
 // Task card component
-const TaskCard = ({ task }: { task: any }) => {
+const TaskCard = ({ task, onDragStart }: { task: any, onDragStart?: (e: React.DragEvent, taskId: string, status: string) => void }) => {
   const formatDate = (dateString: string) => {
     if (!dateString) return '';
     const options: Intl.DateTimeFormatOptions = { month: 'short', day: 'numeric' };
@@ -108,37 +109,56 @@ const TaskCard = ({ task }: { task: any }) => {
     return due < now;
   };
 
+  const handleDragStart = (e: React.DragEvent) => {
+    if (onDragStart) {
+      e.stopPropagation();
+      // Set the effectAllowed to move
+      e.dataTransfer.effectAllowed = 'move';
+      // Store the task data
+      e.dataTransfer.setData('application/json', JSON.stringify({
+        taskId: task._id,
+        currentStatus: task.status
+      }));
+      onDragStart(e, task._id, task.status);
+    }
+  };
+
   return (
-    <Link href={`/tasks/${task._id}`}>
-      <div className="bg-white p-4 rounded-lg shadow hover:shadow-md transition-shadow mb-3 cursor-pointer border-l-4 border-blue-500">
-        <h3 className="font-medium text-gray-900 mb-1 truncate">{task.title}</h3>
+    <div 
+      draggable={true}
+      onDragStart={handleDragStart}
+      className="bg-white p-3 rounded-lg shadow hover:shadow-md transition-shadow mb-3 cursor-move border-l-4 border-blue-500 group"
+    >
+      <div className="flex justify-between items-start">
+        <h3 className="font-medium text-sm text-gray-900 mb-1 truncate no-underline">{task.title}</h3>
+        <FontAwesomeIcon icon={faGripLines} className="text-gray-300 group-hover:text-gray-500 mt-1" />
+      </div>
+      
+      <p className="text-xs text-gray-500 mb-2 line-clamp-2 no-underline">
+        {task.description || 'No description'}
+      </p>
+      
+      <div className="flex justify-between items-center">
+        <PriorityBadge priority={task.priority} />
         
-        <p className="text-sm text-gray-500 mb-3 line-clamp-2">
-          {task.description || 'No description'}
-        </p>
-        
-        <div className="flex justify-between items-center">
-          <PriorityBadge priority={task.priority} />
-          
-          {task.dueDate && (
-            <div className={`text-xs ${isOverdue(task.dueDate) ? 'text-red-500 font-medium' : 'text-gray-500'}`}>
-              <FontAwesomeIcon icon={faCalendarAlt} className="mr-1" />
-              {formatDate(task.dueDate)}
-            </div>
-          )}
-        </div>
-        
-        {task.assignedTo && task.assignedTo.length > 0 && (
-          <div className="mt-3 flex -space-x-2 overflow-hidden">
-            {task.assignedTo.map((user: any, index: number) => (
-              <div key={index} className="inline-block h-6 w-6 rounded-full bg-gray-200 text-xs flex items-center justify-center border border-white">
-                {user.fullname ? user.fullname.charAt(0) : user.email.charAt(0)}
-              </div>
-            ))}
+        {task.dueDate && (
+          <div className={`text-xs ${isOverdue(task.dueDate) ? 'text-red-500 font-medium' : 'text-gray-500'}`}>
+            <FontAwesomeIcon icon={faCalendarAlt} className="mr-1" />
+            {formatDate(task.dueDate)}
           </div>
         )}
       </div>
-    </Link>
+      
+      {task.assignedTo && task.assignedTo.length > 0 && (
+        <div className="mt-2 flex -space-x-2 overflow-hidden">
+          {task.assignedTo.map((user: any, index: number) => (
+            <div key={index} className="inline-block h-6 w-6 rounded-full bg-gray-200 text-xs flex items-center justify-center border border-white">
+              {user.fullname ? user.fullname.charAt(0) : user.email.charAt(0)}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -146,8 +166,8 @@ export default function TaskBoard() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [tasks, setTasks] = useState([]);
-  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [filteredTasks, setFilteredTasks] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const [selectedUsers, setSelectedUsers] = useState<{[key: string]: boolean}>({});
   const [analytics, setAnalytics] = useState({
@@ -162,6 +182,8 @@ export default function TaskBoard() {
     sortBy: 'dueDate'
   });
   const [error, setError] = useState('');
+  const [draggingTask, setDraggingTask] = useState<string | null>(null);
+  const [draggingStatus, setDraggingStatus] = useState<string | null>(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -295,6 +317,79 @@ export default function TaskBoard() {
 
   const getTasksByStatus = (status: string) => {
     return filteredTasks.filter((task: any) => task.status === status);
+  };
+
+  const handleDragStart = (e: React.DragEvent, taskId: string, status: string) => {
+    setDraggingTask(taskId);
+    setDraggingStatus(status);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = async (e: React.DragEvent, newStatus: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Get task data from dataTransfer
+    const dataStr = e.dataTransfer.getData('application/json');
+    if (!dataStr) {
+      console.error('No data found in drop event');
+      return;
+    }
+    
+    try {
+      const data = JSON.parse(dataStr);
+      const { taskId, currentStatus } = data;
+      
+      if (currentStatus === newStatus || !taskId) return;
+      
+      // Find the task in the current list
+      const taskToUpdate = tasks.find((t: any) => t._id === taskId);
+      if (!taskToUpdate) return;
+      
+      // Optimistically update the UI
+      setTasks(prevTasks => 
+        prevTasks.map((t: any) => 
+          t._id === taskId ? { ...t, status: newStatus } : t
+        )
+      );
+      
+      // Update on the server
+      const res = await fetch(`/api/tasks/${taskId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          status: newStatus,
+          title: taskToUpdate.title,
+          description: taskToUpdate.description,
+          priority: taskToUpdate.priority,
+          dueDate: taskToUpdate.dueDate,
+          assignedTo: taskToUpdate.assignedTo
+        })
+      });
+      
+      if (!res.ok) {
+        // If the update fails, revert the UI
+        setTasks(prevTasks => 
+          prevTasks.map((t: any) => 
+            t._id === taskId ? { ...t, status: currentStatus } : t
+          )
+        );
+        throw new Error('Failed to update task status');
+      }
+      
+      // Refresh analytics after successful update
+      fetchTaskData();
+    } catch (error) {
+      console.error('Error handling drop:', error);
+    } finally {
+      setDraggingTask(null);
+      setDraggingStatus(null);
+    }
   };
 
   if (loading) {
@@ -469,14 +564,35 @@ export default function TaskBoard() {
               </span>
             </h3>
           </div>
-          <div className="p-3 h-[calc(100vh-380px)] overflow-y-auto">
+          <div 
+            className="p-3 h-[calc(100vh-380px)] overflow-y-auto"
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onDrop={(e) => handleDrop(e, 'NOT_GROOMED')}
+          >
             {getTasksByStatus('NOT_GROOMED').length === 0 ? (
               <div className="p-4 text-center text-gray-500 bg-gray-50 rounded-lg">
                 <p>No tasks</p>
               </div>
             ) : (
               getTasksByStatus('NOT_GROOMED').map((task: any) => (
-                <TaskCard key={task._id} task={task} />
+                <div key={task._id} className="task-card-wrapper">
+                  <TaskCard task={task} onDragStart={handleDragStart} />
+                  <Link 
+                    href={`/tasks/${task._id}`} 
+                    className="absolute inset-0 z-10 opacity-0 cursor-pointer no-underline hover:no-underline"
+                    onClick={(e) => {
+                      // Only navigate if not dragging
+                      if (draggingTask) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    <span className="sr-only">View task</span>
+                  </Link>
+                </div>
               ))
             )}
           </div>
@@ -493,14 +609,35 @@ export default function TaskBoard() {
               </span>
             </h3>
           </div>
-          <div className="p-3 h-[calc(100vh-380px)] overflow-y-auto">
+          <div 
+            className="p-3 h-[calc(100vh-380px)] overflow-y-auto"
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onDrop={(e) => handleDrop(e, 'TODO')}
+          >
             {getTasksByStatus('TODO').length === 0 ? (
               <div className="p-4 text-center text-gray-500 bg-gray-50 rounded-lg">
                 <p>No tasks</p>
               </div>
             ) : (
               getTasksByStatus('TODO').map((task: any) => (
-                <TaskCard key={task._id} task={task} />
+                <div key={task._id} className="task-card-wrapper">
+                  <TaskCard task={task} onDragStart={handleDragStart} />
+                  <Link 
+                    href={`/tasks/${task._id}`} 
+                    className="absolute inset-0 z-10 opacity-0 cursor-pointer no-underline hover:no-underline"
+                    onClick={(e) => {
+                      // Only navigate if not dragging
+                      if (draggingTask) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    <span className="sr-only">View task</span>
+                  </Link>
+                </div>
               ))
             )}
           </div>
@@ -517,14 +654,35 @@ export default function TaskBoard() {
               </span>
             </h3>
           </div>
-          <div className="p-3 h-[calc(100vh-380px)] overflow-y-auto">
+          <div 
+            className="p-3 h-[calc(100vh-380px)] overflow-y-auto"
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onDrop={(e) => handleDrop(e, 'IN_PROGRESS')}
+          >
             {getTasksByStatus('IN_PROGRESS').length === 0 ? (
               <div className="p-4 text-center text-gray-500 bg-gray-50 rounded-lg">
                 <p>No tasks</p>
               </div>
             ) : (
               getTasksByStatus('IN_PROGRESS').map((task: any) => (
-                <TaskCard key={task._id} task={task} />
+                <div key={task._id} className="task-card-wrapper">
+                  <TaskCard task={task} onDragStart={handleDragStart} />
+                  <Link 
+                    href={`/tasks/${task._id}`} 
+                    className="absolute inset-0 z-10 opacity-0 cursor-pointer no-underline hover:no-underline"
+                    onClick={(e) => {
+                      // Only navigate if not dragging
+                      if (draggingTask) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    <span className="sr-only">View task</span>
+                  </Link>
+                </div>
               ))
             )}
           </div>
@@ -541,14 +699,35 @@ export default function TaskBoard() {
               </span>
             </h3>
           </div>
-          <div className="p-3 h-[calc(50vh-230px)] overflow-y-auto">
+          <div 
+            className="p-3 h-[calc(50vh-230px)] overflow-y-auto"
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onDrop={(e) => handleDrop(e, 'REVIEW')}
+          >
             {getTasksByStatus('REVIEW').length === 0 ? (
               <div className="p-4 text-center text-gray-500 bg-gray-50 rounded-lg">
                 <p>No tasks</p>
               </div>
             ) : (
               getTasksByStatus('REVIEW').map((task: any) => (
-                <TaskCard key={task._id} task={task} />
+                <div key={task._id} className="task-card-wrapper">
+                  <TaskCard task={task} onDragStart={handleDragStart} />
+                  <Link 
+                    href={`/tasks/${task._id}`} 
+                    className="absolute inset-0 z-10 opacity-0 cursor-pointer no-underline hover:no-underline"
+                    onClick={(e) => {
+                      // Only navigate if not dragging
+                      if (draggingTask) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    <span className="sr-only">View task</span>
+                  </Link>
+                </div>
               ))
             )}
           </div>
@@ -562,14 +741,35 @@ export default function TaskBoard() {
               </span>
             </h3>
           </div>
-          <div className="p-3 h-[calc(50vh-230px)] overflow-y-auto">
+          <div 
+            className="p-3 h-[calc(50vh-230px)] overflow-y-auto"
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+            }}
+            onDrop={(e) => handleDrop(e, 'COMPLETED')}
+          >
             {getTasksByStatus('COMPLETED').length === 0 ? (
               <div className="p-4 text-center text-gray-500 bg-gray-50 rounded-lg">
                 <p>No tasks</p>
               </div>
             ) : (
               getTasksByStatus('COMPLETED').map((task: any) => (
-                <TaskCard key={task._id} task={task} />
+                <div key={task._id} className="task-card-wrapper">
+                  <TaskCard task={task} onDragStart={handleDragStart} />
+                  <Link 
+                    href={`/tasks/${task._id}`} 
+                    className="absolute inset-0 z-10 opacity-0 cursor-pointer no-underline hover:no-underline"
+                    onClick={(e) => {
+                      // Only navigate if not dragging
+                      if (draggingTask) {
+                        e.preventDefault();
+                      }
+                    }}
+                  >
+                    <span className="sr-only">View task</span>
+                  </Link>
+                </div>
               ))
             )}
           </div>
