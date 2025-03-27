@@ -7,10 +7,13 @@ import { useRouter } from "next/navigation";
 
 function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
+    setSuccess(null);
 
     const formData = new FormData(e.currentTarget);
     const fullname = formData.get("fullname");
@@ -25,16 +28,15 @@ function RegisterPage() {
       });
 
       console.log(signupResponse);
+      
+      // Show pending approval message
+      setSuccess(signupResponse.data.message || "Registration successful! Your account is pending admin approval.");
+      
+      // Redirect to login page after 3 seconds
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
 
-      const signinResponse = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      });
-
-      if (signinResponse?.ok) return router.push("/dashboard/profile");
-
-      console.log(signinResponse);
     } catch (error) {
       console.error(error);
       if (error instanceof AxiosError) {
@@ -52,6 +54,12 @@ function RegisterPage() {
         {error && (
           <div className="bg-red-100/80 text-red-700 px-4 py-2 rounded-xl mb-4">
             {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="bg-green-100/80 text-green-700 px-4 py-2 rounded-xl mb-4">
+            {success}
           </div>
         )}
 

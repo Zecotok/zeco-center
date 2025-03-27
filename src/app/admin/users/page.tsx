@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash, faSave, faTimes, faUserShield } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faTrash, faSave, faTimes, faUserShield, faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 interface User {
     _id: string;
@@ -15,8 +15,17 @@ interface User {
     role?: string;
 }
 
+interface PendingUser {
+    _id: string;
+    fullname: string;
+    email: string;
+    role?: string;
+    createdAt: string;
+}
+
 function AdminPage() {
     const [users, setUsers] = useState<User[]>([]);
+    const [pendingUsers, setPendingUsers] = useState<PendingUser[]>([]);
     const [editingUser, setEditingUser] = useState<string | null>(null);
     const [formData, setFormData] = useState({ 
         fullname: "", 
@@ -35,6 +44,7 @@ function AdminPage() {
             router.push("/");
         } else {
             fetchUsers();
+            fetchPendingUsers();
         }
     }, [status, session]);
 
@@ -44,6 +54,15 @@ function AdminPage() {
             setUsers(response.data);
         } catch (error) {
             console.error("Error fetching users:", error);
+        }
+    };
+
+    const fetchPendingUsers = async () => {
+        try {
+            const response = await axios.get("/api/admin/users/pending");
+            setPendingUsers(response.data);
+        } catch (error) {
+            console.error("Error fetching pending users:", error);
         }
     };
 
@@ -82,6 +101,31 @@ function AdminPage() {
         }
     };
 
+    const handleApproveUser = async (id: string) => {
+        try {
+            await axios.post("/api/admin/users/pending", {
+                id,
+                role: "USER",
+                isAdmin: false
+            });
+            fetchPendingUsers();
+            fetchUsers();
+        } catch (error) {
+            console.error("Error approving user:", error);
+        }
+    };
+
+    const handleRejectUser = async (id: string) => {
+        if (window.confirm("Are you sure you want to reject this user registration?")) {
+            try {
+                await axios.delete("/api/admin/users/pending", { data: { id } });
+                fetchPendingUsers();
+            } catch (error) {
+                console.error("Error rejecting user:", error);
+            }
+        }
+    };
+
     if (status === "loading") {
         return <div className="text-center mt-8">Loading...</div>;
     }
@@ -98,6 +142,54 @@ function AdminPage() {
                     <h1 className="text-3xl font-bold text-gray-800">User Management</h1>
                 </div>
 
+                {/* Pending User Approvals */}
+                {pendingUsers.length > 0 && (
+                    <div className="mb-8">
+                        <h2 className="text-xl font-semibold text-gray-700 mb-4">Pending Approvals</h2>
+                        <div className="overflow-x-auto">
+                            <table className="min-w-full bg-white border border-gray-200">
+                                <thead>
+                                    <tr className="bg-yellow-50">
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Registered On</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-gray-200">
+                                    {pendingUsers.map((user) => (
+                                        <tr key={user._id} className="bg-yellow-50/30">
+                                            <td className="px-6 py-4 whitespace-nowrap">{user.fullname}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{user.email}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                {new Date(user.createdAt).toLocaleDateString()}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <button
+                                                    onClick={() => handleApproveUser(user._id)}
+                                                    className="bg-green-500 hover:bg-green-600 text-white rounded px-3 py-1 mr-2"
+                                                >
+                                                    <FontAwesomeIcon icon={faCheck} className="mr-1" />
+                                                    Approve
+                                                </button>
+                                                <button
+                                                    onClick={() => handleRejectUser(user._id)}
+                                                    className="bg-red-500 hover:bg-red-600 text-white rounded px-3 py-1"
+                                                >
+                                                    <FontAwesomeIcon icon={faXmark} className="mr-1" />
+                                                    Reject
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                )}
+
+                {/* Existing Users Table */}
+                <h2 className="text-xl font-semibold text-gray-700 mb-4">Active Users</h2>
                 <div className="overflow-x-auto">
                     <table className="min-w-full bg-white">
                         <thead>

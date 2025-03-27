@@ -6,7 +6,7 @@ import Task from '@/models/Task';
 import TaskComment from '@/models/TaskComment';
 import { TaskStatus } from '@/models/Task';
 import { withPermission } from '@/libs/apiAuth';
-import { PERMISSIONS } from '@/libs/rolesConfig';
+import { PERMISSIONS, ROLES } from '@/libs/rolesConfig';
 
 // GET /api/tasks/[id] - Get task by id with comments
 export const GET = async (req: NextRequest, context: { params: { id: string } }) => {
@@ -170,9 +170,9 @@ export const DELETE = async (req: NextRequest, context: { params: { id: string }
       if (!task) {
         return NextResponse.json({ error: 'Task not found' }, { status: 404 });
       }
-      
-      // Only task creator can delete task
-      if (task.createdBy.toString() !== userId) {
+
+      // only task creator or admin can delete task
+      if (task.createdBy.toString() !== userId && session.user.role !== ROLES.ADMIN) {
         return NextResponse.json({ error: 'You do not have permission to delete this task' }, { status: 403 });
       }
       
