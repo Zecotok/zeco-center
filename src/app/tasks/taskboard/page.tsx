@@ -185,15 +185,17 @@ const TaskCard = ({ task, onDragStart }: { task: any, onDragStart?: (e: React.Dr
       onDragStart={handleDragStart}
     >
       <div className="task-card bg-white p-3 rounded-lg shadow hover:shadow-md transition-shadow mb-3 border-l-4 border-blue-500 group">
-        <div className="flex justify-between items-start">
-          <Link 
-            href={`/tasks/${task._id}`}
-            className="block flex-grow no-underline hover:no-underline"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h3 className="font-medium text-sm text-gray-900 mb-1 truncate no-underline">{task.title}</h3>
-          </Link>
-          <div className="drag-handle p-1 rounded hover:bg-gray-100">
+        <div className="flex justify-between items-start w-full">
+          <div className="flex-1 min-w-0 mr-2">
+            <Link 
+              href={`/tasks/${task._id}`}
+              className="block no-underline hover:no-underline"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h3 className="font-medium text-sm text-gray-900 mb-1 truncate no-underline">{task.title}</h3>
+            </Link>
+          </div>
+          <div className="drag-handle p-1 rounded hover:bg-gray-100 shrink-0">
             <FontAwesomeIcon icon={faGripLines} className="text-gray-300 group-hover:text-gray-500" />
           </div>
         </div>
