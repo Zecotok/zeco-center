@@ -978,13 +978,13 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                         <div>
                           <p className="text-sm font-semibold text-gray-600 mb-1">Assigned To</p>
                           {task?.assignedTo?.length > 0 ? (
-                            <ul className="list-none">
+                            <div>
                               {task.assignedTo.map((user: any) => (
-                                <li key={user._id} className="text-gray-800 py-1 border-b border-gray-100 last:border-0">
+                                <p key={user._id} className="text-gray-800 py-1 border-b border-gray-100 last:border-0">
                                   {user.email || user.fullname || 'Unknown'}
-                                </li>
+                                </p>
                               ))}
-                            </ul>
+                            </div>
                           ) : (
                             <p className="text-gray-500 italic">No assignees</p>
                           )}

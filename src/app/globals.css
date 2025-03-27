@@ -36,11 +36,13 @@ body {
 
 a {
   color: var(--primary-color);
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
-a:hover {
-  text-decoration: underline;
+
+/* Make sure all Link components and anchor tags have no underline */
+a, a:link, a:visited, a:hover, a:active, [href], .no-underline {
+  text-decoration: none !important;
 }
 
 /* Common utility classes */
