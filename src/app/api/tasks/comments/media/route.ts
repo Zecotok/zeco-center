@@ -9,21 +9,6 @@ import { join } from 'path';
 import { mkdir } from 'fs/promises';
 import { TASK_MEDIA_DIR } from '@/constants/paths';
 
-// Helper function to check if a user has access to a task
-async function hasTaskAccess(taskId: string, userId: string) {
-  if (!Task) return false;
-  
-  // Check if task exists and user has access
-  const task = await Task.findById(taskId);
-  
-  if (!task) {
-    return false;
-  }
-  
-  // User has access if they created the task or are assigned to it
-  return task.createdBy.toString() === userId || 
-         task.assignedTo.some((id: any) => id.toString() === userId);
-}
 
 // POST /api/tasks/comments/media - Add media comment to task
 export async function POST(req: NextRequest) {
@@ -55,12 +40,6 @@ export async function POST(req: NextRequest) {
     // Check if Task model is available (server-side)
     if (!Task) {
       return NextResponse.json({ error: 'Database model not available' }, { status: 500 });
-    }
-    
-    // Check if user has access to the task
-    const hasAccess = await hasTaskAccess(taskId, userId);
-    if (!hasAccess) {
-      return NextResponse.json({ error: 'Task not found or access denied' }, { status: 404 });
     }
     
     // Check if TaskComment model is available (server-side)

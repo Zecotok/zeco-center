@@ -25,11 +25,7 @@ export const GET = async (req: NextRequest) => {
     const sort = searchParams.get('sort');
     
     // Build query based on parameters
-    const query: any = {
-      $or: [
-        { createdBy: userId }
-      ]
-    };
+    const query: any = {}
     
     // Apply status filter if provided
     if (status) {
