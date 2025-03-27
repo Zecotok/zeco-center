@@ -85,6 +85,9 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
   const [mediaDuration, setMediaDuration] = useState(0);
   const [mediaFileSize, setMediaFileSize] = useState(0);
   const [deletingComment, setDeletingComment] = useState<string | null>(null);
+  const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [statusDropdownOpen, setStatusDropdownOpen] = useState(false);
+  const statusDropdownRef = useRef<HTMLDivElement>(null);
 
   // Fetch task data when component mounts
   useEffect(() => {
@@ -472,6 +475,72 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
     }
   };
 
+  const handleStatusChange = async (newStatus: string) => {
+    if (newStatus === task?.status) {
+      setStatusDropdownOpen(false);
+      return;
+    }
+    
+    try {
+      setUpdatingStatus(true);
+      setError('');
+      
+      // Optimistically update UI
+      setTask((prev: any) => {
+        if (!prev) return prev;
+        return { ...prev, status: newStatus };
+      });
+      
+      const res = await fetch(`/api/tasks/${params.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to update task status');
+      }
+      
+      const data = await res.json();
+      setTask(data.task);
+      setSuccessMessage('Status updated successfully');
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+    } catch (err: any) {
+      console.error('Error updating task status:', err);
+      setError(err.message || 'Failed to update task status');
+      
+      // Revert the optimistic update if there was an error
+      setTask((prev: any) => {
+        if (!prev) return prev;
+        return { ...prev, status: task?.status };
+      });
+    } finally {
+      setUpdatingStatus(false);
+      setStatusDropdownOpen(false);
+    }
+  };
+
+  // Add click outside handler for the status dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (statusDropdownRef.current && !statusDropdownRef.current.contains(event.target as Node)) {
+        setStatusDropdownOpen(false);
+      }
+    }
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [statusDropdownRef]);
+
   if (loading && !task) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -561,8 +630,76 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                   </h1>
                 )}
                 
-                <div className="flex flex-wrap gap-2 mt-3">
-                  <StatusBadge status={task?.status} />
+                <div className="flex flex-wrap items-center gap-3 mt-3">
+                  {/* Jira-style status dropdown */}
+                  <div className="relative" ref={statusDropdownRef}>
+                    <button
+                      onClick={() => setStatusDropdownOpen(!statusDropdownOpen)}
+                      disabled={updatingStatus || isEditing}
+                      className={`inline-flex items-center justify-between min-w-32 px-3 py-1.5 rounded-md border transition-all ${
+                        updatingStatus ? 'opacity-70 cursor-not-allowed' : ''
+                      } ${
+                        task?.status === 'COMPLETED' ? 'bg-green-100 text-green-800 border-green-200 hover:bg-green-200' :
+                        task?.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200' :
+                        task?.status === 'BLOCKED' ? 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200' :
+                        'bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-200'
+                      }`}
+                    >
+                      <span className="font-medium text-sm mr-1">
+                        {updatingStatus ? (
+                          <span className="flex items-center">
+                            <div className="w-3 h-3 mr-2 border-t-2 border-r-2 border-current rounded-full animate-spin"></div>
+                            Updating...
+                          </span>
+                        ) : (
+                          task?.status?.replace('_', ' ')
+                        )}
+                      </span>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    
+                    {statusDropdownOpen && !isEditing && (
+                      <div className="absolute z-10 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                        <div className="py-1">
+                          <button
+                            onClick={() => handleStatusChange('NOT_STARTED')}
+                            className={`block w-full text-left px-4 py-2 text-sm ${
+                              task?.status === 'NOT_STARTED' ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            Not Started
+                          </button>
+                          <button
+                            onClick={() => handleStatusChange('IN_PROGRESS')}
+                            className={`block w-full text-left px-4 py-2 text-sm ${
+                              task?.status === 'IN_PROGRESS' ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            In Progress
+                          </button>
+                          <button
+                            onClick={() => handleStatusChange('BLOCKED')}
+                            className={`block w-full text-left px-4 py-2 text-sm ${
+                              task?.status === 'BLOCKED' ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            Blocked
+                          </button>
+                          <button
+                            onClick={() => handleStatusChange('COMPLETED')}
+                            className={`block w-full text-left px-4 py-2 text-sm ${
+                              task?.status === 'COMPLETED' ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            Completed
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
                   <PriorityBadge priority={task?.priority} />
                 </div>
               </div>
