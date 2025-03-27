@@ -170,11 +170,6 @@ export const DELETE = async (req: NextRequest, context: { params: { id: string }
       if (!task) {
         return NextResponse.json({ error: 'Task not found' }, { status: 404 });
       }
-
-      // only task creator or admin can delete task
-      if (task.createdBy.toString() !== userId && session.user.role !== ROLES.ADMIN) {
-        return NextResponse.json({ error: 'You do not have permission to delete this task' }, { status: 403 });
-      }
       
       // First get all comments for the task to find media files
       if (TaskComment) {
