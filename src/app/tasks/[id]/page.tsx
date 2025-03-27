@@ -542,10 +542,24 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
           {/* Task header */}
           <div className="p-6 border-b border-gray-100">
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-800">
-                  {task?.title}
-                </h1>
+              <div className="w-full">
+                {isEditing ? (
+                  <div className="mb-3 w-full">
+                    <input
+                      type="text"
+                      name="title"
+                      value={editedTask.title || ''}
+                      onChange={handleInputChange}
+                      className="shadow-sm border border-gray-200 rounded-lg w-full py-2 px-3 text-2xl font-bold text-gray-800 leading-tight focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-colors duration-200"
+                      placeholder="Task title"
+                      required
+                    />
+                  </div>
+                ) : (
+                  <h1 className="text-2xl font-bold text-gray-800">
+                    {task?.title}
+                  </h1>
+                )}
                 
                 <div className="flex flex-wrap gap-2 mt-3">
                   <StatusBadge status={task?.status} />
