@@ -23,7 +23,8 @@ import {
   faDesktop,
   faTimes,
   faUserPlus,
-  faXmark
+  faXmark,
+  faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
 import { MediaRecorder } from '@/components/video';
 import { RecordingMode } from '@/types/videoRecording';
@@ -83,6 +84,7 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [mediaDuration, setMediaDuration] = useState(0);
   const [mediaFileSize, setMediaFileSize] = useState(0);
+  const [deletingComment, setDeletingComment] = useState<string | null>(null);
 
   // Fetch task data when component mounts
   useEffect(() => {
@@ -424,6 +426,49 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
         
       default:
         return <p className="text-gray-700 whitespace-pre-wrap">{comment.content}</p>;
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    if (!commentId) return;
+    
+    try {
+      setDeletingComment(commentId);
+      setError('');
+      
+      const res = await fetch('/api/tasks/comments', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ commentId })
+      });
+      
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to delete comment');
+      }
+      
+      // Remove the comment from the UI
+      setTask((prev: any) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          comments: prev.comments.filter((c: any) => c._id !== commentId)
+        };
+      });
+      
+      setSuccessMessage('Comment deleted successfully');
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => {
+        setSuccessMessage('');
+      }, 3000);
+    } catch (err: any) {
+      console.error('Error deleting comment:', err);
+      setError(err.message || 'Failed to delete comment');
+    } finally {
+      setDeletingComment(null);
     }
   };
 
@@ -944,7 +989,22 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                                 )}
                               </div>
                             </div>
-                            <span className="text-xs text-gray-500">{formatDateTime(comment.createdAt)}</span>
+                            <div className="flex items-center space-x-2">
+                              <span className="text-xs text-gray-500">{formatDateTime(comment.createdAt)}</span>
+                              <button
+                                onClick={() => handleDeleteComment(comment._id)}
+                                disabled={deletingComment === comment._id}
+                                className="text-gray-400 hover:text-red-500 transition-colors duration-200 p-1"
+                                title="Delete comment"
+                                aria-label="Delete comment"
+                              >
+                                {deletingComment === comment._id ? (
+                                  <div className="w-4 h-4 border-t-2 border-r-2 border-red-500 rounded-full animate-spin"></div>
+                                ) : (
+                                  <FontAwesomeIcon icon={faTrashAlt} className="w-4 h-4" />
+                                )}
+                              </button>
+                            </div>
                           </div>
                           <div className="mt-3 pl-13">
                             {comment.commentType && comment.commentType !== 'text' 

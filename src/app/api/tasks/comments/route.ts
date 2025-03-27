@@ -75,4 +75,91 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ error: `Failed to create comment: ${error.message}` }, { status: 500 });
     }
   });
+};
+
+// DELETE /api/tasks/comments - Delete a comment
+export const DELETE = async (req: NextRequest) => {
+  return withPermission(PERMISSIONS.TASKS)(req, async (request) => {
+    try {
+      const session = await getServerSession(authOptions);
+      if (!session?.user) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+
+      const { commentId } = await request.json();
+      
+      if (!commentId) {
+        return NextResponse.json({ error: 'Comment ID is required' }, { status: 400 });
+      }
+      
+      await connectDB();
+      
+      // Check if models are available
+      if (!TaskComment) {
+        return NextResponse.json({ error: 'Comment model not available' }, { status: 500 });
+      }
+      
+      if (!Task) {
+        return NextResponse.json({ error: 'Task model not available' }, { status: 500 });
+      }
+      
+      // Find the comment
+      const comment = await TaskComment.findById(commentId);
+      
+      if (!comment) {
+        return NextResponse.json({ error: 'Comment not found' }, { status: 404 });
+      }
+      
+      // Check if the user is authorized to delete the comment
+      // Only comment author, task creator, or admin can delete comments
+      const userId = session.user.id;
+      const isAuthor = comment.author.toString() === userId;
+      const task = await Task.findById(comment.task);
+      
+      if (!task) {
+        return NextResponse.json({ error: 'Associated task not found' }, { status: 404 });
+      }
+      
+      const isTaskCreator = task.createdBy.toString() === userId;
+      const isAdmin = session.user.isAdmin;
+      
+      if (!isAuthor && !isTaskCreator && !isAdmin) {
+        return NextResponse.json({ error: 'Not authorized to delete this comment' }, { status: 403 });
+      }
+      
+      // Delete associated media file if exists
+      if (comment.mediaUrl) {
+        try {
+          const { unlink } = require('fs/promises');
+          const { join } = require('path');
+          
+          // Extract filename from mediaUrl
+          const urlPath = comment.mediaUrl.split('/');
+          const filename = urlPath[urlPath.length - 1];
+          
+          // Form the file path
+          const mediaDir = join(process.cwd(), 'uploads', 'task-media');
+          const filePath = join(mediaDir, filename);
+          
+          // Check if file exists before deleting
+          const { existsSync } = require('fs');
+          if (existsSync(filePath)) {
+            await unlink(filePath);
+            console.log(`Deleted media file: ${filePath}`);
+          }
+        } catch (fileError) {
+          console.error(`Error deleting media file: ${comment.mediaUrl}`, fileError);
+          // Continue with comment deletion even if file deletion fails
+        }
+      }
+      
+      // Delete the comment
+      await TaskComment.findByIdAndDelete(commentId);
+      
+      return NextResponse.json({ message: 'Comment deleted successfully' });
+    } catch (error: any) {
+      console.error('Error deleting comment:', error);
+      return NextResponse.json({ error: `Failed to delete comment: ${error.message}` }, { status: 500 });
+    }
+  });
 }; 
