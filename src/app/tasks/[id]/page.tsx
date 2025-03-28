@@ -28,15 +28,18 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { MediaRecorder } from '@/components/video';
 import { RecordingMode } from '@/types/videoRecording';
+import { TaskStatus } from '@/models/Task';
+import { formatDate } from '@/constants/datetime';
 
 // Task status component
 const StatusBadge = ({ status }: { status: string }) => {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'COMPLETED': return 'bg-green-100 text-green-800 border border-green-200';
-      case 'IN_PROGRESS': return 'bg-blue-100 text-blue-800 border border-blue-200';
-      case 'NOT_STARTED': return 'bg-gray-100 text-gray-800 border border-gray-200';
-      case 'BLOCKED': return 'bg-red-100 text-red-800 border border-red-200';
+      case TaskStatus.COMPLETED: return 'bg-green-100 text-green-800 border border-green-200';
+      case TaskStatus.IN_PROGRESS: return 'bg-blue-100 text-blue-800 border border-blue-200';
+      case TaskStatus.TODO: return 'bg-gray-100 text-gray-800 border border-gray-200';
+      case TaskStatus.REVIEW: return 'bg-yellow-100 text-yellow-800 border border-yellow-200';
+      case TaskStatus.NOT_GROOMED: return 'bg-purple-100 text-purple-800 border border-purple-200';
       default: return 'bg-gray-100 text-gray-800 border border-gray-200';
     }
   };
@@ -376,12 +379,6 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
     }
   };
 
-  const formatDate = (dateString: string) => {
-    if (!dateString) return 'Not set';
-    const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'short', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-  
   const formatDateTime = (dateString: string) => {
     if (!dateString) return '';
     const options: Intl.DateTimeFormatOptions = { 
@@ -639,9 +636,11 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       className={`inline-flex items-center justify-between min-w-32 px-3 py-1.5 rounded-md border transition-all ${
                         updatingStatus ? 'opacity-70 cursor-not-allowed' : ''
                       } ${
-                        task?.status === 'COMPLETED' ? 'bg-green-100 text-green-800 border-green-200 hover:bg-green-200' :
-                        task?.status === 'IN_PROGRESS' ? 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200' :
-                        task?.status === 'BLOCKED' ? 'bg-red-100 text-red-800 border-red-200 hover:bg-red-200' :
+                        task?.status === TaskStatus.COMPLETED ? 'bg-green-100 text-green-800 border-green-200 hover:bg-green-200' :
+                        task?.status === TaskStatus.IN_PROGRESS ? 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-200' :
+                        task?.status === TaskStatus.REVIEW ? 'bg-yellow-100 text-yellow-800 border-yellow-200 hover:bg-yellow-200' :
+                        task?.status === TaskStatus.TODO ? 'bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-200' :
+                        task?.status === TaskStatus.NOT_GROOMED ? 'bg-purple-100 text-purple-800 border-purple-200 hover:bg-purple-200' :
                         'bg-gray-100 text-gray-800 border-gray-200 hover:bg-gray-200'
                       }`}
                     >
@@ -664,33 +663,41 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       <div className="absolute z-10 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                         <div className="py-1">
                           <button
-                            onClick={() => handleStatusChange('NOT_STARTED')}
+                            onClick={() => handleStatusChange(TaskStatus.NOT_GROOMED)}
                             className={`block w-full text-left px-4 py-2 text-sm ${
-                              task?.status === 'NOT_STARTED' ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                              task?.status === TaskStatus.NOT_GROOMED ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
                             }`}
                           >
-                            Not Started
+                            Not Groomed
                           </button>
                           <button
-                            onClick={() => handleStatusChange('IN_PROGRESS')}
+                            onClick={() => handleStatusChange(TaskStatus.TODO)}
                             className={`block w-full text-left px-4 py-2 text-sm ${
-                              task?.status === 'IN_PROGRESS' ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                              task?.status === TaskStatus.TODO ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            To Do
+                          </button>
+                          <button
+                            onClick={() => handleStatusChange(TaskStatus.IN_PROGRESS)}
+                            className={`block w-full text-left px-4 py-2 text-sm ${
+                              task?.status === TaskStatus.IN_PROGRESS ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
                             }`}
                           >
                             In Progress
                           </button>
                           <button
-                            onClick={() => handleStatusChange('BLOCKED')}
+                            onClick={() => handleStatusChange(TaskStatus.REVIEW)}
                             className={`block w-full text-left px-4 py-2 text-sm ${
-                              task?.status === 'BLOCKED' ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                              task?.status === TaskStatus.REVIEW ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
                             }`}
                           >
-                            Blocked
+                            Review
                           </button>
                           <button
-                            onClick={() => handleStatusChange('COMPLETED')}
+                            onClick={() => handleStatusChange(TaskStatus.COMPLETED)}
                             className={`block w-full text-left px-4 py-2 text-sm ${
-                              task?.status === 'COMPLETED' ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                              task?.status === TaskStatus.COMPLETED ? 'bg-gray-100 text-gray-900 font-medium' : 'text-gray-700 hover:bg-gray-50'
                             }`}
                           >
                             Completed
@@ -847,10 +854,11 @@ export default function TaskDetailPage({ params }: { params: { id: string } }) {
                       onChange={handleInputChange}
                       className="shadow-sm border border-gray-200 rounded-lg w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50 transition-colors duration-200"
                     >
-                      <option value="NOT_STARTED">Not Started</option>
-                      <option value="IN_PROGRESS">In Progress</option>
-                      <option value="COMPLETED">Completed</option>
-                      <option value="BLOCKED">Blocked</option>
+                      <option value={TaskStatus.NOT_GROOMED}>Not Groomed</option>
+                      <option value={TaskStatus.TODO}>To Do</option>
+                      <option value={TaskStatus.IN_PROGRESS}>In Progress</option>
+                      <option value={TaskStatus.REVIEW}>Review</option>
+                      <option value={TaskStatus.COMPLETED}>Completed</option>
                     </select>
                   </div>
                   
