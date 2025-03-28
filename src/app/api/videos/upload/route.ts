@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/libs/authConfig';
 import { v4 as uuidv4 } from 'uuid';
-import fs from 'fs-extra';
+import fs from 'fs-extra'; 
 import path from 'path';
-
+import { UPLOADS_DIR } from '@/constants/paths';
 // Create the uploads directory if it doesn't exist
 const uploadDir = path.join(process.cwd(), 'uploads');
 fs.ensureDirSync(uploadDir);
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const uniqueId = uuidv4();
     const fileExtension = path.extname(file.name);
     const fileName = `${uniqueId}${fileExtension}`;
-    const filePath = path.join('uploads', fileName);
+    const filePath = path.join(UPLOADS_DIR, fileName);
     const fullPath = path.join(process.cwd(), filePath);
 
     // Save the file to the uploads directory - using Uint8Array to avoid type issues
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ 
       success: true, 
       fileName,
-      filePath: `/api/uploads/${fileName}`,
+      filePath: filePath,
       fileSize: file.size
     }, { status: 201 });
   } catch (error) {
