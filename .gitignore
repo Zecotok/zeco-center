@@ -43,3 +43,5 @@ next-env.d.ts
 
 /uploads/media/*
 !/uploads/media/.gitkeep
+neko
+browser-data
