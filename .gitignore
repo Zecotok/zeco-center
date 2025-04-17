@@ -45,3 +45,5 @@ next-env.d.ts
 !/uploads/media/.gitkeep
 neko
 browser-data
+screenshots/*
+!/screenshots/.gitkeep
