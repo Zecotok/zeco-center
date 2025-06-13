@@ -47,3 +47,5 @@ neko
 browser-data
 screenshots/*
 !/screenshots/.gitkeep
+notes/*
+!notes/.gitkeep
