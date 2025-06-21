@@ -12,13 +12,13 @@
     "clean-dist": "rm -rf .next",
     "lean-build": "rm -rf .next && next build && npm run clean-cache",
     "lean-build-start": "npm run lean-build && npm run start",
-    "upload-build": "scp -i ~/.ssh/vdi241.pem -r .next ubuntu@3.109.245.201:/home/ubuntu/zecocenter",
-    "upload-programs": "scp -i ~/.ssh/vdi241.pem -r public/programs ubuntu@3.109.245.201:/home/ubuntu/zecocenter/public/programs",
-    "upload-scenes": "scp -i ~/.ssh/vdi241.pem -r public/scenes ubuntu@3.109.245.201:/home/ubuntu/zecocenter/public/scenes",
-    "restart-prod": "ssh -i ~/.ssh/vdi241.pem ubuntu@3.109.245.201 'source ~/.nvm/nvm.sh && pm2 restart zecocenter'",
+    "upload-build": "scp -i ~/.ssh/vdi2025.pem -r .next ubuntu@13.127.161.131:/home/ubuntu/zecocenter",
+    "upload-programs": "scp -i ~/.ssh/vdi2025.pem -r public/programs ubuntu@13.127.161.131:/home/ubuntu/zecocenter/public/programs",
+    "upload-scenes": "scp -i ~/.ssh/vdi2025.pem -r public/scenes ubuntu@13.127.161.131:/home/ubuntu/zecocenter/public/scenes",
+    "restart-prod": "ssh -i ~/.ssh/vdi2025.pem ubuntu@13.127.161.131 'source ~/.nvm/nvm.sh && pm2 restart zecocenter'",
     "deploy": "npm run clean-cache && npm run clean-dist && time next build && npm run clean-cache && time npm run upload-build && npm run restart-prod",
-    "logs": "ssh -i ~/.ssh/vdi241.pem ubuntu@3.109.245.201 'source ~/.nvm/nvm.sh && pm2 logs --lines 10 --raw zecocenter'",
-    "ssh": "ssh -i ~/.ssh/vdi241.pem ubuntu@3.109.245.201"
+    "logs": "ssh -i ~/.ssh/vdi2025.pem ubuntu@13.127.161.131 'source ~/.nvm/nvm.sh && pm2 logs --lines 10 --raw zecocenter'",
+    "ssh": "ssh -i ~/.ssh/vdi2025.pem ubuntu@13.127.161.131"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
