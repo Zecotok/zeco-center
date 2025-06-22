@@ -107,38 +107,34 @@ export default function AudioPlayer({
     
     const pendingUpdates = JSON.parse(localStorage.getItem('pendingProgressUpdates') || '[]');
     
-    if (pendingUpdates.length === 0) return;
+    // Find the latest update for the current book only
+    const currentBookUpdate = pendingUpdates.find((u: any) => u.bookId === book.id);
     
-    console.log(`Processing ${pendingUpdates.length} pending progress updates`);
+    if (!currentBookUpdate) return;
     
-    const processedIds: string[] = [];
+    console.log(`Processing latest progress update for current book: ${book.id}`);
     
-    for (const update of pendingUpdates) {
-      try {
-        await fetch('/api/audiobooks/progress', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            bookId: update.bookId,
-            currentTime: update.currentTime
-          })
-        });
-        
-        processedIds.push(update.bookId);
-        console.log(`Synced pending progress for book ${update.bookId}`);
-        
-      } catch (error) {
-        console.error('Failed to sync pending update:', error);
-        break; // Stop processing if network fails
-      }
-    }
-    
-    // Remove successfully processed updates
-    if (processedIds.length > 0) {
-      const remainingUpdates = pendingUpdates.filter((u: any) => !processedIds.includes(u.bookId));
+    try {
+      await fetch('/api/audiobooks/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          bookId: currentBookUpdate.bookId,
+          currentTime: currentBookUpdate.currentTime
+        })
+      });
+      
+      console.log(`Synced latest progress for book ${currentBookUpdate.bookId}: ${Math.round(currentBookUpdate.currentTime)}s`);
+      
+      // Remove only the successfully processed update for this book
+      const remainingUpdates = pendingUpdates.filter((u: any) => u.bookId !== book.id);
       localStorage.setItem('pendingProgressUpdates', JSON.stringify(remainingUpdates));
+      
+    } catch (error) {
+      console.error('Failed to sync latest progress update:', error);
+      // Keep the pending update for retry later
     }
-  }, []);
+  }, [book.id]);
 
   // Load progress from localStorage on component mount
   const loadProgressLocally = useCallback(() => {
