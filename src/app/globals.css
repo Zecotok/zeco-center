@@ -160,4 +160,9 @@ a, a:link, a:visited, a:hover, a:active, [href], .no-underline {
   }
 }
 
+/* Utility class for pages that need contained scrolling */
+.overflow-hidden-page {
+  overflow: hidden !important;
+}
+
 

@@ -336,32 +336,23 @@ export default function SimpleAudioPlayer({
         {isExpanded ? (
           /* Full Screen Player */
           <div className="h-full flex flex-col">
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 bg-white border-b flex-shrink-0">
+            {/* Header - Much smaller */}
+            <div className="flex items-center justify-between px-4 py-2 bg-white border-b flex-shrink-0">
               <button 
                 onClick={() => setIsExpanded(false)} 
-                className="text-gray-600 hover:text-gray-800 p-2"
+                className="text-gray-600 hover:text-gray-800 p-1"
               >
-                <FontAwesomeIcon icon={faCompress} className="text-lg" />
+                <FontAwesomeIcon icon={faCompress} className="text-sm" />
               </button>
-              <h3 className="font-semibold text-gray-800 truncate mx-4 text-center flex-1">{book.title}</h3>
-              <button onClick={onClose} className="text-gray-600 hover:text-gray-800 p-2">
-                <FontAwesomeIcon icon={faTimes} className="text-lg" />
-              </button>
-            </div>
-
-            {/* Book Info */}
-            <div className="p-4 bg-gradient-to-br from-[#0A2342] to-[#2C4A7F] text-white flex-shrink-0">
-              <div className="text-center">
-                <h2 className="text-lg font-bold mb-1">{book.title}</h2>
-                <p className="text-[#84B9EF] text-sm mb-3">{book.author}</p>
+              <div className="flex-1 text-center mx-2">
+                <h3 className="text-xs font-medium text-gray-800 truncate leading-tight">{book.title}</h3>
                 {currentChapterInfo && (
-                  <div className="bg-white/10 rounded-lg p-3">
-                    <p className="text-xs text-[#84B9EF]">Chapter {currentChapter + 1}</p>
-                    <p className="font-medium text-sm">{currentChapterInfo.title}</p>
-                  </div>
+                  <p className="text-xs text-gray-400 truncate leading-tight">Ch {currentChapter + 1}: {currentChapterInfo.title}</p>
                 )}
               </div>
+              <button onClick={onClose} className="text-gray-600 hover:text-gray-800 p-1">
+                <FontAwesomeIcon icon={faTimes} className="text-sm" />
+              </button>
             </div>
 
             {/* Progress Section */}
@@ -378,7 +369,7 @@ export default function SimpleAudioPlayer({
                   max="100"
                   value={progress}
                   onChange={handleProgressSeek}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                   style={{
                     background: `linear-gradient(to right, #84B9EF 0%, #84B9EF ${progress}%, #e5e7eb ${progress}%, #e5e7eb 100%)`
                   }}
@@ -386,44 +377,13 @@ export default function SimpleAudioPlayer({
               </div>
             </div>
 
-            {/* Controls */}
-            <div className="flex-1 bg-white p-6 flex flex-col justify-center">
-              {/* Chapter Navigation */}
-              <div className="flex items-center justify-center space-x-6 mb-6">
-                <button
-                  onClick={previousChapter}
-                  disabled={currentChapter === 0}
-                  className="text-gray-600 hover:text-[#2C4A7F] disabled:opacity-50 p-4 bg-gray-100 rounded-xl"
-                >
-                  <FontAwesomeIcon icon={faStepBackward} className="text-2xl" />
+            {/* Controls - Exact Layout as Requested */}
+            <div className="flex-1 bg-white p-6 flex flex-col justify-center space-y-6">
+              {/* Row 1: -15s, Play/Pause, +15s - Big buttons */}
+              <div className="flex items-center justify-center space-x-8">
+                <button onClick={() => skipBackward(15)} className="text-gray-600 hover:text-[#2C4A7F] p-6 bg-gray-100 rounded-xl">
+                  <span className="text-2xl font-bold">-15</span>
                 </button>
-                <button
-                  onClick={nextChapter}
-                  disabled={currentChapter === book.chapters.length - 1}
-                  className="text-gray-600 hover:text-[#2C4A7F] disabled:opacity-50 p-4 bg-gray-100 rounded-xl"
-                >
-                  <FontAwesomeIcon icon={faStepForward} className="text-2xl" />
-                </button>
-              </div>
-
-              {/* Skip Controls */}
-              <div className="flex items-center justify-center space-x-4 mb-6">
-                <button onClick={() => skipBackward(15)} className="text-gray-600 hover:text-[#2C4A7F] p-3 bg-gray-100 rounded-xl">
-                  <span className="text-sm font-bold">-15s</span>
-                </button>
-                <button onClick={() => skipBackward(30)} className="text-gray-600 hover:text-[#2C4A7F] p-3 bg-gray-100 rounded-xl">
-                  <span className="text-sm font-bold">-30s</span>
-                </button>
-                <button onClick={() => skipForward(10)} className="text-gray-600 hover:text-[#2C4A7F] p-3 bg-gray-100 rounded-xl">
-                  <span className="text-sm font-bold">+10s</span>
-                </button>
-                <button onClick={() => skipForward(30)} className="text-gray-600 hover:text-[#2C4A7F] p-3 bg-gray-100 rounded-xl">
-                  <span className="text-sm font-bold">+30s</span>
-                </button>
-              </div>
-
-              {/* Main Play Button */}
-              <div className="flex items-center justify-center mb-6">
                 <button
                   onClick={isPlaying ? onPause : onPlay}
                   disabled={isLoading || !isReady}
@@ -434,52 +394,64 @@ export default function SimpleAudioPlayer({
                     className="text-3xl" 
                   />
                 </button>
+                <button onClick={() => skipForward(15)} className="text-gray-600 hover:text-[#2C4A7F] p-6 bg-gray-100 rounded-xl">
+                  <span className="text-2xl font-bold">+15</span>
+                </button>
               </div>
 
-              {/* Additional Controls */}
+              {/* Row 2: -30s, +30s - Big buttons */}
+              <div className="flex items-center justify-center space-x-8">
+                <button onClick={() => skipBackward(30)} className="text-gray-600 hover:text-[#2C4A7F] p-6 bg-gray-100 rounded-xl">
+                  <span className="text-2xl font-bold">-30</span>
+                </button>
+                <button onClick={() => skipForward(30)} className="text-gray-600 hover:text-[#2C4A7F] p-6 bg-gray-100 rounded-xl">
+                  <span className="text-2xl font-bold">+30</span>
+                </button>
+              </div>
+
+              {/* Row 3: Chapter Navigation - Very very small buttons */}
               <div className="flex items-center justify-center space-x-4">
                 <button
-                  onClick={() => setShowChapters(true)}
-                  className="bg-[#84B9EF] text-white px-4 py-2 rounded-lg hover:bg-[#6AA6E8]"
+                  onClick={previousChapter}
+                  disabled={currentChapter === 0}
+                  className="text-gray-600 hover:text-[#2C4A7F] disabled:opacity-50 px-2 py-1 bg-gray-100 rounded text-xs"
                 >
-                  <FontAwesomeIcon icon={faList} className="mr-2" />
-                  Chapters
+                  <FontAwesomeIcon icon={faStepBackward} className="text-xs" />
                 </button>
-
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => setIsMuted(!isMuted)}
-                    className="text-gray-600 hover:text-[#2C4A7F] p-2"
-                  >
-                    <FontAwesomeIcon icon={isMuted || volume === 0 ? faVolumeMute : faVolumeUp} />
-                  </button>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    value={isMuted ? 0 : volume}
-                    onChange={(e) => {
-                      const newVolume = parseFloat(e.target.value);
-                      setVolume(newVolume);
-                      setIsMuted(newVolume === 0);
-                    }}
-                    className="w-20 h-2 bg-gray-200 rounded-lg"
-                  />
-                </div>
-
-                <select
-                  value={playbackRate}
-                  onChange={(e) => setPlaybackRate(parseFloat(e.target.value))}
-                  className="text-sm border border-gray-300 rounded-lg px-3 py-2"
+                <button
+                  onClick={nextChapter}
+                  disabled={currentChapter === book.chapters.length - 1}
+                  className="text-gray-600 hover:text-[#2C4A7F] disabled:opacity-50 px-2 py-1 bg-gray-100 rounded text-xs"
                 >
-                  <option value="0.5">0.5x</option>
-                  <option value="0.75">0.75x</option>
-                  <option value="1">1x</option>
-                  <option value="1.25">1.25x</option>
-                  <option value="1.5">1.5x</option>
-                  <option value="2">2x</option>
-                </select>
+                  <FontAwesomeIcon icon={faStepForward} className="text-xs" />
+                </button>
+              </div>
+
+              {/* Row 4: Speed Controls - Very very small buttons */}
+              <div className="flex items-center justify-center space-x-4">
+                <button
+                  onClick={() => setPlaybackRate(Math.max(0.5, playbackRate - 0.25))}
+                  className="text-gray-600 hover:text-[#2C4A7F] px-2 py-1 bg-gray-100 rounded text-xs"
+                >
+                  <span className="text-xs">-</span>
+                </button>
+                <span className="text-xs text-gray-600 px-2">{playbackRate}x</span>
+                <button
+                  onClick={() => setPlaybackRate(Math.min(2, playbackRate + 0.25))}
+                  className="text-gray-600 hover:text-[#2C4A7F] px-2 py-1 bg-gray-100 rounded text-xs"
+                >
+                  <span className="text-xs">+</span>
+                </button>
+              </div>
+
+              {/* Row 5: Chapters List - Very very small button */}
+              <div className="flex items-center justify-center">
+                <button
+                  onClick={() => setShowChapters(true)}
+                  className="bg-[#84B9EF] text-white px-3 py-1 rounded hover:bg-[#6AA6E8] text-xs"
+                >
+                  <FontAwesomeIcon icon={faList} className="text-xs" />
+                </button>
               </div>
             </div>
           </div>
