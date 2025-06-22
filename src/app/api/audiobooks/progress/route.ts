@@ -9,7 +9,7 @@ import path from 'path';
 async function getProgressCollection() {
   await connectDB();
   const { MongoClient } = require('mongodb');
-  const client = new MongoClient(process.env.MONGODB_URI);
+  const client = new MongoClient(process.env.DB_URI);
   await client.connect();
   const db = client.db('zecocenter');
   return { collection: db.collection('audiobook_progress'), client };
