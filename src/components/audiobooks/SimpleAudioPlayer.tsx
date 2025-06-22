@@ -299,11 +299,16 @@ export default function SimpleAudioPlayer({
     }
   };
 
-  // Progress bar seeking
+  // Progress bar seeking - modified for chapter progress
   const handleProgressSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
     const percentage = parseFloat(e.target.value);
-    const newTime = (percentage / 100) * duration;
-    seekTo(newTime);
+    const currentChapterInfo = book.chapters[currentChapter];
+    if (currentChapterInfo) {
+      const chapterDuration = currentChapterInfo.duration;
+      const newTimeInChapter = (percentage / 100) * chapterDuration;
+      const newTime = currentChapterInfo.start_time + newTimeInChapter;
+      seekTo(newTime);
+    }
   };
 
   // Format time helper
@@ -318,8 +323,12 @@ export default function SimpleAudioPlayer({
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+  // Calculate chapter progress instead of whole book progress
   const currentChapterInfo = book.chapters[currentChapter];
+  const chapterProgress = currentChapterInfo ? 
+    Math.min(100, Math.max(0, ((currentTime - currentChapterInfo.start_time) / currentChapterInfo.duration) * 100)) : 0;
+  const currentTimeInChapter = currentChapterInfo ? currentTime - currentChapterInfo.start_time : 0;
+  const chapterDuration = currentChapterInfo ? currentChapterInfo.duration : 0;
 
   return (
     <>
@@ -359,19 +368,19 @@ export default function SimpleAudioPlayer({
             <div className="p-4 bg-gray-50 flex-shrink-0">
               <div className="mb-2">
                 <div className="flex justify-between text-sm text-gray-600 mb-2">
-                  <span>{formatTime(currentTime)}</span>
-                  <span>{Math.round(progress)}%</span>
-                  <span>{formatTime(duration)}</span>
+                  <span>{formatTime(Math.max(0, currentTimeInChapter))}</span>
+                  <span>{Math.round(chapterProgress)}%</span>
+                  <span>{formatTime(chapterDuration)}</span>
                 </div>
                 <input
                   type="range"
                   min="0"
                   max="100"
-                  value={progress}
+                  value={chapterProgress}
                   onChange={handleProgressSeek}
                   className="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                   style={{
-                    background: `linear-gradient(to right, #84B9EF 0%, #84B9EF ${progress}%, #e5e7eb ${progress}%, #e5e7eb 100%)`
+                    background: `linear-gradient(to right, #84B9EF 0%, #84B9EF ${chapterProgress}%, #e5e7eb ${chapterProgress}%, #e5e7eb 100%)`
                   }}
                 />
               </div>
@@ -461,19 +470,22 @@ export default function SimpleAudioPlayer({
             <div className="h-1 bg-gray-200">
               <div
                 className="h-full bg-[#84B9EF] transition-all duration-300"
-                style={{ width: `${progress}%` }}
+                style={{ width: `${chapterProgress}%` }}
               />
             </div>
-            <div className="flex-1 flex items-center px-4 py-2">
+            <div 
+              className="flex-1 flex items-center px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors"
+              onClick={() => setIsExpanded(true)}
+            >
               <div className="flex items-center flex-1">
                 <div className="w-12 h-12 bg-gradient-to-br from-[#84B9EF] to-[#6AA6E8] rounded-lg flex items-center justify-center mr-3">
                   <FontAwesomeIcon icon={faPlay} className="text-white" />
                 </div>
                 <div className="flex-1 min-w-0 mr-4">
                   <h4 className="font-medium text-gray-800 truncate text-sm">{book.title}</h4>
-                  <p className="text-xs text-gray-500">{formatTime(currentTime)} / {formatTime(duration)}</p>
+                  <p className="text-xs text-gray-500">{formatTime(Math.max(0, currentTimeInChapter))} / {formatTime(chapterDuration)}</p>
                 </div>
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2" onClick={(e) => e.stopPropagation()}>
                   <button onClick={() => skipBackward(15)} className="text-gray-600 hover:text-[#2C4A7F] p-2">
                     <FontAwesomeIcon icon={faBackward} className="text-sm" />
                   </button>
@@ -490,9 +502,6 @@ export default function SimpleAudioPlayer({
                   <button onClick={() => skipForward(30)} className="text-gray-600 hover:text-[#2C4A7F] p-2">
                     <FontAwesomeIcon icon={faForward} className="text-sm" />
                   </button>
-                  <button onClick={() => setIsExpanded(true)} className="text-gray-600 hover:text-[#2C4A7F] p-2">
-                    <FontAwesomeIcon icon={faExpand} className="text-sm" />
-                  </button>
                   <button onClick={onClose} className="text-gray-600 hover:text-[#2C4A7F] p-2">
                     <FontAwesomeIcon icon={faTimes} className="text-sm" />
                   </button>
@@ -507,10 +516,10 @@ export default function SimpleAudioPlayer({
       {showChapters && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-[60] flex items-end">
           <div className="w-full bg-white rounded-t-2xl max-h-[70vh] flex flex-col">
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-semibold text-lg">Chapters</h3>
-              <button onClick={() => setShowChapters(false)} className="text-gray-600 hover:text-gray-800 p-2">
-                <FontAwesomeIcon icon={faTimes} />
+            <div className="flex items-center justify-between px-3 py-2 border-b">
+              <h3 className="font-medium text-sm">Chapters</h3>
+              <button onClick={() => setShowChapters(false)} className="text-gray-600 hover:text-gray-800 p-1">
+                <FontAwesomeIcon icon={faTimes} className="text-sm" />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto">
@@ -518,16 +527,16 @@ export default function SimpleAudioPlayer({
                 <div
                   key={index}
                   onClick={() => goToChapter(index)}
-                  className={`p-4 border-b cursor-pointer hover:bg-gray-50 ${
-                    index === currentChapter ? 'bg-[#84B9EF]/10 border-l-4 border-[#84B9EF]' : ''
+                  className={`px-3 py-1 border-b border-gray-100 cursor-pointer hover:bg-gray-50 ${
+                    index === currentChapter ? 'bg-[#84B9EF]/10 border-l-2 border-[#84B9EF]' : ''
                   }`}
                 >
                   <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium text-gray-800">{chapter.title}</p>
-                      <p className="text-sm text-gray-500">Chapter {index + 1}</p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium text-gray-800 truncate leading-tight">{chapter.title}</p>
+                      <p className="text-xs text-gray-400 leading-tight">Ch {index + 1}</p>
                     </div>
-                    <span className="text-sm text-gray-500">{formatTime(chapter.start_time)}</span>
+                    <span className="text-xs text-gray-400 ml-2 flex-shrink-0">{formatTime(chapter.start_time)}</span>
                   </div>
                 </div>
               ))}
