@@ -25,10 +25,9 @@ interface AudioBook {
   duration: string;
   duration_seconds: number;
   chapters: Array<{
-    chapter: number;
     title: string;
-    start_time: string;
-    start_seconds: number;
+    start_time: number;
+    duration: number;
   }>;
   progress?: {
     current_time: number;
@@ -114,8 +113,8 @@ export default function SimpleAudioPlayer({
           // Update current chapter
           const chapterIndex = book.chapters.findIndex((chapter, index) => {
             const nextChapter = book.chapters[index + 1];
-            return time >= chapter.start_seconds && 
-                   (!nextChapter || time < nextChapter.start_seconds);
+            return time >= chapter.start_time && 
+                   (!nextChapter || time < nextChapter.start_time);
           });
           
           if (chapterIndex !== -1) {
@@ -250,6 +249,12 @@ export default function SimpleAudioPlayer({
     const audio = audioRef.current;
     if (!audio || !isReady) return;
 
+    // Validate that time is a finite number
+    if (!isFinite(time) || isNaN(time)) {
+      console.error('🚫 Seek error: Invalid time value:', time);
+      return;
+    }
+
     const clampedTime = Math.max(0, Math.min(time, duration));
     console.log('🎯 Seeking to:', clampedTime);
     
@@ -273,9 +278,12 @@ export default function SimpleAudioPlayer({
   // Chapter navigation
   const goToChapter = (chapterIndex: number) => {
     const chapter = book.chapters[chapterIndex];
-    if (chapter) {
-      seekTo(chapter.start_seconds);
+    if (chapter && typeof chapter.start_time === 'number') {
+      console.log('📖 Going to chapter:', chapter.title, 'at time:', chapter.start_time);
+      seekTo(chapter.start_time);
       setShowChapters(false);
+    } else {
+      console.error('🚫 Invalid chapter or start_time:', chapter);
     }
   };
 
@@ -349,7 +357,7 @@ export default function SimpleAudioPlayer({
                 <p className="text-[#84B9EF] text-sm mb-3">{book.author}</p>
                 {currentChapterInfo && (
                   <div className="bg-white/10 rounded-lg p-3">
-                    <p className="text-xs text-[#84B9EF]">Chapter {currentChapterInfo.chapter}</p>
+                    <p className="text-xs text-[#84B9EF]">Chapter {currentChapter + 1}</p>
                     <p className="font-medium text-sm">{currentChapterInfo.title}</p>
                   </div>
                 )}
@@ -536,7 +544,7 @@ export default function SimpleAudioPlayer({
             <div className="flex-1 overflow-y-auto">
               {book.chapters.map((chapter, index) => (
                 <div
-                  key={chapter.chapter}
+                  key={index}
                   onClick={() => goToChapter(index)}
                   className={`p-4 border-b cursor-pointer hover:bg-gray-50 ${
                     index === currentChapter ? 'bg-[#84B9EF]/10 border-l-4 border-[#84B9EF]' : ''
@@ -545,9 +553,9 @@ export default function SimpleAudioPlayer({
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="font-medium text-gray-800">{chapter.title}</p>
-                      <p className="text-sm text-gray-500">Chapter {chapter.chapter}</p>
+                      <p className="text-sm text-gray-500">Chapter {index + 1}</p>
                     </div>
-                    <span className="text-sm text-gray-500">{chapter.start_time}</span>
+                    <span className="text-sm text-gray-500">{formatTime(chapter.start_time)}</span>
                   </div>
                 </div>
               ))}
