@@ -94,6 +94,16 @@ export default function SimpleAudioPlayer({
     }
   }, [onProgressUpdate]);
 
+  // Helper function to find correct chapter based on time
+  const findChapterByTime = useCallback((time: number) => {
+    const chapterIndex = book.chapters.findIndex((chapter, index) => {
+      const nextChapter = book.chapters[index + 1];
+      return time >= chapter.start_time && 
+             (!nextChapter || time < nextChapter.start_time);
+    });
+    return chapterIndex !== -1 ? chapterIndex : 0;
+  }, [book.chapters]);
+
   // Simple progress tracking - only when playing
   useEffect(() => {
     if (progressUpdateRef.current) {
@@ -110,16 +120,9 @@ export default function SimpleAudioPlayer({
           // Only save progress if 30+ seconds difference
           smartProgressUpdate(time);
           
-          // Update current chapter
-          const chapterIndex = book.chapters.findIndex((chapter, index) => {
-            const nextChapter = book.chapters[index + 1];
-            return time >= chapter.start_time && 
-                   (!nextChapter || time < nextChapter.start_time);
-          });
-          
-          if (chapterIndex !== -1) {
-            setCurrentChapter(chapterIndex);
-          }
+          // Update current chapter using helper function
+          const chapterIndex = findChapterByTime(time);
+          setCurrentChapter(chapterIndex);
         }
       }, 1000); // Update every second but only save if needed
     }
@@ -129,7 +132,7 @@ export default function SimpleAudioPlayer({
         clearInterval(progressUpdateRef.current);
       }
     };
-  }, [isPlaying, book.chapters, smartProgressUpdate]);
+  }, [isPlaying, book.chapters, smartProgressUpdate, findChapterByTime]);
 
   // Audio event handlers - simplified
   useEffect(() => {
@@ -145,9 +148,15 @@ export default function SimpleAudioPlayer({
       // Set initial progress if available
       const initialTime = book.progress?.current_time || 0;
       if (initialTime > 0 && initialTime < audio.duration) {
+        console.log('🔄 Setting initial progress:', initialTime, 'seconds');
         audio.currentTime = initialTime;
         setCurrentTime(initialTime);
         lastSavedProgressRef.current = initialTime; // Set as last saved
+        
+        // Set correct chapter based on initial time
+        const correctChapter = findChapterByTime(initialTime);
+        console.log('📖 Setting initial chapter:', correctChapter, 'for time:', initialTime);
+        setCurrentChapter(correctChapter);
       }
     };
 
@@ -216,7 +225,7 @@ export default function SimpleAudioPlayer({
       audio.removeEventListener('waiting', handleWaiting);
       audio.removeEventListener('canplaythrough', handleCanPlayThrough);
     };
-  }, [book, onPause]);
+  }, [book, onPause, findChapterByTime]);
 
   // Handle play/pause
   useEffect(() => {
@@ -243,6 +252,17 @@ export default function SimpleAudioPlayer({
     if (!audio) return;
     audio.playbackRate = playbackRate;
   }, [playbackRate]);
+
+  // Update current chapter when time changes (for seeking, loading, etc.)
+  useEffect(() => {
+    if (currentTime > 0) {
+      const correctChapter = findChapterByTime(currentTime);
+      if (correctChapter !== currentChapter) {
+        console.log('📖 Chapter changed from', currentChapter, 'to', correctChapter, 'at time', currentTime);
+        setCurrentChapter(correctChapter);
+      }
+    }
+  }, [currentTime, findChapterByTime, currentChapter]);
 
   // Simple seeking function
   const seekTo = (time: number) => {
@@ -356,7 +376,7 @@ export default function SimpleAudioPlayer({
               <div className="flex-1 text-center mx-2">
                 <h3 className="text-xs font-medium text-gray-800 truncate leading-tight">{book.title}</h3>
                 {currentChapterInfo && (
-                  <p className="text-xs text-gray-400 truncate leading-tight">Ch {currentChapter + 1}: {currentChapterInfo.title}</p>
+                  <p className="text-xs text-gray-400 truncate leading-tight">{currentChapterInfo.title}</p>
                 )}
               </div>
               <button onClick={onClose} className="text-gray-600 hover:text-gray-800 p-1">
@@ -534,7 +554,6 @@ export default function SimpleAudioPlayer({
                   <div className="flex items-center justify-between">
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-medium text-gray-800 truncate leading-tight">{chapter.title}</p>
-                      <p className="text-xs text-gray-400 leading-tight">Ch {index + 1}</p>
                     </div>
                     <span className="text-xs text-gray-400 ml-2 flex-shrink-0">{formatTime(chapter.start_time)}</span>
                   </div>

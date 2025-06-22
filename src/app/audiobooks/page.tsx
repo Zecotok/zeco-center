@@ -93,10 +93,47 @@ export default function AudiobooksPage() {
     setFilteredBooks(filtered);
   }, [searchTerm, audiobooks]);
 
-  const handlePlayBook = (book: AudioBook) => {
-    setCurrentBook(book);
-    setIsPlaying(false);
-    setShouldAutoExpand(true);
+  const handlePlayBook = async (book: AudioBook) => {
+    try {
+      // Fetch updated progress before starting playback
+      console.log('🔄 Fetching updated progress for:', book.title);
+      const response = await fetch(`/api/audiobooks/progress?bookId=${book.id}`);
+      const updatedProgress = await response.json();
+      
+      // Update the book with fresh progress data
+      const bookWithUpdatedProgress = {
+        ...book,
+        progress: updatedProgress.current_time > 0 ? {
+          current_time: updatedProgress.current_time,
+          completed: updatedProgress.completed || false,
+          last_played: updatedProgress.last_played || new Date().toISOString()
+        } : book.progress
+      };
+      
+      console.log('✅ Updated progress loaded:', {
+        bookId: book.id,
+        currentTime: updatedProgress.current_time,
+        hasProgress: updatedProgress.current_time > 0
+      });
+      
+      // Update the audiobooks state with the fresh progress
+      setAudiobooks(prevBooks => 
+        prevBooks.map(b => 
+          b.id === book.id ? bookWithUpdatedProgress : b
+        )
+      );
+      
+      // Set as current book and prepare for playback
+      setCurrentBook(bookWithUpdatedProgress);
+      setIsPlaying(false);
+      setShouldAutoExpand(true);
+    } catch (error) {
+      console.error('❌ Error fetching updated progress:', error);
+      // Fallback to original book if progress fetch fails
+      setCurrentBook(book);
+      setIsPlaying(false);
+      setShouldAutoExpand(true);
+    }
   };
 
   const updateProgress = async (bookId: string, currentTime: number) => {
