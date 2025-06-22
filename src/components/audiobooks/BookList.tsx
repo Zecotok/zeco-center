@@ -63,7 +63,10 @@ export default function BookList({ book, onPlay, isCurrentlyPlaying }: BookListP
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden">
+    <div 
+      onClick={onPlay}
+      className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group hover:scale-[1.01]"
+    >
       <div className="flex items-center p-6">
         {/* Cover Thumbnail */}
         <div className="relative w-20 h-20 bg-gradient-to-br from-[#0A2342] to-[#2C4A7F] rounded-lg flex-shrink-0 mr-6 overflow-hidden">
@@ -91,6 +94,16 @@ export default function BookList({ book, onPlay, isCurrentlyPlaying }: BookListP
               <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
             </div>
           )}
+
+          {/* Play Icon Overlay */}
+          <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+            <div className="bg-white/20 backdrop-blur-sm border border-white/30 text-white p-2 rounded-full">
+              <FontAwesomeIcon 
+                icon={isCurrentlyPlaying ? faPause : faPlay} 
+                className="text-sm" 
+              />
+            </div>
+          </div>
         </div>
 
         {/* Content */}
@@ -113,10 +126,19 @@ export default function BookList({ book, onPlay, isCurrentlyPlaying }: BookListP
 
           {/* Tags and Meta */}
           <div className="flex items-center flex-wrap gap-2 mb-3">
-            <span className="bg-[#84B9EF]/10 text-[#2C4A7F] px-2 py-1 rounded-full text-xs font-medium">
-              {book.genre}
-            </span>
-            {book.categories.slice(0, 3).map((category, index) => (
+            {/* Only show genre if it's meaningful */}
+            {book.genre && book.genre !== 'General' && book.genre !== 'Uncategorized' && (
+              <span className="bg-[#84B9EF]/10 text-[#2C4A7F] px-2 py-1 rounded-full text-xs font-medium">
+                {book.genre}
+              </span>
+            )}
+            {/* Show only first meaningful category */}
+            {book.categories.filter(cat => 
+              !cat.toLowerCase().includes('business') && 
+              !cat.toLowerCase().includes('development') &&
+              !cat.toLowerCase().includes('general') &&
+              cat.length > 2
+            ).slice(0, 1).map((category, index) => (
               <span 
                 key={index}
                 className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs"
@@ -124,11 +146,6 @@ export default function BookList({ book, onPlay, isCurrentlyPlaying }: BookListP
                 {category}
               </span>
             ))}
-            {book.categories.length > 3 && (
-              <span className="bg-gray-100 text-gray-600 px-2 py-1 rounded-full text-xs">
-                +{book.categories.length - 3}
-              </span>
-            )}
           </div>
 
           {/* Progress Bar */}
@@ -174,24 +191,17 @@ export default function BookList({ book, onPlay, isCurrentlyPlaying }: BookListP
           </div>
         </div>
 
-        {/* Action Button */}
-        <div className="ml-6 flex-shrink-0">
-          <button
-            onClick={onPlay}
-            className={`px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center space-x-2 ${
-              isCurrentlyPlaying
-                ? 'bg-[#84B9EF] text-white hover:bg-[#6AA6E8]'
-                : 'bg-gray-100 text-gray-700 hover:bg-[#84B9EF] hover:text-white'
-            }`}
-          >
-            <FontAwesomeIcon 
-              icon={isCurrentlyPlaying ? faPause : faPlay} 
-              className="w-4 h-4" 
-            />
-            <span className="hidden sm:inline">
-              {isCurrentlyPlaying ? 'Pause' : 'Play'}
-            </span>
-          </button>
+        {/* Status Indicator */}
+        <div className="ml-6 flex-shrink-0 flex items-center justify-center w-12 h-12">
+          {isCurrentlyPlaying ? (
+            <div className="bg-[#84B9EF] text-white p-3 rounded-full">
+              <FontAwesomeIcon icon={faPause} className="text-lg" />
+            </div>
+          ) : (
+            <div className="bg-gray-100 text-gray-600 p-3 rounded-full group-hover:bg-[#84B9EF] group-hover:text-white transition-colors">
+              <FontAwesomeIcon icon={faPlay} className="text-lg" />
+            </div>
+          )}
         </div>
       </div>
     </div>

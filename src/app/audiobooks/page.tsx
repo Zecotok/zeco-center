@@ -19,7 +19,7 @@ import {
   faThLarge
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import AudioPlayer from '@/components/audiobooks/AudioPlayer';
+import SimpleAudioPlayer from '@/components/audiobooks/SimpleAudioPlayer';
 import BookCard from '@/components/audiobooks/BookCard';
 import BookList from '@/components/audiobooks/BookList';
 
@@ -62,6 +62,7 @@ export default function AudiobooksPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [loading, setLoading] = useState(true);
+  const [shouldAutoExpand, setShouldAutoExpand] = useState(false);
 
   // Fetch audiobooks from API
   useEffect(() => {
@@ -108,7 +109,8 @@ export default function AudiobooksPage() {
 
   const handlePlayBook = (book: AudioBook) => {
     setCurrentBook(book);
-    setIsPlaying(true);
+    setIsPlaying(false);
+    setShouldAutoExpand(true);
   };
 
   const handlePauseBook = () => {
@@ -239,7 +241,7 @@ export default function AudiobooksPage() {
 
         {/* Audiobooks Grid/List */}
         {!loading && filteredBooks.length > 0 && (
-          <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6' : 'space-y-4'}>
+          <div className={viewMode === 'grid' ? 'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4' : 'space-y-4'}>
             {filteredBooks.map((book) => (
               viewMode === 'grid' ? (
                 <BookCard 
@@ -263,7 +265,7 @@ export default function AudiobooksPage() {
 
       {/* Audio Player */}
       {currentBook && (
-        <AudioPlayer
+        <SimpleAudioPlayer
           book={currentBook}
           isPlaying={isPlaying}
           onPlay={() => setIsPlaying(true)}
@@ -272,7 +274,10 @@ export default function AudiobooksPage() {
           onClose={() => {
             setCurrentBook(null);
             setIsPlaying(false);
+            setShouldAutoExpand(false);
           }}
+          autoExpand={shouldAutoExpand}
+          onAutoExpandHandled={() => setShouldAutoExpand(false)}
         />
       )}
     </div>
