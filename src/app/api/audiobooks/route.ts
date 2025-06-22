@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { connectDB } from '@/libs/mongodb';
 import fs from 'fs';
 import path from 'path';
+
+// MongoDB collection for audiobook progress
+async function getProgressCollection() {
+  await connectDB();
+  const { MongoClient } = require('mongodb');
+  const client = new MongoClient(process.env.MONGODB_URI);
+  await client.connect();
+  const db = client.db('zecocenter');
+  return { collection: db.collection('audiobook_progress'), client };
+}
 
 export async function GET(request: NextRequest) {
   try {
@@ -22,6 +33,9 @@ export async function GET(request: NextRequest) {
     const metaFiles = fs.readdirSync(metaPath).filter(file => file.endsWith('.json'));
     const audiobooks = [];
 
+    // Get all user progress at once for efficiency
+    const userProgress = await getAllUserProgress(session.user.id);
+
     for (const metaFile of metaFiles) {
       try {
         const metaFilePath = path.join(metaPath, metaFile);
@@ -30,8 +44,8 @@ export async function GET(request: NextRequest) {
         // Generate unique ID from filename
         const id = path.basename(metaFile, '.json');
         
-        // Get user progress from database (you'll need to implement this)
-        const progress = await getUserProgress(session.user.id, id);
+        // Get progress for this book from the fetched progress map
+        const progress = userProgress[id] || null;
         
         audiobooks.push({
           id,
@@ -60,35 +74,72 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// Function to get user progress (implement based on your database)
-async function getUserProgress(userId: string, bookId: string) {
-  // This is a placeholder - implement with your actual database
-  // For now, return null to indicate no progress
-  return null;
+// Enhanced function to get all user progress at once
+async function getAllUserProgress(userId: string) {
+  let client;
   
-  // Example implementation with MongoDB:
-  /*
   try {
-    const { MongoClient } = require('mongodb');
-    const client = new MongoClient(process.env.MONGODB_URI);
-    await client.connect();
+    const { collection, client: dbClient } = await getProgressCollection();
+    client = dbClient;
     
-    const db = client.db('zecocenter');
-    const progress = await db.collection('audiobook_progress').findOne({
+    const progressRecords = await collection.find({ userId }).toArray();
+    
+    // Convert to a map for quick lookup
+    const progressMap: { [bookId: string]: any } = {};
+    
+    progressRecords.forEach(progress => {
+      progressMap[progress.bookId] = {
+        current_time: progress.currentTime,
+        completed: progress.completed,
+        last_played: progress.lastPlayed.toISOString(),
+        progress_percentage: progress.progressPercentage,
+        updated_at: progress.updatedAt.toISOString()
+      };
+    });
+    
+    return progressMap;
+    
+  } catch (error) {
+    console.error('Error fetching user progress:', error);
+    return {};
+  } finally {
+    if (client) {
+      await client.close();
+    }
+  }
+}
+
+// Function to get user progress (legacy - kept for compatibility)
+async function getUserProgress(userId: string, bookId: string) {
+  let client;
+  
+  try {
+    const { collection, client: dbClient } = await getProgressCollection();
+    client = dbClient;
+    
+    const progress = await collection.findOne({
       userId,
       bookId
     });
     
-    await client.close();
+    if (!progress) {
+      return null;
+    }
     
-    return progress ? {
+    return {
       current_time: progress.currentTime,
       completed: progress.completed,
-      last_played: progress.lastPlayed.toISOString()
-    } : null;
+      last_played: progress.lastPlayed.toISOString(),
+      progress_percentage: progress.progressPercentage,
+      updated_at: progress.updatedAt.toISOString()
+    };
+    
   } catch (error) {
     console.error('Error fetching progress:', error);
     return null;
+  } finally {
+    if (client) {
+      await client.close();
+    }
   }
-  */
 } 
