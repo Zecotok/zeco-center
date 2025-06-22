@@ -15,6 +15,7 @@
     "upload-build": "scp -i ~/.ssh/server2025.pem -r .next ubuntu@13.127.161.131:/home/ubuntu/zecocenter",
     "upload-programs": "scp -i ~/.ssh/server2025.pem -r public/programs ubuntu@13.127.161.131:/home/ubuntu/zecocenter/public/programs",
     "upload-scenes": "scp -i ~/.ssh/server2025.pem -r public/scenes ubuntu@13.127.161.131:/home/ubuntu/zecocenter/public/scenes",
+    "upload-media": "scp -i ~/.ssh/server2025.pem -r uploads/media ubuntu@13.127.161.131:/home/ubuntu/zecocenter/uploads/",
     "restart-prod": "ssh -i ~/.ssh/server2025.pem ubuntu@13.127.161.131 'source ~/.nvm/nvm.sh && pm2 restart zecocenter'",
     "deploy": "npm run clean-cache && npm run clean-dist && time next build && npm run clean-cache && time npm run upload-build && npm run restart-prod",
     "logs": "ssh -i ~/.ssh/server2025.pem ubuntu@13.127.161.131 'source ~/.nvm/nvm.sh && pm2 logs --lines 10 --raw zecocenter'",
