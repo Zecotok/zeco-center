@@ -87,7 +87,7 @@ async function getAllUserProgress(userId: string) {
     // Convert to a map for quick lookup
     const progressMap: { [bookId: string]: any } = {};
     
-    progressRecords.forEach(progress => {
+    progressRecords.forEach((progress: any) => {
       progressMap[progress.bookId] = {
         current_time: progress.currentTime,
         completed: progress.completed,
